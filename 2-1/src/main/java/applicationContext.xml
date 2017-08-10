@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value = "oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+		<property name="username" value="hr"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	
+	<bean id="teamDao" class="dao.impl.TeamDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="teamUi" class="ui.TeamUi">
+		<property name="teamDao" ref="teamDao"></property>
+	</bean>
+	
+	<bean id="menuUi" class="ui.MenuUi">
+		<property name="teamUi" ref="teamUi"></property>
+		<property name="proUi" ref="proUi"></property>
+	</bean>
+	
+	<bean id="proUi" class="pro.ProUi">
+		<property name="teamDao" ref="teamDao"></property>
+	</bean>
+</beans>

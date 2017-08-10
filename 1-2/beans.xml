@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="myAdvice" class="sample1.MyAdvice"></bean>
+	
+	<bean id="targetBean" class="sample1.MessageBeanImpl">
+		<property name="name" value="hong"></property>
+	</bean>
+	
+	<bean id="defaultAdvisor"
+		class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="myAdvice"></property>
+		<property name="pointcut">
+			<bean
+				class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+				<property name="pattern">
+					<value>.*.sayHello.*</value>
+					<!-- . : 줄바꿈이나 줄마침 문자를 제외한 모든 문자 -->
+					<!-- * : 앞 항목을 0번이상 반복 -->
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="proxy"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="targetBean"></property>
+		<property name="interceptorNames" >
+			<list>
+				<value>defaultAdvisor</value>
+			</list>
+		</property>
+	</bean>
+</beans>
