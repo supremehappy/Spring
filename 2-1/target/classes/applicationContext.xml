@@ -22,9 +22,36 @@
 	<bean id="menuUi" class="ui.MenuUi">
 		<property name="teamUi" ref="teamUi"></property>
 		<property name="proUi" ref="proUi"></property>
+		<property name="playerUi" ref="insertPlayerUi"></property>
+		<property name="productUi" ref="insertProductUi"></property>
 	</bean>
 	
-	<bean id="proUi" class="pro.ProUi">
-		<property name="teamDao" ref="teamDao"></property>
+	<!-- product -->
+	<bean id="productDao" class="dao.impl.ProductDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	
+	<bean id="proUi" class="ui.ProUi">
+		<property name="productDao" ref="productDao"></property>
+	</bean>
+	
+	<bean id="insertProductDao" class="dao.impl.InsertProductDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="insertProductUi" class="ui.InsertProductUi">
+		<property name="productDao" ref="productDao"></property>
+		<property name="insertProductDao" ref="insertProductDao"></property>
+	</bean>
+	
+	<!-- player -->
+	<bean id="playerDao" class="dao.impl.PlayerDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="insertPlayerUi" class="ui.InsertPlayerUi">
+		<property name="teamDao" ref="teamDao"></property>
+		<property name="playerDao" ref="playerDao"></property>
+	</bean>
+	
 </beans>

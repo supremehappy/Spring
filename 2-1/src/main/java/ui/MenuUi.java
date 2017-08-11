@@ -3,12 +3,12 @@ package ui;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import pro.ProUi;
-
 public class MenuUi extends AbstractUiImpl {
 
 	private TeamUi teamUi;
 	private ProUi proUi;
+	private InsertPlayerUi playerUi;
+	private InsertProductUi productUi;
 	
 	public void setTeamUi(TeamUi teamUi) {
 		this.teamUi = teamUi;
@@ -17,13 +17,21 @@ public class MenuUi extends AbstractUiImpl {
 	public void setProUi(ProUi proUi) {
 		this.proUi = proUi;
 	}
+	
+	public void setPlayerUi(InsertPlayerUi playerUi) {
+		this.playerUi = playerUi;
+	}
+	
+	public void setProductUi(InsertProductUi productUi) {
+		this.productUi = productUi;
+	}
 
 	@Override
 	protected void showMenu() {
 	
-		System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-		System.out.println("1. 종료 / 2. 팀 목록 보기 / 3. 상품 목록 보기");
-		System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+		System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+		System.out.println("1. 종료 / 2. 팀 목록 보기 / 3. 상품 목록 보기 / 4. 선수 등록 / 5. 상품 등록");
+		System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 		System.out.println("번호를 입력 후 엔터");
 
 	}
@@ -31,7 +39,7 @@ public class MenuUi extends AbstractUiImpl {
 	@Override
 	protected int getMaxMenuNumber() {
 		
-		return 3;
+		return 5;
 	}
 
 	@Override
@@ -56,6 +64,14 @@ public class MenuUi extends AbstractUiImpl {
 				
 			case 3 :
 				proUi.show();
+				break;
+				
+			case 4:
+				playerUi.show();
+				break;
+				
+			case 5 :
+				productUi.show();
 				break;
 			}
 		}catch(Exception e){

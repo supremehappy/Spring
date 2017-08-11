@@ -4,14 +4,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import dao.TeamDao;
 import model.Team;
-import pro.productList;
+import model.productList;
 
-public class TeamDaoImpl extends JdbcDaoSupport implements TeamDao {
+public class TeamDaoImpl extends NamedParameterJdbcDaoSupport implements TeamDao {
 
 	@Override
 	public List<Team> getTeamList() throws Exception {
@@ -36,30 +42,41 @@ public class TeamDaoImpl extends JdbcDaoSupport implements TeamDao {
 		}
 		
 	}
-
+//-----------------------------------------------------------------------------------------	
 	@Override
-	public List<productList> getProList() throws Exception {
+	public Team getTeam(Integer id) throws Exception {
+
+		String sql = "select team_id, name from team where team_id= :teamId";
 		
-		RowMapper<productList> rowMapper = new ProRowMapper();
-		String sql = "select pid, name, price from product_info";
+		SqlParameterSource params = new MapSqlParameterSource("teamId",id);
+		NamedParameterJdbcTemplate template = this.getNamedParameterJdbcTemplate();
+		Team team = template.query(sql, params, new TeamResultSetExtractor());
 		
-		return getJdbcTemplate().query(sql, rowMapper);
+		return team;
 	}
-	
-	protected class ProRowMapper implements RowMapper<productList>{
+
+	protected class TeamResultSetExtractor implements ResultSetExtractor<Team>{
 
 		@Override
-		public productList mapRow(ResultSet arg0, int arg1) throws SQLException {
+		public Team extractData(ResultSet arg0) throws SQLException, DataAccessException {
 			
-			productList pro = new productList();
-			
-			pro.setPid(arg0.getInt("pid"));
-			pro.setName(arg0.getString("name"));
-			pro.setPrice(arg0.getInt("price"));
-			
-			return pro;
+				if(arg0.next()){//검색 결과가 존재
+					Team team = new Team();
+					
+					team.setId(arg0.getInt("team_id"));
+					team.setName(arg0.getString("name"));
+					
+					return team;
+				}else {
+					return null;
+				}
 		}
 		
 	}
+	
+//-----------------------------------------------------------------------------------------	
+
+
+
 
 }
