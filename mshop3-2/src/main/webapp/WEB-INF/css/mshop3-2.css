@@ -1,20 +1,66 @@
 @CHARSET "UTF-8";
-body{
+body {
+
 	font-family: 굴림체;
+
 }
 
-div.body{
+
+
+div.body {
+
+	overflow-y: auto;
+
+	scrollbar-face-color: #C9BFED;
+
+	scrollbar-shadow-color: #EDEDED;
+
 	margin-top: 50px;
+
 	margin-bottom: 50px;
-	scrollbar-face-color:#C9BFED;
-	Scrollbar-shadow-color:#EDEDED;
-	
+
 }
 
-tr.header{
-	background : #C9BFED;
+
+
+tr.header {
+
+	background: #C9BFED;
+
 }
 
-tr.record{
-	background :#EDEDED;
+
+
+tr.record {
+
+	background: #EDEDED;
+
+}
+
+
+
+input.userId{
+
+	height: 20px;
+
+	width: 150px;
+
+	border-width: 1px;
+
+	border-style: solid;
+
+}
+
+
+
+input.password {
+
+	height: 20px;
+
+	width: 150px;
+
+	border-width: 1px;
+
+	border-style: solid;
+
 }
