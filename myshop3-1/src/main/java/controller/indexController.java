@@ -21,18 +21,21 @@ public class indexController implements Controller {
 		this.shopService = shopService;
 	}
 	
-	@Override
+	
 	public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		
 		List<Product> productList = this.shopService.getIProductList();
 		
+		Product pro = new Product();		
 		Map<String, Object> model = new HashMap<String, Object>();
+		
 		model.put("productList", productList);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/WEB-INF/jsp/index.jsp");
 		
+		mav.setViewName("index");
 		mav.addAllObjects(model);
 		
-		return null;
+		return mav;
 	}
 }

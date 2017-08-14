@@ -14,5 +14,11 @@ public class ShopImpl implements Shop {
 		
 		return itemCatalog.getItemList();
 	}
+	
+	//------------------------------------------------------------------------------------ add(8.14:9h)
+	public Item getItemByItemId(Integer id) {
+		
+		return itemCatalog.getItemByItemId(id);
+	}
 
 }

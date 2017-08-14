@@ -15,5 +15,11 @@ public class ItemCatalogImpl implements ItemCatalog {
 		
 		return this.itemDao.findAll();
 	}
+	
+	//------------------------------------------------------------------------------------ add(8.14:9h)
+	public Item getItemByItemId(Integer id) {
+		
+		return this.itemDao.findByPrimaryKey(id);
+	}
 
 }

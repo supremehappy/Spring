@@ -12,10 +12,16 @@ public class ProductlogImpl implements Productlog {
 		this.productDao = productDao;
 	}
 
-	@Override
+	
 	public List<Product> getProductList() {
 		
 		return this.productDao.findAll();
+	}
+
+
+	public Product getItemByItemId(Integer id) {
+		
+		return productDao.findByPrimaryKey(id);
 	}
 
 }

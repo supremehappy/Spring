@@ -7,5 +7,5 @@ import logic.Product;
 public interface ProductDao {
 
 	List<Product> findAll();
-	
+	Product findByPrimaryKey(Integer id);
 }

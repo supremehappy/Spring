@@ -14,5 +14,37 @@
 	<bean id="itemDao" class="dao.ItemDaoImpl" p:dataSource-ref="dataSource"></bean>
 	<bean id="itemCatalog" class="logic.ItemCatalogImpl" p:itemDao-ref="itemDao"></bean>
 	<bean id="shop" class="logic.ShopImpl" p:itemCatalog-ref="itemCatalog"></bean>
-	<bean id="frontController" class="controller.indexController" p:shopService-ref="shop" name="/index.html"></bean>
+	<!--
+	 HandlerMapping 명시 안 한 경우 : BeanNamedUrlHandlerMapping 적용 : 환경설정파일의 컨트롤러 정의에 의해 매핑 URL(name="/index.html") 를 찾음
+	 ViewResolver 명시 안 한 경우 : InternalResoureViewResolver : mav.setViewName("/WEB-INF/jsp/index.jsp"); 을 참조하여 찾음
+	 View 명시 안 한 경우 : InternalResoureView : 기본 객체
+	 -->
+	<!--<bean id="frontController" class="controller.indexController" p:shopService-ref="shop" name="/index.html"></bean> -->
+	<bean id="frontController" class="controller.indexController" p:shopService-ref="shop"></bean> <!-- 수정 -->
+	
+	<!-- add(8.14:9h) -->
+	<!-- 
+	HandlerMapping 명시 한 경우 : SimpleUrlHandlerMapping 적용 : 환경설정파일에서 매핑정보를 찾는다.
+	ViewResolver 명시 한 경우 : 
+	View 명시 한 경우 : JstlView : JSTL 이 적용된 JSP를 찾는다. JSP를 찾을때 환경설정파일에 명시한 refix와 suffix를 참조하여 전체적인 JSP의 경로와 이름을 완성
+	-->
+	<bean id="detailController" class="controller.DetailController" p:shopService-ref="shop" ></bean> 
+	<bean id="headlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/index.html=frontController
+				/detail.html=detailController
+			</value>
+		</property>
+	</bean>
+	
+	<!-- add(8.14:10h) -->
+	<bean id="internalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
 </beans>

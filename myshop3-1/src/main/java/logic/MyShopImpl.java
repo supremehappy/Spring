@@ -10,9 +10,15 @@ public class MyShopImpl implements MyShop {
 		this.productlog = productlog;
 	}
 	
-	@Override
+	
 	public List<Product> getIProductList() {
 		
 		return productlog.getProductList();
+	}
+
+
+	public Product getItemByItemId(Integer id) {
+		
+		return productlog.getItemByItemId(id);
 	}
 }

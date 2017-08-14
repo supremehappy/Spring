@@ -23,13 +23,13 @@ public class indexController implements Controller{
 
 	public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
 		
-		List<Item> itemList = this.shopService.getItemList();
-		
+		List<Item> itemList = this.shopService.getItemList();		
 		Map<String, Object> model = new HashMap<String, Object>();
+		
 		model.put("itemList", itemList);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/WEB-INF/jsp/index.jsp");
+		mav.setViewName("index"); //<-- 수정(8.14:10h)
 		
 		mav.addAllObjects(model);
 		

@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+body{
+	font-family: 굴림체;
+}
+
+div.body{
+	margin-top: 50px;
+	margin-bottom: 50px;
+	scrollbar-face-color:#C9BFED;
+	Scrollbar-shadow-color:#EDEDED;
+	
+}
+
+tr.header{
+	background : #C9BFED;
+}
+
+tr.record{
+	background :#EDEDED;
+}
