@@ -1,0 +1,15 @@
+error.input.product = 입력 정보에 문제가 있습니다.
+error.required.product.id = 사용자 ID 를 입력해주세요.
+error.required.product.name = 상품명을 입력해주세요.
+error.required.product.price = 가격을 입력해주세요.
+error.required.product.content = 내용을 입력해주세요.
+error.required.product.group_id = 그룹번호를 입력해주세요
+error.required.product.order_no = 정렬번호를 입력해주세요
+error.required.product.parent_id = 부모번호를 입력해주세요
+error.required.product.p_date = 날짜를 입력해주세요.
+error.required.product.pid = 글번호를 입력해주세요.
+
+error.duplicate.product = 입력된 사용자 ID는 이미 존재합니다.
+product.id.default = 글 작성에 필요합니다.
+product.name.default = 글 작성에 필요합니다.
+error.required.product = 사용자 정보에 문제가 있습니다.

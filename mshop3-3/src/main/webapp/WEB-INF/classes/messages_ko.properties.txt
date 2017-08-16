@@ -1,0 +1,13 @@
+error.input.user = 입력 정보에 문제가 있습니다.
+error.required.user.userId = 사용자 ID 를 입력해주세요.
+error.required.user.userName = 이름을 입력해주세요.
+error.required.user.password = 암호를 입력해주세요.
+error.required.user.postCode = 우편번호를 입력해주세요.
+error.required.user.address = 주소를 입력해주세요.
+error.required.user.email = 이메일을 입력해주세요.
+error.required.user.birthDay = 생일을 입력해주세요.
+error.duplicate.user = 입력된 사용자 ID는 이미 존재합니다.
+user.userId.default = 로그인에 필요합니다.
+user.userName.default = 배송에 필요합니다.
+error.required.user = 사용자 정보에 문제가 있습니다.
+typeMismatch.user.birthDay = 생년월일은 20170101 형식으로 입력해주세요.
