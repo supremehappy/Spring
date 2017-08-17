@@ -1,6 +1,7 @@
 package logic;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import model.Cart;
 import model.Item;
 import model.ItemSet;
+import model.Sale;
+import model.SaleLine;
 import model.User;
 
 @Service
@@ -75,17 +78,33 @@ public class ShopImpl implements Shop {
 		
 		Timestamp currentTime = getCurrentTime();
 		
-		sale.setUdateTime(currentTime);
+		sale.setUpdateTime(String.valueOf(currentTime));
 		
-		List<ItemList> itemList = cart.getItemList();
+		List<ItemSet> itemList = cart.getItemList();
 		
-		for(int i =0 ; i <itemList.size;i++){
+		for(int i =0 ; i <itemList.size();i++){
 			ItemSet itemSet = (ItemSet)itemList.get(i);
 			int saleLineId = i+1;
 			SaleLine saleLine = createSaleLine(sale, saleLineId, itemSet, currentTime);
 			
 			sale.addSaleLine(saleLine);
 		}
+		return sale;
+	}
+	//---------------------------------------------------------
+	private Integer getNewSaleId(){
+		return this.saleCatalog.getNewSaleId();
+	}
+	
+	private Timestamp getCurrentTime(){
+		return new Timestamp(Calendar.getInstance().getTimeInMillis());
+	}
+	
+	private SaleLine createSaleLine(Sale sale,int saleLineId, ItemSet itemSet, Timestamp currentTime){
+		return new SaleLine(sale,saleLineId,itemSet,currentTime);
 	}
 
+	private void entrySale(Sale sale){
+		this.saleCatalog.entrySale(sale);
+	}
 }

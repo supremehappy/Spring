@@ -25,10 +25,20 @@
 		from item
 		where item_id = #{itemId}
 	</select>
-<!--  -->
-
-<!--  -->
-
+	
+<!-- SaleDaoImpl -->
+	<select id="getMaxSaleId" resultType="Integer">
+		select max(sale_id) as sale_id from sale
+	</select>
+	
+	<insert id="putSale" parameterType="modle.Sale">
+		insert into sale(sale_id, user_id, update_time)
+		values(#{saleId},#{userId},#{updateTime})
+	</insert>
+<!-- SaleLineDaoImpl -->
+	<insert id="puSaleLine" parameterType="model.SaleLine">
+		insert into sale_line values(#{saleLineId},#{saleId},#{itemId},#{quantity},#{updateTime})
+	</insert>
 <!--  -->
 
 <!--  -->

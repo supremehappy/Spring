@@ -42,6 +42,11 @@ public class Sale {
 		this.saleLineList = saleLineList;
 	}
 	
+	//---------------------------------------------------------
+	
+	public void addSaleLine(SaleLine saleLine){
+		this.saleLineList.add(saleLine);
+	}
 	
 	
 }
