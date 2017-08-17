@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="productMapper">
+
+<!-- UserDaoImpl -->	
+	<insert id="putUser" parameterType="model.User">
+		insert into user_info values(#{id},#{password})
+	</insert>
+	
+	<select id="getUser" parameterType="model.User" resultType="model.User">
+		select id from user_info
+		where id=#{id} and password = #{password}
+	</select>
+	
+<!-- ProductDaoImpl -->	
+	<select id="getProductList" resultType="model.Product">
+		select pid,group_id as groupId ,order_no as orderNo ,parent_id as parentId , name, price,p_date as pDate ,content,id
+		from product_info
+	</select>
+	
+		<select id="getProduct" resultType="model.Item" parameterType="Integer">
+		select pid,group_id as groupId ,order_no as orderNo ,parent_id as parentId , name, price,p_date as pDate ,content,id 
+		from product_info
+		where pid = #{pid}
+	</select>
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

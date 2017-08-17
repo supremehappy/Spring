@@ -9,9 +9,14 @@
 <title>login</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/jsp/menu_header.jsp" %>
+
 	<div ailgn="center" class="body">
 		<h2>login success</h2>
 		Hi, ${loginUser.userName }!
 	</div>
+	
+	<a href ="../index/index.html">* 목록으로 돌아가기</a>
+	<a href ="../checkout/checkout.html">* 계산하러 가기</a>
 </body>
 </html>

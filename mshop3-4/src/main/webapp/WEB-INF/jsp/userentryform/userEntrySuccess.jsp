@@ -13,6 +13,8 @@
 <title>가입완료</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/jsp/menu_header.jsp" %>
+
 	<div align="center" class="body">
 		<b>
 			<font color="blue">사용자 등록이 완료되었습니다.</font>

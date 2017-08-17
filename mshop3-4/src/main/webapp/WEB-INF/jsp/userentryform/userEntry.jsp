@@ -13,6 +13,8 @@
 <title>회원가입 화면</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/jsp/menu_header.jsp" %>
+
 	<div align="center" calss="body">
 			<h2>회원가입</h2>
 			<form:form modelAttribute="user" method="post" action = "userEntry.html">

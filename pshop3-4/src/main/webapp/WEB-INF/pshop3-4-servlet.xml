@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- db -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value = "oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+		<property name="username" value="hr"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	
+	<!-- SqlSessionFactory -->
+	<bean 
+		id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean" 
+		p:dataSource-ref="dataSource" 
+		p:configLocation="classpath:config/mybatis-config.xml">
+	</bean>
+	
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+		
+	<!-- ControllerClassNameHandlerMapping -->
+	<bean
+		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+	</bean>
+	
+	<!-- context:component-scan :  해당 패키지 밑 클래스 안에 어노테이션 자동 처리-->	
+	<context:component-scan base-package="dao,logic,controller"></context:component-scan>
+	
+	<!-- view, ViewResolver 처리 -->
+	<bean id="internalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- 에러 메시지 처리 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 유효검사 -->
+	<bean id="userEntryValidator" class="util.UserEntryValidator"></bean>
+	<bean id="loginValidator" class="util.LoginValidator"></bean>
+</beans>

@@ -11,6 +11,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/jsp/menu_header.jsp" %>
+
 <div align="center" class="body">
 	<form:form modelAttribute = "user" method="post" action="login.html">
 		<spring:hasBindErrors name="user">
@@ -45,6 +47,8 @@
 			</tr>
 		</table>
 	</form:form>
+	
+	<a href="../userentryform/userEntry.html">* 회원가입</a>
 </div>
 </body>
 </html>

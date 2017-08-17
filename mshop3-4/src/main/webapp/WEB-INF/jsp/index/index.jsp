@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="css/shop3-1.css">
 </head>
 <body>
+<%@ include file="/WEB-INF/jsp/menu_header.jsp" %>
 <div align="center" class="body">
 	<h2>상품 목록 화면</h2>
 	<table border="1">
@@ -20,7 +21,7 @@
 		<c:forEach items="${itemList }" var="item">
 			<tr class="record">
 				<td align="center">${item.itemId }</td>
-				<td align="center"><a href="detail.html?itemId=${item.itemId }">${item.itemName }</a></td> <!-- <-- 수정(8.14:9h) -->
+				<td align="center"><a href="../detail/detail.html?itemId=${item.itemId }">${item.itemName }</a></td> <!-- <-- 수정(8.14:9h) -->
 				<td align="center">${item.price }</td>
 			</tr>
 		</c:forEach>
