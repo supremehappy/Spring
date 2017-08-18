@@ -56,4 +56,16 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- 예외처리 -->
+	<bean id="exceptionHandler"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<value>
+				exception.LoginRequiredException=loginRequired
+				exception.CartEmptyException=cartEmpty
+				java.lang.Exception=exception
+			</value>
+		</property>
+	</bean>
 </beans>

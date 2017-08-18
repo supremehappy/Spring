@@ -14,8 +14,10 @@ public class SaleLine { // 매출/구매 상세 정보
 	
 	public SaleLine(Sale sale, Integer saleLineId, ItemSet itemSet, Timestamp currentTime){
 		this.sale=sale;
+		this.saleId=this.sale.getSaleId();
 		this.saleLineId=saleLineId;
 		this.item=itemSet.getItem();
+		this.itemId=this.item.getItemId();
 		this.quantity=itemSet.getQuantity();
 		this.updateTime=String.valueOf(currentTime);
 	}

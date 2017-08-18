@@ -1,0 +1,13 @@
+error.input.user=입력정보에 문제가 있습니다.
+error.login.user=입력하신 ID와 암호가 일치하지 않습니다.
+error.required.user.userId=사용자 ID를 입력해 주세요.
+error.required.user.userName=사용자 이름을 입력해 주세요.
+error.required.user.password=사용자 암호를 입력해 주세요.
+error.required.user.postCode=우편번호를 입력해 주세요.
+error.required.user.address=주소를 입력해 주세요.
+error.required.user.email=이메일을 입력해 주세요.
+error.required.user.birthday=생일을 입력해 주세요.
+error.duplicate.user=입력된 ID는 이미 사용 중입니다.
+user.userId.default=로그인시 필요합니다.
+user.userName.default=배송시 필요합니다.
+typeMismatch.user.birthday=생년월일은 20110101 형식으로 입력해 주세요.

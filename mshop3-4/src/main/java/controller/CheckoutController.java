@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import exception.CartEmptyException;
+import exception.LoginRequiredException;
 import logic.Shop;
 import model.Cart;
 import model.ItemSet;
@@ -22,31 +24,30 @@ public class CheckoutController {
 	
 	@RequestMapping
 	public ModelAndView checkout(HttpSession session){
-		User loginUser = (User) session.getAttribute("USER_KEY");
+		User loginUser=(User)session.getAttribute("USER_KEY");
 		Cart cart = null;
-		try{
-			if(loginUser == null){
-				throw new Exception("로그인을 해야 합니다.");
-			}
-			cart=(Cart)session.getAttribute("CART_KEY");
-			
-			if(cart == null || cart.isEmpty()){
-				throw new Exception("카트가 비어있습니다");
-			}
-		}catch(Exception e){
-			ModelAndView mav = new ModelAndView();
-			
-			mav.addObject("loginUser",loginUser);
-			
-			List<ItemSet> itemList = cart.getItemList();
-			
-			mav.addObject("itemList",itemList);
-			
-			Integer totalAmount = this.shopService.calculateTotalAmount(itemList);
-			mav.addObject("totalAmount",totalAmount);
+		
+	
+		if(loginUser == null){
+			throw new LoginRequiredException("로그인을 해야 합니다.");
+		}
+		cart=(Cart)session.getAttribute("CART_KEY");
+		
+		if(cart == null || cart.isEmpty()){
+			throw new CartEmptyException("카트가 비어있습니다");
 		}
 		
-		return null;
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("loginUser",loginUser);
+		
+		List<ItemSet> itemList = cart.getItemList();
+		
+		mav.addObject("itemList",itemList);
+		
+		Integer totalAmount = this.shopService.calculateTotalAmount(itemList);
+		mav.addObject("totalAmount",totalAmount);
+		return mav;
 	}
 	
 }

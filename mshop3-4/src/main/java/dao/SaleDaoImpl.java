@@ -14,13 +14,13 @@ public class SaleDaoImpl implements SaleDao{
 	
 	public void create(Sale sale) {
 
-		this.session.insert("shopMapper.puSale",sale);
+		this.session.insert("shopMapper.putSale",sale);
 		
 	}
 
 	public Integer findMaxSaleId() {
 		
-		Object obj = this.session.selectOne("");
+		Object obj = this.session.selectOne("shopMapper.getMaxSaleId");
 		
 		if(obj==null){
 			return 0;

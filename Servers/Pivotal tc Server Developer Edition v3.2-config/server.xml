@@ -16,7 +16,16 @@
             </Realm>
             <Host appBase="webapps" autoDeploy="true" deployOnStartup="true" deployXML="true" name="localhost" unpackWARs="true">
                 <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
-            <Context docBase="shop3-1" path="/shop3-1" reloadable="true" source="org.eclipse.jst.jee.server:shop3-1"/><Context docBase="myshop3-1" path="/myshop3-1" reloadable="true" source="org.eclipse.jst.jee.server:myshop3-1"/><Context docBase="mshop3-1" path="/mshop3-1" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-1"/><Context docBase="mybatisshop" path="/mybatisshop" reloadable="true" source="org.eclipse.jst.jee.server:mybatisshop"/><Context docBase="mshop3-2" path="/mshop3-2" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-2"/><Context docBase="mshop3-3" path="/mshop3-3" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-3"/><Context docBase="pshop3-3" path="/pshop3-3" reloadable="true" source="org.eclipse.jst.jee.server:pshop3-3"/><Context docBase="mshop3-4" path="/mshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4"/><Context docBase="pshop3-4" path="/pshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:pshop3-4"/></Host>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <Context docBase="mshop3-4-t" path="/mshop3-4-t" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4-t"/><Context docBase="mshop3-4" path="/mshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4"/><Context docBase="mshop3-5" path="/mshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-5"/></Host>
         </Engine>
         <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="${nio.http.port}" protocol="org.apache.coyote.http11.Http11NioProtocol" redirectPort="${nio.https.port}"/>
     </Service>

@@ -1,0 +1,4 @@
+javax.validation.constants.NotNull.message = 값을 입력해주세요.
+javax.validation.constants.Min.message = {value} 이상의 값을 입력해주세요.
+
+org.hibernate.validator.constants.NotEmpty.message = 값을 입력해주세요.
