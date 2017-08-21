@@ -21,7 +21,7 @@
 	</delete>
 	
 	<update id="updateItem" parameterType="model.Item">
-		update item set item_name = #{itemName}, price = #{price}, description = #{description}, picture_uri = #{pictureUrl}
+		update item set item_name = #{itemName}, price = #{price}, description = #{description},picture_url = #{pictureUrl}
 		where item_id = #{itemId}
 	</update>
 	

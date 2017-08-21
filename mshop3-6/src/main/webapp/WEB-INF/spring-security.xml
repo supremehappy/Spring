@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- security -->
+	<security:http auto-config="true">
+		<!-- 접속권한 설정 -->
+		<security:intercept-url pattern="/item/create**" access="ROLE_ADMIN"/><!-- 1 * : create~~~  / 2 *: .~~~  -->
+		<security:intercept-url pattern="/item/edit**" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/item/confirm**" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/item/search**" access="ROLE_USER"/>
+		<security:intercept-url pattern="/item/index**" access="ROLE_USER"/>
+		
+		<!-- 로그인처리 -->
+		<security:form-login login-page="/login.html" authentication-failure-url="/login.html?login_error=1" default-target-url="/item/index.html"/>
+		
+		<!-- 중복처리 -->
+		<security:session-management>
+			<security:concurrency-control  error-if-maximum-exceeded="true" max-sessions="1" />
+		</security:session-management>
+		
+		<!-- 로그아웃처리 -->
+		<security:logout logout-url="/j_spring_security_logout" logout-success-url="/logout.html" invalidate-session="true"/>
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="admin" password="1234" authorities="ROLE_ADMIN, ROLE_USER"/>
+				<security:user name="user" password="user" authorities="ROLE_USER"/>
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>
+

@@ -1,0 +1,10 @@
+productMenu.title = 마스터 관리 - 상품 목록 화면
+productEdit.title = 마스터 관리 - 상품 편집 화면
+productAdd.title = 마스터 관리 - 상품 등록 화면
+productDelete.title = 마스터 관리 - 상품 삭제 화면
+
+productEditForm.product.pid = 상품ID
+productEditForm.product.name = 상품 이름
+productEditForm.product.price = 상품 가격
+productEditForm.product.content = 상품 설명
+productEditForm.product.picture = 파일명
