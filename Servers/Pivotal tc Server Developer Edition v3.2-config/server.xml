@@ -25,7 +25,7 @@
             
             
             
-            <Context docBase="mshop3-4-t" path="/mshop3-4-t" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4-t"/><Context docBase="mshop3-4" path="/mshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4"/><Context docBase="mshop3-5" path="/mshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-5"/><Context docBase="pshop3-4" path="/pshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:pshop3-4"/><Context docBase="pshop3-5" path="/pshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:pshop3-5"/><Context docBase="mshop3-6" path="/mshop3-6" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-6"/></Host>
+            <Context docBase="mshop3-4-t" path="/mshop3-4-t" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4-t"/><Context docBase="mshop3-4" path="/mshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4"/><Context docBase="mshop3-5" path="/mshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-5"/><Context docBase="pshop3-4" path="/pshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:pshop3-4"/><Context docBase="pshop3-5" path="/pshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:pshop3-5"/><Context docBase="mshop3-6" path="/mshop3-6" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-6"/><Context docBase="MyHome" path="/MyHome" reloadable="true" source="org.eclipse.jst.jee.server:MyHome"/></Host>
         </Engine>
         <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="${nio.http.port}" protocol="org.apache.coyote.http11.Http11NioProtocol" redirectPort="${nio.https.port}"/>
     </Service>
