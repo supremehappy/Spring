@@ -9,16 +9,16 @@
 </head>
 <body>
 <c:choose>
-	<c:when test="${param.UPLOAD != null }">
+	<c:when test="${RESULT != null }">
 		<h2>글을 올리시려면, 로그인해야 합니다.</h2>
-		<form action="login" method="post">
+		<form action="../login/template.html" method="post">
 		아이디 : <input type="text" name="ID" size="12"/><br/>
 		패스워드 : <input type="password" name="PWD" size="12"/><br/>
 		<input type="submit" value="로그인"/>
 		</form>
 	</c:when>
 	<c:otherwise>
-		<form action="login" method="post">
+		<form action="../login/template.html" method="post">
 		아이디 : <input type="text" name="ID" size="12"/><br/>
 		패스워드 : <input type="password" name="PWD" size="12"/><br/>
 		<input type="submit" value="로그인"/>

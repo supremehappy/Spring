@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="homeMapper">
+
+<!-- login -->
+	<!-- LoginDaoImpl -->	
+	<select id="getPassword" resultType="String" parameterType="String">
+		select password from user_account
+		where user_id = #{userId}
+	</select>
+
+<!-- bbs -->
+	<!-- WriteDaoImpl -->	
+	<select id="getMaxBbsId" resultType="Integer">
+		select max(seqno) m_id from bbs
+	</select>
+	
+	<insert id="putBBS" parameterType="model.Bbs">
+		insert into bbs values(#{seqno},#{title},#{content},#{id},#{bbs_date})
+	</insert>
+	
+	<!-- ReadDaoImpl -->
+<!-- 	<select id="getBBSList" resultType="model.Bbs">
+		select seqno, title, id , content, bbs_date from bbs
+		order by seqno desc
+	</select>
+ -->
+	<select id="getBBSDetail" resultType="model.Bbs" parameterType="Integer">
+		select * from bbs where seqno = #{seqno}
+	</select>
+	
+	<select id="getBBSCount" resultType="Integer"><!-- add -->
+		select count(*) as num from bbs
+	</select>
+	
+	<select id="getBBSList" parameterType="model.Condition" resultType="model.Bbs">
+		select seqno,title,id,content,bbs_date
+		from 
+		(
+			select a.*, rownum rn from
+			(
+				(select * from bbs
+				order by seqno desc) a
+			)
+		) where rn between #{startRow} and #{endRow}
+	</select>
+<!-- product -->	
+	<!-- ProductWriteDaoImpl -->
+	<select id="getMaxProductBbsId" resultType="Integer">
+		select max(pid) m_id from product_info
+	</select>
+	
+	<insert id="putProductBBS" parameterType="model.Product">
+		insert into product_info values(#{pid},#{group_id},#{order_no},#{parent_id},#{name}, #{price}, #{p_date}, #{content}, #{id}, #{password}, #{pictureUrl} )
+	</insert>
+
+	<!-- ProductReadDaoImpl -->
+<!-- 	<select id="getProductBBSList" resultType="model.Product">
+		select pid, group_id, order_no, parent_id, name, price, p_date, content, id, password, pictureUrl from product_info
+		order by pid desc
+	</select> -->
+
+	<select id="getProductBBSDetail" resultType="model.Product" parameterType="Integer">
+		select * from product_info where pid = #{pid}
+	</select>
+	
+	<select id="getProductBBSCount" resultType="Integer"><!-- add -->
+		select count(*) as num from product_info
+	</select>
+	
+	<select id="getProductBBSList" parameterType="model.Condition" resultType="model.Product">
+		select pid, group_id, order_no, parent_id, name, price, p_date, content, id, password, pictureUrl
+		from 
+		(
+			select a.*, rownum rn from
+			(
+				(select * from product_info
+				order by pid desc) a
+			)
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+<!--  -->
+		
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+<!--  -->
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

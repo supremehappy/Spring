@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,66 +9,25 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<script type="text/javascript">
-	function validate(form){
-		if(form.PRONAME.value == ""){
-			alert("plz, input name");
-			return false;
-		}
-		
-		if(form.password.value == ""){
-			alert("plz, input password");
-			return false;
-		}
-		
-		if(form.PROPRICE.value == ""){
-			alert("plz, input price");
-			return false;
-		}
-		
-		if(form.CONTENT.value == ""){
-			alert("plz, input content");
-			return false;
-		}
-		
-		
-	}
-</script>
-
-	<form action="pro-post" method="post" onSubmit="return validate(this)">
+	<h3 align="center">게시판 글쓰기</h3>
 	
-		<c:if test="${! empty pro.group_id }">
-			<input type="hidden" name ="groupid" value="${param.groupid }"/>
-		</c:if>
+	<form:form modelAttribute="product" action="../home/productWrite.html" method="post">
+		<h4>
+			글제목 : <form:input path="name" cssClass="name"/>
+		</h4>
+		<font color="red"><form:errors path="name"></form:errors></font><br>
+		<h4>
+			가격 : <form:input path="price" cssClass="price"/>
+		</h4>
+		<font color="red"><form:errors path="price"></form:errors></font><br>
 		
-		<c:if test="${! empty pro.parent_id }">
-			<input type="hidden" name ="parentid" value="${param.parentid }"/>
-		</c:if>
-	
-		<input type="hidden" name="orderno" value="${param.order_no+1 }" />
+		<form:textarea path="content" rows="5" cols="80" cssClass="content"/>
+		<font color="red"><form:errors path="content"></form:errors></font>
 		
-		<table border="1" width="100%">
+		<input type="submit" value="글올리기"/>
+		<input type="reset" value="취 소"/>	
 		
-			<tr><td>상품명</td>
-				<td><input type="text" name="PRONAME" size="40" value="${title }" /></td>
-			</tr>	
-			<tr><td>가 격</td>
-				<td><input type="text" name="PROPRICE" size="30"/></td>
-			</tr>
-			<tr><td>암호</td>
-				<td><input type="password" name="password" size="20"/></td>
-			</tr>
-			<tr><td>글내용</td>
-				<td><textarea rows="8" cols="40" name="CONTENT"></textarea></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-				<input type="submit" value="등 록"/>
-				<input type="reset" value="취 소"/>
-				</td>
-			</tr>	
-		</table>
-	</form>
+	</form:form>
+
 </body>
 </html>

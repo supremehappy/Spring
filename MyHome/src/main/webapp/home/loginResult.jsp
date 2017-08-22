@@ -9,9 +9,9 @@
 </head>
 <body>
 <c:choose>
-	<c:when test="${param.RESULT == 'OK'}">
+	<c:when test="${sessionScope.loginUser != null}">
 		<h3 align="center">로그인되었습니다.</h3>
-		<h3 align="center">환영합니다. ${sessionScope.ID }님~</h3>
+		<h3 align="center">환영합니다. ${sessionScope.loginUser }님~</h3>
 	</c:when>
 	<c:otherwise>
 		<h3 align="center">로그인되지 못했습니다.</h3>

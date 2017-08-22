@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="logout" method="get">
-안녕하세요? ${sessionScope.ID }님~<br/>
+<form action="../logout/template.html" method="get">
+안녕하세요? ${sessionScope.loginUser }님~<br/>
 <input type="submit" value="로그아웃"/>
 </form>
 </body>

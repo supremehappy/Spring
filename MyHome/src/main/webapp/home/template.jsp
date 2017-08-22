@@ -13,7 +13,7 @@
 <tr>
 	<td width="190" valign="top">
 		<c:choose>
-			<c:when test="${sessionScope.ID == null}">
+			<c:when test="${sessionScope.loginUser == null}">
 				<jsp:include page="login.jsp"/>
 			</c:when>
 			<c:otherwise>
@@ -21,10 +21,10 @@
 			</c:otherwise>
 		</c:choose>
 		<a href="../home/intro.html?BODY=intro.jsp">우리집 소개</a><br/>
-		<a href="template.jsp?BODY=bbsInput.jsp">게시판 글쓰기</a><br/>
-		<a href="bbs-list">게시판 글읽기</a><br/>
-		<a href="template.jsp?BODY=productInput.jsp">상품 등록</a><br/>
-		<a href="pro-list">상품 목록</a><br/>
+		<a href="../home/bbsTemplate.html">게시판 글쓰기</a><br/>
+		<a href="../read/read.html">게시판 글읽기</a><br/>
+		<a href="../home/productTemplate.html">상품 등록</a><br/>
+		<a href="../product/productRead.html">상품 목록</a><br/>
 		<a href="cart-list">장바구니</a><br/>
 		<a href="write-form">이미지 게시글 및 답글 작성</a><br/>
 		<a href="image-list">이미지 게시판 보기</a>

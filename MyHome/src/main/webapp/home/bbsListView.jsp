@@ -16,16 +16,30 @@
 		<td width="80">작성자</td>
 		<td width="90">작성일</td>
 	</tr>
-	<c:forEach var="cnt" begin="0" end="${BBS_LIST.listSize -1 }">
+	<c:forEach var = "bbs" items="${BBS_LIST }">
+		<tr>
+			<td>${bbs.seqno }</td>
+			<td><a href="../read/readDetail.html?SEQNO=${bbs.seqno }">${bbs.title }</a></td>
+			<td>${bbs.id }</td>
+			<td>${bbs.bbs_date }</td>
+		</tr>
+	</c:forEach>
+<%-- 	<c:forEach var="cnt" begin="0" end="${BBS_LIST.listSize -1 }">
 		<tr>
 			<td>${BBS_LIST.seqNoList[cnt] }</td>
 			<td><a href="bbsItem?SEQNO=${BBS_LIST.seqNoList[cnt] }">${BBS_LIST.titleList[cnt] }</a></td>
 			<td>${BBS_LIST.writerList[cnt] }</td>
 			<td>${BBS_LIST.dateList[cnt] }</td>
 		</tr>
-	</c:forEach>
+	</c:forEach> --%>
 </table>
-<c:if test="${! BBS_LIST.firstPage}">
+<br>
+
+<c:forEach var = "page" begin="1" end="${COUNT }">
+	<a href="../read/read.html?PAGENO=${page} ">${page }</a>
+</c:forEach>
+
+<%-- <c:if test="${! BBS_LIST.firstPage}">
 	<a href="bbs-list?FIRST_SEQNO=${BBS_LIST.seqNoList[0] }">이전 페이지</a>
 </c:if>
 <c:forEach var="page" begin="1" end="${BBS_LIST.pageNum}">
@@ -33,38 +47,6 @@
 </c:forEach>
 <c:if test="${! BBS_LIST.lastPage}">
 	<a href="bbs-list?LAST_SEQNO=${BBS_LIST.seqNoList[BBS_LIST.listSize -1] }">다음 페이지</a>
-</c:if>
+</c:if> --%>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

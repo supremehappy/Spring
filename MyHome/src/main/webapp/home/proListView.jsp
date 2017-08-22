@@ -9,12 +9,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<table width="100%">
+<%-- <table width="100%">
 	<tr>
 		<td align="right"><b>${startRow }~${endRow }/${count }</b></td>
 	</tr>
-</table>
-
+</table> --%>
+<h1 align="center">게시글 목록</h1>
 <table border="1">
 	<tr>
 		<td width="40">글번호</td>
@@ -24,8 +24,21 @@
 		<td width="100">작성일</td>
 		<td width="100">&nbsp;</td>
 	</tr>
-		<c:if test="${ !empty LIST }">
-	<c:forEach var="proitem" items="${LIST }">
+	
+	<c:forEach var ="product" items="${PRODUCT_LIST }">
+		<tr>
+			<td>${product.pid }</td>
+			<td><a href="../product/productReadDetail.html?PID=${product.pid} ">${product.name }</a></td>
+			<td>${product.price }</td>
+			<td>${product.id }</td>
+			<td>${product.p_date }</td>
+			<td>&nbsp;</td>
+			
+		</tr>		
+	</c:forEach>
+
+<%-- 		<c:if test="${ !empty LIST }">
+ 	<c:forEach var="proitem" items="${LIST }">
 	<tr>
 		<td>${proitem.pid }</td>
 		<td><a href="javascript:goView(${proitem.pid })">${proitem.name }</a></td>
@@ -34,11 +47,17 @@
 		<td>${proitem.p_date }</td>
 		<td><a href="#" onClick="window.open('add-cart?CODE=${proitem.pid  }','Cart_Result','width=400,height=150').focus()">장바구니 담기</a></td>
 	</tr>
-	</c:forEach>
+	</c:forEach> 
 	</c:if>
-</table>
+ --%>
+ </table>
+<br>
 
-<c:set var="startPage" value="${currentPage-(currentPage%10==0?10:(currentPage%10))+1 }"/>
+<c:forEach var = "page" begin="1" end="${COUNT }">
+	<a href="../product/productRead.html?PAGENO=${page} ">${page }</a>
+</c:forEach>
+
+<%-- <c:set var="startPage" value="${currentPage-(currentPage%10==0?10:(currentPage%10))+1 }"/>
 <c:set var="endPage" value="${startPage+9 }"/>
 <c:if test="${endPage > pageCount }">
 	<c:set var="endPage" value="${pageCount }"/>
@@ -80,7 +99,7 @@ function goView(id){
 		document.sender.action="proitem";
 		document.sender.submit();
 	}
-}
-</script>
+} 
+</script>--%>
 </body>
 </html>

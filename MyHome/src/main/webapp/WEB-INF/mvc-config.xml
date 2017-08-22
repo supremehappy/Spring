@@ -22,6 +22,27 @@
 	        <property name="suffix" value=".jsp"/>
 	</bean>
 
+	<!-- db -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value = "oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+		<property name="username" value="hr"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	
+	<!-- SqlSessionFactory -->
+	<bean 
+		id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean" 
+		p:dataSource-ref="dataSource" 
+		p:configLocation="classpath:config/mybatis-config.xml">
+	</bean>
+	
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+
 	<!-- controller -->
 	<bean
 		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">

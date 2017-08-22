@@ -9,33 +9,37 @@
 </head>
 <body>
 
-<c:if test="${ empty pro }">
+<%-- <c:if test="${ empty pro }">
 	존재하지 않는 게시글입니다.
-</c:if>
-<c:if test="${ ! empty pro }">
+</c:if>--%>
+<%-- <c:if test="${ ! empty pro }">  --%>
 <table width="100%" border="1">
 	<tr>
 		<td>상품명</td>
-		<td>${pro.name }</td>
-	</tr>
-	<tr>
+		<td>${PRODUCT_ITEM.name }</td>
 		<td>가 격</td>
-		<td>${pro.price }</td>
+		<td>${PRODUCT_ITEM.price }</td>
 	</tr>
 	<tr>
-		<td>글내용</td>
-		<td>${pro.content }</td>
+		<td>작성일</td>
+		<td>${PRODUCT_ITEM.content }</td>
 	</tr>
-	<tr><td colspan="2">
+	<tr>
+		<td>글내용</td>		
+	</tr>
+	<tr>
+		<td>${PRODUCT_ITEM.content }</td>
+	</tr>
+<!-- 	<tr><td colspan="2">
 		<a href="javascript:goReply()">[답글]</a>
 		<a href="javascript:goModify()">[수정]</a>
 		<a href="javascript:goDelete()">[삭제]</a>
 		<a href="pro-list">[목록]</a>
-	</td></tr>
+	</td></tr> -->
 </table>
-</c:if>
+<%-- </c:if> --%>
 
-<script type="text/javascript">
+<%-- <script type="text/javascript">
 	function goReply(){
 		document.move.action="pro-form";
 		document.move.submit();
@@ -56,7 +60,7 @@
 	<input type="hidden" name="pid" value="${pro.pid }"/>
 	<input type="hidden" name="parentid" value="${pro.pid }"/>
 	<input type="hidden" name="groupid" value="${pro.group_id }"/>
-</form>
+</form> --%>
 
 </body>
 </html>

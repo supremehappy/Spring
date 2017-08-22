@@ -9,7 +9,7 @@
 </head>
 <body>
 <c:choose>
-	<c:when test="${param.RESULT == 'OK' }">
+	<c:when test="${sessionScope.loginUser == null }">
 		<h1>로그아웃 되었습니다. 또 방문해 주세요~</h1>
 	</c:when>
 	<c:otherwise>
