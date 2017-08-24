@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopMapper">
+	<insert id="insertWritingInfo" parameterType="model.Writing">
+	insert into writing_info values(#{writing_id},#{group_id},
+	#{order_no},#{parent_id},#{register_date},#{writer_name},
+	#{email},#{image_name},#{password},#{title},0)
+	</insert>
+	<select id="getWritingInfo" resultType="model.Writing">
+	select * from writing_info order by writing_id desc
+	</select>
+	<select id="getMaxWritingId" resultType="Integer">
+	select max(writing_id) max_id from writing_info
+	</select>
+	<delete id="deleteCart" parameterType="model.CartItem">
+	delete from cart where code=#{code} and id=#{id}
+	</delete>
+	<update id="updateCart" parameterType="model.CartItem">
+	update cart set num=#{num}
+	where code=#{code} and id=#{id}
+	</update>
+	<select id="selectMaxCart" resultType="Integer">
+	select max(seqno) max_seqno from cart
+	</select>
+	<insert id="insertCart" parameterType="model.CartItem">
+	insert into cart values(#{seqno},#{code},#{num},#{id})
+	</insert>
+	<select id="selectCart" parameterType="String"
+		resultType="model.CartItem">
+	select cart.code code, cart.num num, p.price price,
+	p.name title from cart cart, product_info p
+	where cart.code = p.pid and cart.id = #{id}
+	</select>
+	<select id="getProductList" resultType="model.Product">
+	select * from product_info order by pid desc
+	</select>
+	<select id="getBBSCount" resultType="Integer">
+	select count(*) as num from bbs
+	</select>
+	<select id="getBBSDetail" resultType="model.Bbs"
+			parameterType="Integer">
+	select * from bbs where seqno = #{seqno}
+	</select>
+	<select id="getBBSList" parameterType="model.Condition" 
+		resultType="model.Bbs">
+		select seqno,title,id,content,bbs_date
+		from 
+		(
+			select a.*, rownum rn from
+			(
+				(select * from bbs
+				order by seqno desc) a
+			)
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	<insert id="putBBS" parameterType="model.Bbs">
+	insert into bbs values(#{seqno},#{title},#{content},
+			#{id},#{bbs_date})
+	</insert>
+	<select id="getMaxBbsId" resultType="Integer">
+	select max(seqno) m_id from bbs
+	</select>
+	<select id="getPassword" resultType="String"
+		parameterType="String">
+	select password from user_account
+	where user_id = #{userId} 
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
