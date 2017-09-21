@@ -1,0 +1,2 @@
+NotEmpty.login.id = ID 를 입력해주세요.
+NotEmpty.login.password =  PW 를 입력해주세요.
