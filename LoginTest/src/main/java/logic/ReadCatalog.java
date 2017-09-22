@@ -12,8 +12,10 @@ public interface ReadCatalog {
 	List<Bbs_free> readFreeAll(Condition con);
 	Bbs_free readFreeDetail(Integer seqno);
 	Integer getFreeBbsCount();
+	Integer updateFreeBBSViewCount(Bbs_free free);
 	//---------------------------------------notice
 	List<Notice> readNoticeAll(Condition con);
 	Notice readNoticeDetail(Integer seqno);
 	Integer getNoticeBbsCount();
+	Integer updateNoticeBBSViewCount(Notice notice);
 }

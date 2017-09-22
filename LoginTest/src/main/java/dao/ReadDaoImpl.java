@@ -22,9 +22,9 @@ public class ReadDaoImpl implements ReadDao{
 		return session.selectList("bbsMapper.getFreeBBSList",con);
 	}
 
-	public Bbs_free getFreeBBS(Integer seqno) {
+	public Bbs_free getFreeBBS(Integer seq) {
 		
-		return session.selectOne("bbsMapper.getFreeBBSDetail",seqno);
+		return session.selectOne("bbsMapper.getFreeBBSDetail",seq);
 	}
 	
 	public Integer getFreeBBSCount() {
@@ -32,19 +32,28 @@ public class ReadDaoImpl implements ReadDao{
 		return session.selectOne("bbsMapper.getFreeBBSCount");
 	}
 
+	public Integer updateFreeBBSViewCount(Bbs_free free) {
+		
+		return session.update("bbsMapper.updateFreeBBSViewCount", free);
+	}
 	//-----------------------------------------------------notice
 	public List<Notice> readNoticeBBS(Condition con) {
 		
 		return session.selectList("bbsMapper.getNoticeBBSList",con);
 	}
 	
-	public Notice getNoticeBBS(Integer seqno) {
+	public Notice getNoticeBBS(Integer seq) {
 		
-		return session.selectOne("bbsMapper.getNoticeBBSDetail",seqno);
+		return session.selectOne("bbsMapper.getNoticeBBSDetail",seq);
 	}
 	
 	public Integer getNoticeBBSCount() {
 		
 		return session.selectOne("bbsMapper.getNoticeBBSCount");
+	}
+	
+	public Integer updateNoticeBBSViewCount(Notice notice) {
+		
+		return session.update("bbsMapper.updateNoticeBBSViewCount", notice);
 	}
 }

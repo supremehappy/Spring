@@ -26,17 +26,6 @@ public class WriteDaoImpl implements WriteDao {
 		String freebbsDate = year+""+month+""+date;
 		
 		free.setReg_date(freebbsDate);
-		String fileName="";
-		free.setImage1(fileName);
-		System.out.println("WriteController getImage1 "+free.getImage1());
-		free.setImage2(fileName);
-		System.out.println("WriteController getImage2 "+free.getImage2());
-		free.setImage3(fileName);
-		System.out.println("WriteController getImage3 "+free.getImage3());
-		free.setImage4(fileName);
-		System.out.println("WriteController getImage4 "+free.getImage4());
-		free.setImage5(fileName);
-		System.out.println("WriteController getImage5 "+free.getImage5());
 		
 		this.session.insert("bbsMapper.insertFreeWritingInfo",free);
 		
@@ -50,15 +39,27 @@ public class WriteDaoImpl implements WriteDao {
 	//-------------------------------------------------notice
 	public void insertNoticeWriting(Notice notice) {
 
-		notice.setSeq(getMaxFreeId()+1);
+		notice.setSeq(getMaxNoticeId()+1);
 		
 		Calendar today = Calendar.getInstance();
 		int year = today.get(Calendar.YEAR);
 		int month=today.get(Calendar.MONTH)+1;
 		int date = today.get(Calendar.DATE);
-		String freebbsDate = year+"/"+month+"/"+date;
+		String freebbsDate = year+""+month+""+date;
 		
 		notice.setReg_date(freebbsDate);
+		
+		String fileName="";
+		notice.setImage1(fileName);
+		System.out.println("WriteController getImage1 "+notice.getImage1());
+		notice.setImage2(fileName);
+		System.out.println("WriteController getImage2 "+notice.getImage2());
+		notice.setImage3(fileName);
+		System.out.println("WriteController getImage3 "+notice.getImage3());
+		notice.setImage4(fileName);
+		System.out.println("WriteController getImage4 "+notice.getImage4());
+		notice.setImage5(fileName);
+		System.out.println("WriteController getImage5 "+notice.getImage5());
 		
 		this.session.insert("bbsMapper.insertNoticeWritingInfo",notice);
 	}

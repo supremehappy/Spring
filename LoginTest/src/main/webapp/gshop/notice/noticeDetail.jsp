@@ -28,11 +28,21 @@
 					</tr>
 				</tbody>
 			</table>
-			<div align="center">
-				<a href="../read/noticeList.html" class="btn btn-info" role="button">list</a>
-				<a href="#" class="btn btn-info" role="button">update</a>
-				<a href="#" class="btn btn-info" role="button">delete</a>
-			</div>
+			
+			<c:choose>
+				<c:when test="${not empty admin_key }">
+					<div align="center">
+						<a href="../read/noticeList.html" class="btn btn-info" role="button">list</a>
+						<a href="#" class="btn btn-info" role="button">update</a>
+						<a href="#" class="btn btn-info" role="button">delete</a>
+					</div>	
+				</c:when>
+				<c:otherwise>
+					<div align="center">
+						<a href="../read/noticeList.html" class="btn btn-info" role="button">list</a>
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 </body>

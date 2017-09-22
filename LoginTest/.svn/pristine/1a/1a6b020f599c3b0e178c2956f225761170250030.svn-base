@@ -1,0 +1,10 @@
+itemMenu.title = 마스터 관리 - 상품 목록 화면
+itemEdit.title = 마스터 관리 - 상품 편집 화면
+itemAdd.title = 마스터 관리 - 상품 등록 화면
+itemDelete.title = 마스터 관리 - 상품 삭제 화면
+
+itemEditForm.item.itemId = 상품ID
+itemEditForm.item.itemName = 상품 이름
+itemEditForm.item.price = 상품 가격
+itemEditForm.item.description = 상품 설명
+itemEditForm.item.pictureUrL = 파일명

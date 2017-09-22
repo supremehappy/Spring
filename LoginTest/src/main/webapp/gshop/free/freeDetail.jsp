@@ -26,13 +26,52 @@
 						<td width="60"><h4>content</h4></td>
 						<td>${FREE_ITEM.post_content }</td>
 					</tr>
+					<tr>
+						<c:choose>
+							<c:when test="${empty FREE_ITEM.image1 }">
+								
+							</c:when>
+							<c:otherwise>
+								<td width="60"><h4>image</h4></td>
+								<td>
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${FREE_ITEM.image1 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image2 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image3 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image4 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image5 }">
+									<%-- <c:forEach var = "image" items="${ }">
+										
+									</c:forEach> --%>
+								</td>	
+							</c:otherwise>
+						</c:choose>						
+					</tr>
 				</tbody>
 			</table>
-			<div align="center">
-				<a href="../read/freeList.html" class="btn btn-info" role="button">list</a>
-				<a href="#" class="btn btn-info" role="button">update</a>
-				<a href="#" class="btn btn-info" role="button">delete</a>
-			</div>
+			
+			<input type="hidden" name="view_count" value="${FREE_ITEM.view_count }">
+			
+			<c:choose>
+				<c:when test="${not empty user_key }">
+					<div align="center">
+						<a href="../read/freeList.html" class="btn btn-info" role="button">list</a>
+						<a href="../read/freeUpdateFrom.html" class="btn btn-info" role="button">update</a>
+						<a href="#" class="btn btn-info" role="button">delete</a>
+					</div>	
+				</c:when>
+				<c:when test="${not empty admin_key }">
+					<div align="center">
+						<a href="../read/freeList.html" class="btn btn-info" role="button">list</a>
+						<a href="../read/freeUpdateFrom.html" class="btn btn-info" role="button">update</a>
+						<a href="#" class="btn btn-info" role="button">delete</a>
+					</div>	
+				</c:when>
+				<c:otherwise>
+					<div align="center">
+						<a href="../read/freeList.html" class="btn btn-info" role="button">list</a>
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 </body>

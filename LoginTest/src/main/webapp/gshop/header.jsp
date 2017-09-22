@@ -13,7 +13,7 @@
 	<div class="header">	
 	
 		<div class="col-sm-2" align="center">
-			로고
+			<a href="../gshop/main.jsp">로고</a>
 		</div>
 		<div class="col-sm-5">
 			공백

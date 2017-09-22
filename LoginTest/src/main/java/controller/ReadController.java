@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import logic.HeaderCatalog;
 import logic.ReadCatalog;
 import model.Bbs_free;
 import model.Condition;
+import model.Header;
 import model.Notice;
 
 @Controller
@@ -18,6 +20,8 @@ public class ReadController {
 	
 	@Autowired
 	private ReadCatalog readCatalog;
+	@Autowired
+	private HeaderCatalog headerCatalog;
 
 	//---------------------------------------------------------------------free
 	@RequestMapping(value="/read/freeDetail.html", method=RequestMethod.GET)
@@ -25,8 +29,26 @@ public class ReadController {
 		System.out.println("readFreeDetail");
 		Bbs_free free = this.readCatalog.readFreeDetail(SEQNO);
 		
+		System.out.println("view_count 1 "+free.getView_count());
+		
+		/*Header header = this.headerCatalog.findHeaderAll();*/
+		
+		Bbs_free free1 = new Bbs_free();
+		
+		if(free.getView_count()>=0){
+			int count=free.getView_count()+1;
+			free1.setView_count(count);
+		}
+		
+		free1.setSeq(SEQNO);
+		
+		this.readCatalog.updateFreeBBSViewCount(free1);
+		
+		System.out.println("view_count 2 "+free.getView_count());
+		
 		ModelAndView mav = new ModelAndView("gshop/free/freeDetail");
 		
+		/*mav.addObject("HEADER",header);*/
 		mav.addObject("FREE_ITEM",free);
 		mav.addObject("/free/freeDetail");
 		
@@ -87,11 +109,27 @@ public class ReadController {
 		return mav;
 	}
 	
+	
 	//---------------------------------------------------------------------notice
 	@RequestMapping(value="/read/noticeDetail.html", method=RequestMethod.GET)
 	public ModelAndView readNoticeDetail(Integer SEQNO){
 		System.out.println("readnoticeDetail");
 		Notice notice = this.readCatalog.readNoticeDetail(SEQNO);
+		
+		System.out.println("view_count 1 "+notice.getView_count());
+		
+		Notice notice1 = new Notice();
+		
+		if(notice.getView_count()>=0){
+			int count=notice.getView_count()+1;
+			notice1.setView_count(count);
+		}
+		
+		notice1.setSeq(SEQNO);
+		
+		this.readCatalog.updateNoticeBBSViewCount(notice1);
+		
+		System.out.println("view_count 2 "+notice.getView_count());
 		
 		ModelAndView mav = new ModelAndView("gshop/notice/noticeDetail");
 		

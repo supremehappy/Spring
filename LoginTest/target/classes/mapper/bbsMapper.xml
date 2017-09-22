@@ -15,7 +15,7 @@
 		
 		<select id="getFreeBBSList" parameterType="model.Condition" 
 			resultType="model.Bbs_free">
-			select seq,post_title, user_id ,post_content, reg_date
+			select seq,post_title, user_id ,post_content, reg_date, view_count
 			from 
 			(
 				select a.*, rownum rn from
@@ -25,6 +25,10 @@
 				)
 			) where rn between #{startRow} and #{endRow}
 		</select>
+		
+		<update id="updateFreeBBSViewCount" parameterType="model.Bbs_free">
+			update t_bbs_free set view_count = #{view_count} where seq = #{seq}
+		</update>
 		
 		<!-- NoticeBBS -->
 		<select id="getNoticeBBSCount" resultType="Integer">
@@ -38,7 +42,7 @@
 		
 		<select id="getNoticeBBSList" parameterType="model.Condition" 
 			resultType="model.Notice">
-			select seq, post_title, user_id, post_content, reg_date
+			select seq, post_title, user_id, post_content, reg_date, view_count
 			from 
 			(
 				select a.*, rownum rn from
@@ -48,6 +52,10 @@
 				)
 			) where rn between #{startRow} and #{endRow}
 		</select>
+		
+		<update id="updateNoticeBBSViewCount" parameterType="model.Notice">
+			update t_bbs_notice set view_count = #{view_count} where seq = #{seq}
+		</update>
 		
 	<!-- WriteDaoImpl -->
 		<!-- FreeBBS -->
@@ -64,14 +72,21 @@
 		
 		<!-- NoticeBBS -->
 		<insert id="insertNoticeWritingInfo" parameterType="model.Notice">
-			insert into t_bbs_notice values(#{seq},#{user_id},
-			#{header_id},#{post_title},#{post_pw},#{reg_date},#{post_content},#{image1},#{image2},#{image3},#{image4},#{image5},#{view_count})
+			insert into t_bbs_notice values(
+			#{seq},#{user_id},#{header_id},#{post_title},#{post_pw},
+			#{reg_date},#{post_content},#{image1},#{image2},#{image3},
+			#{image4},#{image5},#{view_count})
 		</insert>
 		
 		<select id="getMaxNoticeId" resultType="Integer">
 			select max(seq) max_id from t_bbs_notice
 		</select>
-	<!--  -->
+		
+	<!-- HeaderDaoImpl -->
+	<select id="findHeaderAll" parameterType="model.Header" >
+		select header_id, header_name from t_header
+	</select>
+	
 	<!--  -->
 	
 </mapper>

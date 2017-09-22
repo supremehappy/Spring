@@ -36,7 +36,7 @@
 							<td width="60"><h4>image</h4></td>
 							<td width="300">
 								<div align="left">image</div>
-								<div align="right"><input type="file" class="btn btn-info" value="upload" name="image"></div>
+								<div align="right"><input type="file" class="btn btn-info" value="upload" name="image" multiple="multiple"></div>
 							</td>
 						</tr>
 						<tr>
@@ -45,6 +45,9 @@
 						</tr>
 					</tbody>
 				</table>
+				
+				<form:hidden path="view_count"/>
+				
 				<div align="center">
 					<input type="submit" class="btn btn-info" value="upload">
 					<input type="reset" class="btn btn-info" value="cancle">

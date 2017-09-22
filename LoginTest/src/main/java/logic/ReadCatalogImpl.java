@@ -32,6 +32,11 @@ public class ReadCatalogImpl implements ReadCatalog{
 		return this.readDao.getFreeBBSCount();
 	}
 
+	public Integer updateFreeBBSViewCount(Bbs_free free) {
+		
+		return this.readDao.updateFreeBBSViewCount(free);
+	}
+	
 	//-------------------------------------------------------notice
 	public List<Notice> readNoticeAll(Condition con) {
 		
@@ -46,6 +51,11 @@ public class ReadCatalogImpl implements ReadCatalog{
 	public Integer getNoticeBbsCount() {
 		
 		return this.readDao.getNoticeBBSCount();
+	}
+	
+	public Integer updateNoticeBBSViewCount(Notice notice) {
+		
+		return this.readDao.updateNoticeBBSViewCount(notice);
 	}
 
 }
