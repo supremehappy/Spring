@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import logic.HeaderCatalog;
 import logic.ReadCatalog;
 import model.Bbs_free;
 import model.Condition;
-import model.Header;
 import model.Notice;
 
 @Controller
@@ -29,7 +29,7 @@ public class ReadController {
 		System.out.println("readFreeDetail");
 		Bbs_free free = this.readCatalog.readFreeDetail(SEQNO);
 		
-		System.out.println("view_count 1 "+free.getView_count());
+		System.out.println("view_count "+free.getView_count());
 		
 		/*Header header = this.headerCatalog.findHeaderAll();*/
 		
@@ -44,10 +44,8 @@ public class ReadController {
 		
 		this.readCatalog.updateFreeBBSViewCount(free1);
 		
-		System.out.println("view_count 2 "+free.getView_count());
-		
 		ModelAndView mav = new ModelAndView("gshop/free/freeDetail");
-		
+		System.out.println("readFreeDetail free.getSeq()"+ free.getSeq());
 		/*mav.addObject("HEADER",header);*/
 		mav.addObject("FREE_ITEM",free);
 		mav.addObject("/free/freeDetail");
@@ -106,6 +104,17 @@ public class ReadController {
 		mav.addObject("FREE_LIST",freeList);
 		mav.addObject("/free/freeList");
 		//
+		Calendar today = Calendar.getInstance();
+		
+		int year = today.get(Calendar.YEAR);
+		int month = today.get(Calendar.MONTH);
+		int date = today.get(Calendar.DATE);
+		
+		String to = year+""+month+""+date;  
+		
+		mav.addObject("DATE",to);
+		System.out.println(to);
+		
 		return mav;
 	}
 	

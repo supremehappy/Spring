@@ -6,6 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript">
+function validate(form){
+	var result = confirm("정말로 삭제하시겠습니까?");
+	if(result == false) return false;
+}
+</script>
 <body>
 	<h2>notice input from</h2>
 	<div class="body">

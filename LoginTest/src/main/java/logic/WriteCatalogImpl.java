@@ -20,6 +20,21 @@ public class WriteCatalogImpl implements WriteCatalog{
 		
 	}
 
+	public void updateFreeBBS(Bbs_free free) { // 글 수정
+		
+		this.writeDao.updateFreeBBS(free);
+	}
+	
+	public Bbs_free getFreeBBSSeq(Integer SEQNO) {
+	
+		return this.writeDao.findFreeBBSSeq(SEQNO);
+	}
+
+	public void deleteFreeBBS(Integer SEQNO) { // 글 삭제
+		
+		this.writeDao.deleteFreeBBS(SEQNO);
+		
+	}
 	//--------------------------------------- notice
 	public void entryNoticeWriting(Notice notice) {
 		
@@ -27,4 +42,22 @@ public class WriteCatalogImpl implements WriteCatalog{
 		
 	}
 
+	public void updateNoticeBBS(Notice notice) {
+		
+		this.writeDao.updateNoticeBBS(notice);
+		
+	}
+	
+	public Notice getNoticeBBSSeq(Integer SEQNO) {
+		
+		return this.writeDao.findNoitceBBSSeq(SEQNO);
+	}
+
+	public void deleteNoticeBBS(Integer SEQNO) {
+		
+		this.writeDao.deleteNoticeBBS(SEQNO);
+		
+	}
+
+	
 }

@@ -32,10 +32,17 @@ public class ReadDaoImpl implements ReadDao{
 		return session.selectOne("bbsMapper.getFreeBBSCount");
 	}
 
-	public Integer updateFreeBBSViewCount(Bbs_free free) {
+	public Integer updateFreeBBSViewCount(Bbs_free free) { // 조회수
 		
 		return session.update("bbsMapper.updateFreeBBSViewCount", free);
 	}
+	
+	public void selectDate(Integer SEQNO) { // 등록일 조회
+		
+		this.session.selectOne("bbsMapper.selectDate",SEQNO);
+		
+	}
+
 	//-----------------------------------------------------notice
 	public List<Notice> readNoticeBBS(Condition con) {
 		
@@ -55,5 +62,5 @@ public class ReadDaoImpl implements ReadDao{
 	public Integer updateNoticeBBSViewCount(Notice notice) {
 		
 		return session.update("bbsMapper.updateNoticeBBSViewCount", notice);
-	}
+	}	
 }

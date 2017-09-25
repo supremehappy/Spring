@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+
 <body>
 	<h1 align="center">게시글 목록</h1>
 	<div class="body">
@@ -27,7 +28,17 @@
 					<c:forEach var="free" items="${FREE_LIST }">
 					<tr>
 						<td>${free.seq }</td>
-						<td><a href="../read/freeDetail.html?SEQNO=${free.seq }">${free.post_title }</a></td>
+						<c:choose>
+							<c:when test="${free.reg_date eq DATE }">
+								<td><a href="../read/freeDetail.html?SEQNO=${free.seq }">
+									${free.post_title } <img alt="" src="../image/new.png"> 
+								</a></td>		
+							</c:when>
+							<c:otherwise>
+								<td><a href="../read/freeDetail.html?SEQNO=${free.seq }">${free.post_title }</a></td>
+							</c:otherwise>
+						</c:choose>
+						
 						<td>${free.user_id }</td>
 						<td>${free.reg_date }</td>
 						<td>${free.view_count }</td>

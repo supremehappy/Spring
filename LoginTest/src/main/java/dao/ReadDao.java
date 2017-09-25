@@ -12,10 +12,14 @@ public interface ReadDao {
 	List<Bbs_free> readFreeBBS(Condition con);
 	Bbs_free getFreeBBS(Integer seq);
 	Integer getFreeBBSCount();
-	Integer updateFreeBBSViewCount(Bbs_free free);
+	Integer updateFreeBBSViewCount(Bbs_free free); //-- 조회수
+	void selectDate(Integer SEQNO); // 등록일 조회
+	
 	//-----------------------------------------notice
 	List<Notice> readNoticeBBS(Condition con);
 	Notice getNoticeBBS(Integer seq);
 	Integer getNoticeBBSCount();
-	Integer updateNoticeBBSViewCount(Notice notice);
+	Integer updateNoticeBBSViewCount(Notice notice); //-- 조회수
+	
+	
 }

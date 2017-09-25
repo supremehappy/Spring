@@ -32,9 +32,15 @@ public class ReadCatalogImpl implements ReadCatalog{
 		return this.readDao.getFreeBBSCount();
 	}
 
-	public Integer updateFreeBBSViewCount(Bbs_free free) {
+	public Integer updateFreeBBSViewCount(Bbs_free free) { // 조회수
 		
 		return this.readDao.updateFreeBBSViewCount(free);
+	}
+	
+	public void selectDate(Integer SEQNO) {
+	
+		this.readDao.selectDate(SEQNO);
+		
 	}
 	
 	//-------------------------------------------------------notice
@@ -58,4 +64,5 @@ public class ReadCatalogImpl implements ReadCatalog{
 		return this.readDao.updateNoticeBBSViewCount(notice);
 	}
 
+	
 }

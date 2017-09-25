@@ -26,6 +26,26 @@
 						<td width="60"><h4>content</h4></td>
 						<td>${NOTICE_ITEM.post_content }</td>
 					</tr>
+					<tr>
+						<c:choose>
+							<c:when test="${empty NOTICE_ITEM.image1 }">
+								
+							</c:when>
+							<c:otherwise>
+								<td width="60"><h4>image</h4></td>
+								<td>
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${NOTICE_ITEM.image1 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image2 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image3 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image4 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image5 }">
+									<%-- <c:forEach var = "image" items="${ }">
+										
+									</c:forEach> --%>
+								</td>	
+							</c:otherwise>
+						</c:choose>						
+					</tr>
 				</tbody>
 			</table>
 			
@@ -33,8 +53,8 @@
 				<c:when test="${not empty admin_key }">
 					<div align="center">
 						<a href="../read/noticeList.html" class="btn btn-info" role="button">list</a>
-						<a href="#" class="btn btn-info" role="button">update</a>
-						<a href="#" class="btn btn-info" role="button">delete</a>
+						<a href="../write/noticeUpdate.html?SEQNO=${NOTICE_ITEM.seq}" class="btn btn-info" role="button">update</a>
+						<a href="../write/noticeDelete.html?SEQNO=${NOTICE_ITEM.seq}" class="btn btn-info" role="button">delete</a>
 					</div>	
 				</c:when>
 				<c:otherwise>

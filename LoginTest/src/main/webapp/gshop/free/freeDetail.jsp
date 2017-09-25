@@ -6,10 +6,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript">
+function validate(form){
+	var result = confirm("정말로 삭제하시겠습니까?");
+	if(result == false) return false;
+}
+</script>
 <body>
 	<h2>notice detail</h2>
 	<div class="body">
 		<div class="container">
+		<form onSubmit="return validate(this)">
 			<h2>Bordered Table</h2>
 			<p>The .table-bordered class adds borders to a table:</p>            
 			<table class="table table-bordered">
@@ -55,15 +62,15 @@
 				<c:when test="${not empty user_key }">
 					<div align="center">
 						<a href="../read/freeList.html" class="btn btn-info" role="button">list</a>
-						<a href="../read/freeUpdateFrom.html" class="btn btn-info" role="button">update</a>
-						<a href="#" class="btn btn-info" role="button">delete</a>
+						<a href="../write/freeUpdate.html?SEQNO=${FREE_ITEM.seq}" class="btn btn-info" role="button">update</a>
+						<a href="../write/freeDelete.html?SEQNO=${FREE_ITEM.seq}" class="btn btn-info" role="button">delete</a>
 					</div>	
 				</c:when>
 				<c:when test="${not empty admin_key }">
 					<div align="center">
 						<a href="../read/freeList.html" class="btn btn-info" role="button">list</a>
-						<a href="../read/freeUpdateFrom.html" class="btn btn-info" role="button">update</a>
-						<a href="#" class="btn btn-info" role="button">delete</a>
+						<a href="../write/freeUpdate.html?SEQNO=${FREE_ITEM.seq}" class="btn btn-info" role="button">update</a>
+						<a href="../write/freeDelete.html?SEQNO=${FREE_ITEM.seq}" class="btn btn-info" role="button">delete</a>
 					</div>	
 				</c:when>
 				<c:otherwise>
@@ -72,6 +79,7 @@
 					</div>
 				</c:otherwise>
 			</c:choose>
+			</form>
 		</div>
 	</div>
 </body>

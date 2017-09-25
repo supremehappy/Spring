@@ -55,14 +55,18 @@ public class WriteController {
 		String fileName = null; 
 		String path = null;
 		OutputStream out = null;
+		
+		ServletContext context = session.getServletContext();
+		
 		String folder = "C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		//context.getRealPath("/image/"); //
 		File dir = new File(folder);
 		
 		if(!dir.isDirectory()){
 			
 			dir.mkdirs();
 		}
-		ServletContext context = session.getServletContext();
+		
 		
 		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")){
 			String strNull = "";
@@ -154,6 +158,141 @@ public class WriteController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/write/freeUpdate.html", method=RequestMethod.GET)
+	public ModelAndView viewFreeBBSupdateForm(Integer SEQNO){
+		
+		System.out.println("viewFreeBBSupdateForm");
+		System.out.println("SEQNO "+SEQNO);
+		ModelAndView mav = new ModelAndView("/gshop/free/freeUpdateFrom");
+		
+		Bbs_free free = new Bbs_free();
+		
+		free = this.writeCatalog.getFreeBBSSeq(SEQNO);
+		//free.setSeq(SEQNO);
+		System.out.println("viewFreeBBSupdateForm free.getSeq()"+free.getSeq());
+		mav.addObject("FREE_ITEM",free);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/write/freeUpdateFrom.html", method=RequestMethod.POST)
+	public ModelAndView updateFreeBBS(@Valid Bbs_free free, BindingResult result, HttpSession session, Integer SEQNO, MultipartHttpServletRequest multi) throws IllegalStateException, IOException{
+		
+		System.out.println("updateFreeBBS");
+		
+		if(result.getErrorCount()>0){
+			ModelAndView mav = new ModelAndView("/gshop/free/freeInputForm");
+			
+			mav.getModel().putAll(result.getModel());
+			return mav;
+		}
+		
+		List<MultipartFile> mf = multi.getFiles("image");
+		List<String> str = new ArrayList<String>();
+		str.clear();
+		
+		String fileName = null; 
+		String path = null;
+		OutputStream out = null;
+		
+		ServletContext context = session.getServletContext();
+		
+		String folder = "C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		//context.getRealPath("/image/"); //
+		File dir = new File(folder);
+		
+		if(!dir.isDirectory()){
+			
+			dir.mkdirs();
+		}
+		
+		
+		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")){
+			String strNull = "";
+			free.setImage1(strNull);
+			free.setImage2(strNull);
+			free.setImage3(strNull);
+			free.setImage4(strNull);
+			free.setImage5(strNull);
+		}else{
+			for(int i = 0; i<mf.size();i++){
+				fileName=mf.get(i).getOriginalFilename();
+				
+				str.add(fileName);
+				
+				path=context.getRealPath("/image/"+fileName);
+				
+				String savePath = folder + fileName;
+				
+				mf.get(i).transferTo(new File(savePath));
+				
+			}
+			switch(str.size()){
+			case 1:
+				free.setImage1(str.get(0));
+				free.setImage2("");
+				free.setImage3("");
+				free.setImage4("");
+				free.setImage5("");
+				str.clear();
+				break;
+			case 2:
+				free.setImage1(str.get(0));
+				free.setImage2(str.get(1));
+				free.setImage3("");
+				free.setImage4("");
+				free.setImage5("");
+				str.clear();
+				break;
+			case 3:
+				free.setImage1(str.get(0));
+				free.setImage2(str.get(1));
+				free.setImage3(str.get(2));
+				free.setImage4("");
+				free.setImage5("");
+				str.clear();
+				break;
+			case 4:
+				free.setImage1(str.get(0));
+				free.setImage2(str.get(1));
+				free.setImage3(str.get(2));
+				free.setImage4(str.get(3));
+				free.setImage5("");
+				str.clear();
+				break;
+			case 5:
+				free.setImage1(str.get(0));
+				free.setImage2(str.get(1));
+				free.setImage3(str.get(2));
+				free.setImage4(str.get(3));
+				free.setImage5(str.get(4));
+				str.clear();
+				break;
+			}
+		}
+		
+		free.setSeq(SEQNO);
+		
+		this.writeCatalog.updateFreeBBS(free);
+		ModelAndView mav = new ModelAndView("redirect:/read/freeList.html");
+		return mav;
+	}
+	
+	@RequestMapping(value="/write/freeDelete.html", method=RequestMethod.GET)
+	public ModelAndView freeDelete(Integer SEQNO){
+		
+		System.out.println("freeDelete");
+		System.out.println("freeDelete SEQNO "+SEQNO);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		this.writeCatalog.deleteFreeBBS(SEQNO);
+		
+		mav.setViewName("redirect:/read/freeList.html");
+		
+		return mav;
+	}
+	
 	//-----------------------------notice-----------------------------------------------------------
 	@ModelAttribute
 	public Notice setUpnoticeBBS(){
@@ -198,7 +337,7 @@ public class WriteController {
 				fileName=mf.get(i).getOriginalFilename();
 				
 				str.add(fileName);
-				
+				System.out.println("str.get(i) "+str.get(i));
 				path=context.getRealPath("/image/"+fileName);
 				
 				String savePath = folder + fileName;
@@ -206,6 +345,9 @@ public class WriteController {
 				mf.get(i).transferTo(new File(savePath));
 				
 			}
+			System.out.println("str.size() "+str.size());
+			System.out.println("str.get(0) "+str.get(0));
+			
 			switch(str.size()){
 			case 1:
 				notice.setImage1(str.get(0));
@@ -272,6 +414,140 @@ public class WriteController {
 	public ModelAndView noticeWrite(){
 		System.out.println("WriteController noticeWrite");
 		ModelAndView mav = new ModelAndView("/gshop/notice/noticeInputForm");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/write/noticeUpdate.html", method=RequestMethod.GET)
+	public ModelAndView viewNoticeBBSupdateForm(Integer SEQNO){
+		
+		System.out.println("viewNoticeBBSupdateForm");
+		System.out.println("SEQNO "+SEQNO);
+		ModelAndView mav = new ModelAndView("/gshop/notice/noticeUpdateFrom");
+		
+		Notice notice = new Notice();
+		
+		notice = this.writeCatalog.getNoticeBBSSeq(SEQNO);
+		
+		mav.addObject("NOTICE_ITEM",notice);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/write/noticeUpdateFrom.html", method=RequestMethod.POST)
+	public ModelAndView updateNoticeBBS(@Valid Notice notice, BindingResult result, HttpSession session, Integer SEQNO, MultipartHttpServletRequest multi) throws IllegalStateException, IOException{
+		
+		System.out.println("updateNoticeBBS");
+		
+		if(result.getErrorCount()>0){
+			ModelAndView mav = new ModelAndView("/gshop/notice/noticeUpdateFrom");
+			
+			mav.getModel().putAll(result.getModel());
+			return mav;
+		}
+		
+		List<MultipartFile> mf = multi.getFiles("image");
+		List<String> str = new ArrayList<String>();
+		str.clear();
+		
+		String fileName = null; 
+		String path = null;
+		OutputStream out = null;
+		
+		ServletContext context = session.getServletContext();
+		
+		String folder = "C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		//context.getRealPath("/image/"); //
+		File dir = new File(folder);
+		
+		if(!dir.isDirectory()){
+			
+			dir.mkdirs();
+		}
+		
+		
+		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")){
+			String strNull = "";
+			notice.setImage1(strNull);
+			notice.setImage2(strNull);
+			notice.setImage3(strNull);
+			notice.setImage4(strNull);
+			notice.setImage5(strNull);
+		}else{
+			for(int i = 0; i<mf.size();i++){
+				fileName=mf.get(i).getOriginalFilename();
+				
+				str.add(fileName);
+				
+				path=context.getRealPath("/image/"+fileName);
+				
+				String savePath = folder + fileName;
+				
+				mf.get(i).transferTo(new File(savePath));
+				
+			}
+			switch(str.size()){
+			case 1:
+				notice.setImage1(str.get(0));
+				notice.setImage2("");
+				notice.setImage3("");
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 2:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3("");
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 3:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 4:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4(str.get(3));
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 5:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4(str.get(3));
+				notice.setImage5(str.get(4));
+				str.clear();
+				break;
+			}
+		}
+		
+		notice.setSeq(SEQNO);
+		
+		this.writeCatalog.updateNoticeBBS(notice);
+		ModelAndView mav = new ModelAndView("redirect:/read/noticeList.html");
+		return mav;
+	}
+	
+	@RequestMapping(value="/write/noticeDelete.html", method=RequestMethod.GET)
+	public ModelAndView noticeDelete(Integer SEQNO){
+		
+		System.out.println("noticeDelete");
+		System.out.println("noticeDelete SEQNO "+SEQNO);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		this.writeCatalog.deleteNoticeBBS(SEQNO);
+		
+		mav.setViewName("redirect:/read/noticeList.html");
 		
 		return mav;
 	}

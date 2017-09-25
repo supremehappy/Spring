@@ -13,10 +13,10 @@ function validate(form){
 }
 </script>
 <body>
-	<h2>free update detail</h2>
+<h2>notice update detail</h2>
 	<div class="body">
 		<div class="container">
-			<form:form modelAttribute = "bbs_free" action="../write/freeUpdateFrom.html" method ="post" enctype="multipart/form-data" onSubmit="return validate(this)">
+			<form:form modelAttribute = "notice" action="../write/noticeUpdateFrom.html" method ="post" enctype="multipart/form-data" onSubmit="return validate(this)">
 				<h2>Bordered Table</h2>
 				<p>The .table-bordered class adds borders to a table:</p>            
 				<table class="table table-bordered">
@@ -36,20 +36,19 @@ function validate(form){
 						</tr>
 						<tr>
 							<td width="60"><h4>wirter</h4></td>
-							<td><form:input type="text" class="form-control" id="id" path ="user_id" value="${FREE_ITEM.user_id }" /></td>
+							<td><form:input type="text" class="form-control" id="id" path ="user_id" value="${NOTICE_ITEM.user_id }" /></td>
 						</tr>
 						<tr>
 							<td width="60"><h4>title</h4></td>
-							<td><form:input type="text" class="form-control" id="usr" path="post_title" value="${FREE_ITEM.post_title }"/></td>
+							<td><form:input type="text" class="form-control" id="usr" path="post_title" value="${NOTICE_ITEM.post_title }"/></td>
 						</tr>
 						<tr>
 							<td width="60"><h4>content</h4></td>
-							<td><form:textarea class="form-control" rows="20" id="comment" path="post_content" value="${FREE_ITEM.post_content }"/></td>
+							<td><form:textarea class="form-control" rows="20" id="comment" path="post_content" value="${NOTICE_ITEM.post_content }"/></td>
 						</tr>
 						<tr>
 							<c:choose>
-								<c:when test="${empty FREE_ITEM.image1 }">
-									<td width="60"><h4>image</h4></td>
+								<c:when test="${empty NOTICE_ITEM.image1 }">
 									<td width="300">
 										<div align="left">image</div>
 										<div align="right"><input type="file" class="btn btn-info" value="upload" name="image" multiple="multiple"></div>
@@ -58,11 +57,11 @@ function validate(form){
 								<c:otherwise>
 									<td width="60"><h4>image</h4></td>
 									<td>
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${FREE_ITEM.image1 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image2 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image3 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image4 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image5 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${NOTICE_ITEM.image1 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image2 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image3 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image4 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image5 }">
 										<br>
 										<div align="left">image</div>
 										<div align="right"><input type="file" class="btn btn-info" value="upload" name="image" multiple="multiple"></div>
@@ -76,8 +75,8 @@ function validate(form){
 					</tbody>
 				</table>
 				
-				<input type="hidden" name="view_count" value="${FREE_ITEM.view_count }">
-				<input type="hidden" name="SEQNO" value="${FREE_ITEM.seq }">
+				<input type="hidden" name="view_count" value="${NOTICE_ITEM.view_count }">
+				<input type="hidden" name="SEQNO" value="${NOTICE_ITEM.seq }">
 				
 				<div align="center">
 					<input type="submit" class="btn btn-info" value="upload">

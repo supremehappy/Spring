@@ -30,6 +30,10 @@
 			update t_bbs_free set view_count = #{view_count} where seq = #{seq}
 		</update>
 		
+		<select id="selectDate" parameterType="Integer">
+			select reg_date from t_bbs_free seq=#{seq}
+		</select>
+		
 		<!-- NoticeBBS -->
 		<select id="getNoticeBBSCount" resultType="Integer">
 			select count(*) as num from t_bbs_notice
@@ -69,6 +73,20 @@
 		<select id="getMaxFreeId" resultType="Integer">
 			select max(seq) max_id from t_bbs_free
 		</select>
+				
+		<update id="updateFreeBBS" parameterType="model.Bbs_free">
+			update t_bbs_free 
+			set header_id=#{header_id}, post_title=#{post_title}, post_content=#{post_content}, image1=#{image1}, image2=#{image2}, image3=#{image3}, image4=#{image4}, image5=#{image5} 
+			where seq=#{seq}
+		</update>
+		
+		<select id="findFreeBBSSeq" parameterType="Integer" resultType="model.Bbs_free">
+			select * from t_bbs_free where seq = #{seq}
+		</select>
+		
+		<delete id="deleteFreeBBS" parameterType="Integer">
+			delete t_bbs_free where seq=#{seq}
+		</delete>
 		
 		<!-- NoticeBBS -->
 		<insert id="insertNoticeWritingInfo" parameterType="model.Notice">
@@ -81,6 +99,20 @@
 		<select id="getMaxNoticeId" resultType="Integer">
 			select max(seq) max_id from t_bbs_notice
 		</select>
+		
+		<update id="updateNoticeBBS" parameterType="model.Notice">
+			update t_bbs_notice 
+			set header_id=#{header_id}, post_title=#{post_title}, post_content=#{post_content}, image1=#{image1}, image2=#{image2}, image3=#{image3}, image4=#{image4}, image5=#{image5} 
+			where seq=#{seq}
+		</update>
+		
+		<select id="findNoticeBBSSeq" parameterType="Integer" resultType="model.Notice">
+			select * from t_bbs_notice where seq = #{seq}
+		</select>
+		
+		<delete id="deleteNoticeBBS" parameterType="Integer">
+			delete t_bbs_notice where seq=#{seq}
+		</delete>
 		
 	<!-- HeaderDaoImpl -->
 	<select id="findHeaderAll" parameterType="model.Header" >

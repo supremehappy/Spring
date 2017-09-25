@@ -36,6 +36,22 @@ public class WriteDaoImpl implements WriteDao {
 		return this.session.selectOne("bbsMapper.getMaxFreeId");
 	}
 
+	public void updateFreeBBS(Bbs_free free) { // 글 수정
+
+		this.session.update("bbsMapper.updateFreeBBS",free);
+	}
+
+	public Bbs_free findFreeBBSSeq(Integer SEQNO) {
+
+		return this.session.selectOne("bbsMapper.findFreeBBSSeq", SEQNO);
+	}
+	
+	public void deleteFreeBBS(Integer SEQNO) {
+		
+		this.session.selectOne("bbsMapper.deleteFreeBBS",SEQNO);
+		
+	}
+	
 	//-------------------------------------------------notice
 	public void insertNoticeWriting(Notice notice) {
 
@@ -45,21 +61,9 @@ public class WriteDaoImpl implements WriteDao {
 		int year = today.get(Calendar.YEAR);
 		int month=today.get(Calendar.MONTH)+1;
 		int date = today.get(Calendar.DATE);
-		String freebbsDate = year+""+month+""+date;
+		String noticebbsDate = year+""+month+""+date;
 		
-		notice.setReg_date(freebbsDate);
-		
-		String fileName="";
-		notice.setImage1(fileName);
-		System.out.println("WriteController getImage1 "+notice.getImage1());
-		notice.setImage2(fileName);
-		System.out.println("WriteController getImage2 "+notice.getImage2());
-		notice.setImage3(fileName);
-		System.out.println("WriteController getImage3 "+notice.getImage3());
-		notice.setImage4(fileName);
-		System.out.println("WriteController getImage4 "+notice.getImage4());
-		notice.setImage5(fileName);
-		System.out.println("WriteController getImage5 "+notice.getImage5());
+		notice.setReg_date(noticebbsDate);
 		
 		this.session.insert("bbsMapper.insertNoticeWritingInfo",notice);
 	}
@@ -69,6 +73,21 @@ public class WriteDaoImpl implements WriteDao {
 		return this.session.selectOne("bbsMapper.getMaxNoticeId");
 	}
 
+	public void updateNoticeBBS(Notice notice) {
 	
+		this.session.selectOne("bbsMapper.updateNoticeBBS",notice);
+		
+	}
+	
+	public Notice findNoitceBBSSeq(Integer SEQNO) {
+		
+		return this.session.selectOne("bbsMapper.findNoticeBBSSeq",SEQNO);
+	}
 
+	public void deleteNoticeBBS(Integer SEQNO) {
+		
+		this.session.selectOne("bbsMapper.deleteNoticeBBS",SEQNO);
+		
+	}
+	
 }
