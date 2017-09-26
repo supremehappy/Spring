@@ -30,10 +30,6 @@
 			update t_bbs_free set view_count = #{view_count} where seq = #{seq}
 		</update>
 		
-		<select id="selectDate" parameterType="Integer">
-			select reg_date from t_bbs_free seq=#{seq}
-		</select>
-		
 		<!-- NoticeBBS -->
 		<select id="getNoticeBBSCount" resultType="Integer">
 			select count(*) as num from t_bbs_notice
@@ -115,10 +111,23 @@
 		</delete>
 		
 	<!-- HeaderDaoImpl -->
-	<select id="findHeaderAll" parameterType="model.Header" >
+	<select id="findHeaderAll" resultType="model.Header" >
 		select header_id, header_name from t_header
 	</select>
 	
+	<select id="findFreeBBSHeaderOne" resultType="model.Header" parameterType="Integer"> 
+		select b.seq, b.header_id, h.header_name
+		from t_bbs_free b join t_header h
+		on b.header_id = h.header_id
+		join t_user u
+		on b.seq = #{seq}
+	</select>
+	
+	<select id="findNoticeBBSHeaderOne" resultType="model.Header" parameterType="Integer">
+		select b.seq, b.header_id, h.header_name
+		from t_bbs_notice b join t_header h
+		on b.header_id = h.header_id and b.seq=#{seq}
+	</select>
 	<!--  -->
 	
 </mapper>

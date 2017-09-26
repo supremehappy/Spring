@@ -2,13 +2,13 @@ package model;
 
 public class Header {
 
-	private int header_id;
+	private Integer header_id;
 	private String header_name;
 	
-	public int getHeader_id() {
+	public Integer getHeader_id() {
 		return header_id;
 	}
-	public void setHeader_id(int header_id) {
+	public void setHeader_id(Integer header_id) {
 		this.header_id = header_id;
 	}
 	public String getHeader_name() {

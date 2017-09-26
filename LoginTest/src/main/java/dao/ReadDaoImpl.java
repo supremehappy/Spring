@@ -37,13 +37,7 @@ public class ReadDaoImpl implements ReadDao{
 		return session.update("bbsMapper.updateFreeBBSViewCount", free);
 	}
 	
-	public void selectDate(Integer SEQNO) { // 등록일 조회
-		
-		this.session.selectOne("bbsMapper.selectDate",SEQNO);
-		
-	}
-
-	//-----------------------------------------------------notice
+		//-----------------------------------------------------notice
 	public List<Notice> readNoticeBBS(Condition con) {
 		
 		return session.selectList("bbsMapper.getNoticeBBSList",con);

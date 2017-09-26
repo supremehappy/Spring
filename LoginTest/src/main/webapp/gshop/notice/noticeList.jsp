@@ -27,7 +27,16 @@
 					<c:forEach var="notice" items="${NOTICE_LIST }">
 						<tr>
 							<td>${notice.seq }</td>
-							<td><a href="../read/noticeDetail.html?SEQNO=${notice.seq }">${notice.post_title }</a></td>
+							<c:choose>
+								<c:when test="${notice.reg_date eq DATE }">
+									<td><a href="../read/noticeDetail.html?SEQNO=${notice.seq }">
+										${notice.post_title } <img alt="" src="../image/new.png"> 
+									</a></td>	
+								</c:when>
+								<c:otherwise>
+									<td><a href="../read/noticeDetail.html?SEQNO=${notice.seq }">${notice.post_title }</a></td>	
+								</c:otherwise>
+							</c:choose>
 							<td>${notice.user_id }</td>
 							<td>${notice.reg_date }</td>
 							<td>${notice.view_count }</td>

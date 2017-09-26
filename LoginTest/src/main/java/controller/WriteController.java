@@ -1,12 +1,13 @@
 package controller;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -22,8 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import logic.HeaderCatalog;
 import logic.WriteCatalog;
 import model.Bbs_free;
+import model.Header;
 import model.Notice;
 
 @Controller
@@ -31,13 +34,16 @@ public class WriteController {
 
 	@Autowired
 	private WriteCatalog writeCatalog;
+	@Autowired
+	private HeaderCatalog headerCatalog;
 	
-	//-----------------------------free-----------------------------------------------------------
+//-----------------------------free-----------------------------------------------------------
 	@ModelAttribute
 	public Bbs_free setUpFreeBBS(){
 		return new Bbs_free();
 	}
 	
+	// free BBS input
 	@RequestMapping(value="/write/freeInputForm.html", method=RequestMethod.POST)
 	public ModelAndView freeWirte(@Valid Bbs_free free, BindingResult result, HttpSession session, MultipartHttpServletRequest multi) throws IllegalStateException, IOException{
 		
@@ -58,8 +64,8 @@ public class WriteController {
 		
 		ServletContext context = session.getServletContext();
 		
-		String folder = "C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
-		//context.getRealPath("/image/"); //
+		String folder = context.getRealPath("/image/"); //"C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		
 		File dir = new File(folder);
 		
 		if(!dir.isDirectory()){
@@ -146,6 +152,7 @@ public class WriteController {
 		this.writeCatalog.entryFreeWriting(free);
 		
 		ModelAndView mav = new ModelAndView("redirect:/read/freeList.html");
+		
 		System.out.println("mav "+mav.toString());
 		return mav;
 	}
@@ -155,23 +162,57 @@ public class WriteController {
 		System.out.println("WriteController freeWrite");
 		ModelAndView mav = new ModelAndView("/gshop/free/freeInputForm");
 		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("HEADER_LIST",headerList);
 		return mav;
 	}
 	
+	// free BBS modify
 	@RequestMapping(value="/write/freeUpdate.html", method=RequestMethod.GET)
 	public ModelAndView viewFreeBBSupdateForm(Integer SEQNO){
 		
 		System.out.println("viewFreeBBSupdateForm");
-		System.out.println("SEQNO "+SEQNO);
+		
 		ModelAndView mav = new ModelAndView("/gshop/free/freeUpdateFrom");
 		
 		Bbs_free free = new Bbs_free();
 		
 		free = this.writeCatalog.getFreeBBSSeq(SEQNO);
-		//free.setSeq(SEQNO);
-		System.out.println("viewFreeBBSupdateForm free.getSeq()"+free.getSeq());
+		
 		mav.addObject("FREE_ITEM",free);
 		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("HEADER_LIST",headerList);
+		
+		HashMap<Integer, String> selectedHeaderOne = new HashMap<Integer, String>();
+		List<Header> selectedHeader = new ArrayList<Header>();
+		
+		selectedHeader = this.headerCatalog.findFreeBBSHeaderOne(SEQNO);
+		
+		for(Header h : selectedHeader){
+			System.out.println("h.getHeader_id() "+h.getHeader_id());
+			System.out.println("h.getHeader_name() "+h.getHeader_name());
+			
+			selectedHeaderOne.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("SELECTED_HEADER",selectedHeaderOne);
 		return mav;
 	}
 	
@@ -278,6 +319,7 @@ public class WriteController {
 		return mav;
 	}
 	
+	// free BBS delete
 	@RequestMapping(value="/write/freeDelete.html", method=RequestMethod.GET)
 	public ModelAndView freeDelete(Integer SEQNO){
 		
@@ -293,12 +335,13 @@ public class WriteController {
 		return mav;
 	}
 	
-	//-----------------------------notice-----------------------------------------------------------
+//-----------------------------notice-----------------------------------------------------------
 	@ModelAttribute
 	public Notice setUpnoticeBBS(){
 		return new Notice();
 	}
 
+	//notice BBS input
 	@RequestMapping(value="/write/noticeInputForm.html", method=RequestMethod.POST)
 	public ModelAndView noticeWirte(@Valid Notice notice, BindingResult result, HttpSession session, MultipartHttpServletRequest multi) throws IllegalStateException, IOException{
 		
@@ -402,7 +445,7 @@ public class WriteController {
 		}
 		
 		notice.setView_count(0);
-		
+		System.out.println("notice input header_id "+notice.getHeader_id());
 		this.writeCatalog.entryNoticeWriting(notice);
 		
 		ModelAndView mav = new ModelAndView("redirect:/read/noticeList.html");
@@ -415,9 +458,20 @@ public class WriteController {
 		System.out.println("WriteController noticeWrite");
 		ModelAndView mav = new ModelAndView("/gshop/notice/noticeInputForm");
 		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("HEADER_LIST",headerList);
 		return mav;
 	}
 	
+	//notice BBS modify
 	@RequestMapping(value="/write/noticeUpdate.html", method=RequestMethod.GET)
 	public ModelAndView viewNoticeBBSupdateForm(Integer SEQNO){
 		
@@ -430,6 +484,31 @@ public class WriteController {
 		notice = this.writeCatalog.getNoticeBBSSeq(SEQNO);
 		
 		mav.addObject("NOTICE_ITEM",notice);
+		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("HEADER_LIST",headerList);
+		
+		HashMap<Integer, String> selectedHeaderOne = new HashMap<Integer, String>();
+		List<Header> selectedHeader = new ArrayList<Header>();
+		
+		selectedHeader = this.headerCatalog.findNoticeBBSHeaderOne(SEQNO);
+		
+		for(Header h : selectedHeader){
+			System.out.println("h.getHeader_id() "+h.getHeader_id());
+			System.out.println("h.getHeader_name() "+h.getHeader_name());
+			
+			selectedHeaderOne.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("SELECTED_HEADER",selectedHeaderOne);
 		
 		return mav;
 	}
@@ -537,6 +616,7 @@ public class WriteController {
 		return mav;
 	}
 	
+	//notice BBS delete
 	@RequestMapping(value="/write/noticeDelete.html", method=RequestMethod.GET)
 	public ModelAndView noticeDelete(Integer SEQNO){
 		

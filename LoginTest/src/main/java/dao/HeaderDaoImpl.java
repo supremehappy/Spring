@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,19 @@ public class HeaderDaoImpl implements HeaderDao{
 	@Autowired
 	private SqlSession session;
 	
-	public Header findHeaderAll() {
+	public List<Header> findHeaderAll() {
 		
-		Header item = this.session.selectOne("bbsMapper.findHeaderAll");
-		System.out.println("HeaderDaoImpl "+item.toString());
+		return this.session.selectList("bbsMapper.findHeaderAll");
+	}
+
+	public List<Header> findFreeBBSHeaderOne(Integer SEQNO) {
 		
-		return item;
+		return this.session.selectList("bbsMapper.findFreeBBSHeaderOne",SEQNO);
+	}
+
+	public List<Header> findNoticeBBSHeaderOne(Integer SEQNO) {
+		
+		return this.session.selectList("bbsMapper.findNoticeBBSHeaderOne",SEQNO);
 	}
 
 }

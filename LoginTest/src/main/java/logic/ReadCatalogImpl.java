@@ -37,11 +37,6 @@ public class ReadCatalogImpl implements ReadCatalog{
 		return this.readDao.updateFreeBBSViewCount(free);
 	}
 	
-	public void selectDate(Integer SEQNO) {
-	
-		this.readDao.selectDate(SEQNO);
-		
-	}
 	
 	//-------------------------------------------------------notice
 	public List<Notice> readNoticeAll(Condition con) {

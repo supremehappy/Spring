@@ -20,7 +20,7 @@
 					<font color="red"><form:errors path="userId"/></font>
 					<br>
 					<h2>PW</h2>
-					<form:input path="password"/>
+					<form:password path="password"/>
 					<font color="red"><form:errors path="password"/></font>
 				</div>
 				<div align="center">
@@ -38,7 +38,7 @@
 					<font color="red"><form:errors path="userId"/></font>
 					<br>
 					<h2>PW</h2>
-					<form:input path="password"/>
+					<form:password path="password"/>
 					<font color="red"><form:errors path="password"/></font>
 				</div>
 				<div align="center">
@@ -55,7 +55,7 @@
 					<font color="red"><form:errors path="userId"/></font>
 					<br>
 					<h2>PW</h2>
-					<form:input path="password"/>
+					<form:password path="password"/>
 					<font color="red"><form:errors path="password"/></font>
 				</div>
 				<div align="center">

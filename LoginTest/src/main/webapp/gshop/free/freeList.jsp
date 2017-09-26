@@ -38,7 +38,6 @@
 								<td><a href="../read/freeDetail.html?SEQNO=${free.seq }">${free.post_title }</a></td>
 							</c:otherwise>
 						</c:choose>
-						
 						<td>${free.user_id }</td>
 						<td>${free.reg_date }</td>
 						<td>${free.view_count }</td>

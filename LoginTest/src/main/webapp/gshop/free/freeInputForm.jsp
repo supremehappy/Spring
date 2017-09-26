@@ -18,14 +18,22 @@
 						<tr>
 							<td width="60"><h4>category</h4></td>
 							<td>
-								<form:select class="form-control" id="sel1" path="header_id">
-									<form:option value="0">스포츠</form:option>
+								<%-- <form:select class="form-control" id="sel1" path="header_id" items="${HEADER_LIST}" itemValue="${HEADER_LIST.header_id}" itemLabel="${HEADER_LIST.header_name}" multiple="false"/> --%>
+								
+								<form:select class="form-control" id="sel1" path="header_id" items="${HEADER_LIST }" itemName="header_name" />
+									<%-- <c:forEach var="header" items="${HEADER_LIST }">
+										<form:option value="${header.header_id }">${header.header_name }</form:option>
+									</c:forEach> --%>
+									
+									<%-- <form:options items="${HEADER_LIST }"/> --%>
+									
+									<%-- <form:option value="0">스포츠</form:option>
 									<form:option value="1">레이싱</form:option>
 									<form:option value="2">액션</form:option>
 									<form:option value="3">전략</form:option>
 									<form:option value="4">롤플레잉</form:option>
-									<form:option value="5">캐주얼</form:option>
-								</form:select>
+									<form:option value="5">캐주얼</form:option> --%>
+								<%-- </form:select> --%>
 							</td>
 						</tr>
 						<tr>

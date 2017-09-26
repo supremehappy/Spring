@@ -107,7 +107,7 @@ public class ReadController {
 		Calendar today = Calendar.getInstance();
 		
 		int year = today.get(Calendar.YEAR);
-		int month = today.get(Calendar.MONTH);
+		int month = today.get(Calendar.MONTH)+1;
 		int date = today.get(Calendar.DATE);
 		
 		String to = year+""+month+""+date;  
@@ -198,6 +198,17 @@ public class ReadController {
 		mav.addObject("NOTICE_LIST",noticeList);
 		mav.addObject("/notice/noticeList");
 
+		Calendar today = Calendar.getInstance();
+		
+		int year = today.get(Calendar.YEAR);
+		int month = today.get(Calendar.MONTH)+1;
+		int date = today.get(Calendar.DATE);
+		
+		String to = year+""+month+""+date;  
+		
+		mav.addObject("DATE",to);
+		System.out.println(to);
+		
 		return mav;
 	}
 }

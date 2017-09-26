@@ -13,7 +13,6 @@ public interface ReadCatalog {
 	Bbs_free readFreeDetail(Integer seqno);
 	Integer getFreeBbsCount();
 	Integer updateFreeBBSViewCount(Bbs_free free); // 조회수
-	void selectDate(Integer SEQNO);
 	
 	//---------------------------------------notice
 	List<Notice> readNoticeAll(Condition con);

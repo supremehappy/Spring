@@ -24,14 +24,15 @@ function validate(form){
 						<tr>
 							<td width="60"><h4>category</h4></td>
 							<td>
-								<form:select class="form-control" id="sel1" path="header_id">
+							<form:select class="form-control" id="sel1" path="header_id" items="${HEADER_LIST }" itemName="header_name" />
+								<%-- <form:select class="form-control" id="sel1" path="header_id">
 									<form:option value="0">스포츠</form:option>
 									<form:option value="1">레이싱</form:option>
 									<form:option value="2">액션</form:option>
 									<form:option value="3">전략</form:option>
 									<form:option value="4">롤플레잉</form:option>
 									<form:option value="5">캐주얼</form:option>
-								</form:select>
+								</form:select> --%>
 							</td>
 						</tr>
 						<tr>
@@ -48,7 +49,9 @@ function validate(form){
 						</tr>
 						<tr>
 							<c:choose>
+								
 								<c:when test="${empty NOTICE_ITEM.image1 }">
+									<td width="60"><h4>image</h4></td>
 									<td width="300">
 										<div align="left">image</div>
 										<div align="right"><input type="file" class="btn btn-info" value="upload" name="image" multiple="multiple"></div>
