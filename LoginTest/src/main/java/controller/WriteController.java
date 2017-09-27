@@ -49,10 +49,21 @@ public class WriteController {
 		
 		if(result.getErrorCount()>0){
 			ModelAndView mav = new ModelAndView("/gshop/free/freeInputForm");
-			
+			//redirect:/read/freeList.html
 			mav.getModel().putAll(result.getModel());
 			return mav;
 		}
+		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		
 		
 		List<MultipartFile> mf = multi.getFiles("image");
 		List<String> str = new ArrayList<String>();
@@ -64,8 +75,9 @@ public class WriteController {
 		
 		ServletContext context = session.getServletContext();
 		
-		String folder = context.getRealPath("/image/"); //"C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
-		
+		String folder = "C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		//context.getRealPath("/image/"); //
+		System.out.println(folder);
 		File dir = new File(folder);
 		
 		if(!dir.isDirectory()){
@@ -101,7 +113,7 @@ public class WriteController {
 				free.setImage3("");
 				free.setImage4("");
 				free.setImage5("");
-				str.clear();
+				//str.clear();
 				break;
 			case 2:
 				free.setImage1(str.get(0));
@@ -109,7 +121,7 @@ public class WriteController {
 				free.setImage3("");
 				free.setImage4("");
 				free.setImage5("");
-				str.clear();
+				//str.clear();
 				break;
 			case 3:
 				free.setImage1(str.get(0));
@@ -117,7 +129,7 @@ public class WriteController {
 				free.setImage3(str.get(2));
 				free.setImage4("");
 				free.setImage5("");
-				str.clear();
+				//str.clear();
 				break;
 			case 4:
 				free.setImage1(str.get(0));
@@ -125,7 +137,7 @@ public class WriteController {
 				free.setImage3(str.get(2));
 				free.setImage4(str.get(3));
 				free.setImage5("");
-				str.clear();
+				//str.clear();
 				break;
 			case 5:
 				free.setImage1(str.get(0));
@@ -133,9 +145,15 @@ public class WriteController {
 				free.setImage3(str.get(2));
 				free.setImage4(str.get(3));
 				free.setImage5(str.get(4));
-				str.clear();
+				//str.clear();
 				break;
 			}
+		}
+		
+		System.out.println("free str.size() "+str.size());
+		
+		for(int i = 0 ; i<str.size(); i++){
+			System.out.println("str "+ i +" "+str.get(i));
 		}
 		
 		String user_key = (String) session.getAttribute("user_key");
@@ -154,6 +172,9 @@ public class WriteController {
 		ModelAndView mav = new ModelAndView("redirect:/read/freeList.html");
 		
 		System.out.println("mav "+mav.toString());
+		mav.addObject("HEADER_LIST",headerList);
+		mav.addObject("STR_SIZE",str.size());
+		
 		return mav;
 	}
 	
@@ -352,6 +373,17 @@ public class WriteController {
 			return mav;
 		}
 		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		
+		
 		List<MultipartFile> mf = multi.getFiles("image");
 		List<String> str = new ArrayList<String>();
 		str.clear();
@@ -435,6 +467,8 @@ public class WriteController {
 			}
 		}
 		
+		System.out.println("notice str.size() "+str.size());
+		
 		String user_key = (String) session.getAttribute("user_key");
 		String admin_key = (String) session.getAttribute("admin_key");
 		
@@ -450,6 +484,7 @@ public class WriteController {
 		
 		ModelAndView mav = new ModelAndView("redirect:/read/noticeList.html");
 		System.out.println("mav "+mav.toString());
+		mav.addObject("HEADER_LIST",headerList);
 		return mav;
 	}
 	

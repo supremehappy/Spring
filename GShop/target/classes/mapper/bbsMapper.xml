@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bbsMapper">
+	
+	<!-- 답글 작성 시 order_no 변경 -->
+	<update id="updateViewOrder" parameterType="map">
+		UPDATE ${tableName} SET view_order = view_order + 1
+		WHERE group_id = ${group_id} AND view_order >= ${view_order}
+		
+	</update>
+	
+	<!-- 답글 처리를 위해 최대 답글 번호를 찾기 -->
+	<select id="selectMaxGroupId" resultType="Integer">
+		SELECT MAX(group_id) as num FROM ${tableName}
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateBbs" parameterType="map">
+		UPDATE ${tableName} SET
+			header_id=${header_id},
+			post_title='${post_title}',
+			image1='${image1}',
+			image2='${image2}',
+			image3='${image3}',
+			image4='${image4}',
+			image5='${image5}',
+			post_content='${post_content}'
+		WHERE
+			seq=${seq}
+	</update>
+	
+	<!-- 게시글 등록 시 사용될 어드민 닉네임 조회 -->
+	<select id="getAdminNicknameBySession" parameterType="String" resultType="String">
+		SELECT admin_name FROM t_admin
+		WHERE user_id=#{userId}
+	</select>
+	
+	<!-- 게시글 등록 시 사용될 유저 닉네임 조회 -->
+	<select id="getUserNicknameBySession" parameterType="String" resultType="String">
+		SELECT nickname FROM t_user
+		WHERE user_id=#{userId}
+	</select>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="updateBbsViewCount" parameterType="map">
+		UPDATE ${tableName} SET view_count = ${viewCount} WHERE seq=${seq}
+	</update>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBbs" parameterType="map">
+		DELETE FROM ${tableName} WHERE seq=${seq}
+	</delete>
+	
+	<!-- 게시글 본문 조회 -->
+	<select id="getBbsDetail" parameterType="map" resultType="model.Bbs">
+		SELECT
+		h.header_name, b.seq, b.group_id, b.parent_id, b.view_order, b.view_count, b.post_title, b.post_content, u.picture, u.nickname, u.user_id, b.reg_date,
+		b.image1, b.image2, b.image3, b.image4, b.image5
+		FROM t_header h, t_user u, ${tableName} b
+		WHERE h.header_id=b.header_id
+		AND u.user_id=b.user_id
+		AND b.seq=${seq}
+	</select>
+	
+	<!-- 게시판 글 갯수 조회 (말머리로 찾기)-->
+	<select id="getBbsCountHeader" parameterType="map" resultType="Integer">
+		SELECT count(*) AS num FROM ${tableName}
+		WHERE header_id = ${header}
+	</select>
+	
+	<!-- 게시판 전체 글 갯수 조회 -->
+	<select id="getBbsCount" parameterType="map" resultType="Integer">
+		SELECT count(*) AS num FROM ${tableName}
+	</select>
+	
+	<!-- 게시글 리스트 조회 (말머리로 찾기)-->
+	<select id="getBbsListHeader" parameterType="map" resultType="model.Bbs">
+		select seq, view_order, header_name, header_id, post_title, picture, user_id, nickname, post_content, reg_date, view_count from
+		(
+		    select a.*, rownum rn from
+		    (
+		        (SELECT
+		        g.seq, g.header_id, g.view_order, h.header_name, g.post_title, u.picture, g.user_id, u.nickname,
+		        g.post_content, g.reg_date, g.view_count
+		        FROM ${tableName} g, t_user u, t_header h
+		        WHERE g.user_id = u.user_id AND g.header_id = h.header_id AND g.header_id = ${header}
+		        ORDER BY g.group_id DESC, g.view_order asc) a
+		    )
+		) where rn between ${startRow} and ${endRow}
+	</select>
+	
+	<!-- 게시글 리스트 조회 -->
+	<select id="getBbsList" parameterType="map" resultType="model.Bbs">
+		select seq, header_name, header_id, post_title, picture, user_id, nickname, post_content, reg_date, view_count from
+		(
+		    select a.*, rownum rn from
+		    (
+		        (SELECT
+		        g.seq, g.header_id, g.view_order, h.header_name, g.post_title, u.picture, g.user_id, u.nickname,
+		        g.post_content, g.reg_date, g.view_count
+		        FROM ${tableName} g, t_user u, t_header h
+		        WHERE g.user_id = u.user_id AND g.header_id = h.header_id
+		        ORDER BY g.group_id DESC, g.view_order asc) a
+		    )
+		) where rn between ${startRow} and ${endRow}<!-- 2. startRow부터 endRow까지 -->
+	</select>
+	<!-- 게시글 등록 -->
+	<insert id="putBbs" parameterType="model.BbsCondition">
+		INSERT INTO t_bbs_#{gameId}
+		(
+			seq, user_id, price, p_date, content, id
+		)
+		VALUES
+		(
+			#{seq}, #{name}, #{price}, #{p_date}, #{content}, #{id} 	
+		)
+	</insert>
+	<!-- 게임 게시판 본문 등록 -->
+	<!-- <insert id="inputBbs" parameterType="map">
+		INSERT INTO ${bbs.tableName} VALUES(
+			${bbs.seq}, ${bbs.group_id}, ${bbs.parent_id}, ${bbs.view_order}, '${bbs.user_id}', ${bbs.header_id}, '${bbs.post_title}',
+			${bbs.post_pw}, '${bbs.reg_date}', '${bbs.post_content}',
+			'${bbs.image1}', '${bbs.image2}', '${bbs.image3}', '${bbs.image4}', '${bbs.image5}',${bbs.view_count}
+		)
+	</insert> -->
+	<!-- 게임 게시판 본문 등록 -->
+	<insert id="insertBbs" parameterType="map">
+		INSERT INTO ${tableName}
+		 (	seq,
+		 	group_id,
+		 	parent_id,
+		 	view_order,
+		 	user_id,
+		 	header_id,
+		 	post_title,
+		 	reg_date,
+		 	post_content,
+		 	image1, image2, image3, image4, image5,
+		 	view_count
+		 ) VALUES (
+			${seq}, ${group_id}, ${parent_id}, ${view_order}, '${user_id}', ${header_id}, '${post_title}',
+			'${reg_date}', '${post_content}',
+			'${image1}', '${image2}', '${image3}', '${image4}', '${image5}',${view_count}
+		)
+	</insert>
+	
+	<!-- 가장 큰 글번호 가져오기 -->
+	<select id="getMaxSeq" resultType="Integer" parameterType="map">
+		SELECT MAX(seq) m_seq FROM ${tableName}
+	</select>
+	
+	<!-- 선택된 말머리 이름 가져오기 -->
+	<select id="getHeaderName" resultType="String" parameterType="model.BbsCondition">
+		SELECT header_name FROM t_header
+		WHERE header_id = #{header}
+	</select>
+	
+	<!-- 말머리 가져오기 -->
+	<select id="getHeader" resultType="model.BbsHeader">
+		SELECT header_id, header_name FROM t_header ORDER BY header_id
+	</select>
+		
+	<!-- 닉네임 가져오기 -->
+	<select id="getUserInfo" resultType="String" parameterType="model.Bbs">
+		SELECT nickname, picture, introduce
+		FROM t_user
+		WHERE #{user_id}
+	</select>
+	
+</mapper>

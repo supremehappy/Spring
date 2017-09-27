@@ -1,0 +1,233 @@
+package model;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
+
+public class Bbs {
+	
+	////t_bbs의 변수 시작 ////
+	private int				seq;
+	private int				group_id;
+	private int				parent_id;
+	private int				view_order;
+	private String			user_id;
+	private Integer			header_id;
+	private String			header_name;
+	@NotEmpty(message="제목을 입력해 주세요.")
+	private String			post_title;
+	private Integer			post_pw;
+	private String			reg_date;
+	@NotEmpty(message="내용을 입력해 주세요.")
+	private String			post_content;
+	private String			image1;
+	private String			image2;
+	private String			image3;
+	private String			image4;
+	private String			image5;
+	private Integer			view_count;
+	//// t_bbs의 변수 끝 ////
+	
+	private MultipartFile[]	images;
+	private String[]		names;
+	private Integer			gameNo;
+	private String			nickname;
+	private String			picture;
+	private String			tableName;
+	
+	public int				imageCount;
+	public MultipartFile[]	pImages;
+	public String[]			pNames;
+	
+
+	public void setImg() {
+		int count = 0;
+		if(images != null) {
+			for(int i = 0; i < images.length; i++) {
+				if(images[i].getOriginalFilename().length() > 0) {
+					count++;
+				}
+			}
+		}
+		setImageCount(count);
+		pImages = images;
+		pNames = new String[count];
+	}
+	
+	public void setName() {
+		for(int i = 0; i < pNames.length; i++) {
+			System.out.println("setName : " + pNames[i]);
+		}
+		names = pNames;
+	}
+	
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String gameId) {
+		this.tableName = "t_bbs_" + gameId;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	public void putImages() {
+		if(names.length > 0) {
+			if(names[0] != null) {
+				image1 = names[0];
+			}
+			if(names[1] != null) {
+				image2 = names[1];
+			}
+			if(names[2] != null) {
+				image3 = names[2];
+			}
+			if(names[3] != null) {
+				image4 = names[3];
+			}
+			if(names[4] != null) {
+				image5 = names[4];
+			}
+		}
+	}
+	
+	public int getImageCount() {
+		return imageCount;
+	}
+
+	public void setImageCount(int imageCount) {
+		this.imageCount = imageCount;
+	}
+	
+	public void setNames(String[] names) {
+		this.names = names;
+	}
+	public MultipartFile[] getImages() {
+		return images;
+	}
+	public void setImages(MultipartFile[] images) {
+		this.images = images;
+	}
+	
+	
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+	public int getGroup_id() {
+		return group_id;
+	}
+	public void setGroup_id(int group_id) {
+		this.group_id = group_id;
+	}
+	public int getParent_id() {
+		return parent_id;
+	}
+	public void setParent_id(int parent_id) {
+		this.parent_id = parent_id;
+	}
+	public int getView_order() {
+		return view_order;
+	}
+	public void setView_order(int view_order) {
+		this.view_order = view_order;
+	}
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public Integer getHeader_id() {
+		return header_id;
+	}
+	public void setHeader_id(Integer header_id) {
+		this.header_id = header_id;
+	}
+	public String getHeader_name() {
+		return header_name;
+	}
+	public void setHeader_name(String header_name) {
+		this.header_name = header_name;
+	}
+	public String getPost_title() {
+		return post_title;
+	}
+	public void setPost_title(String post_title) {
+		this.post_title = post_title;
+	}
+	public Integer getPost_pw() {
+		return post_pw;
+	}
+	public void setPost_pw(Integer post_pw) {
+		this.post_pw = post_pw;
+	}
+	public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
+	}
+	public String getPost_content() {
+		return post_content;
+	}
+	public void setPost_content(String post_content) {
+		this.post_content = post_content;
+	}
+	public String getImage1() {
+		return image1;
+	}
+	public void setImage1(String image1) {
+		this.image1 = image1;
+	}
+	public String getImage2() {
+		return image2;
+	}
+	public void setImage2(String image2) {
+		this.image2 = image2;
+	}
+	public String getImage3() {
+		return image3;
+	}
+	public void setImage3(String image3) {
+		this.image3 = image3;
+	}
+	public String getImage4() {
+		return image4;
+	}
+	public void setImage4(String image4) {
+		this.image4 = image4;
+	}
+	public String getImage5() {
+		return image5;
+	}
+	public void setImage5(String image5) {
+		this.image5 = image5;
+	}
+	public Integer getView_count() {
+		return view_count;
+	}
+	public void setView_count(Integer view_count) {
+		this.view_count = view_count;
+	}
+	public Integer getGameNo() {
+		return gameNo;
+	}
+	public void setGameNo(Integer gameNo) {
+		this.gameNo = gameNo;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
+}

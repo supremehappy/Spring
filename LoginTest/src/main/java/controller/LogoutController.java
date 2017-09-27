@@ -12,6 +12,7 @@ public class LogoutController {
 
 	@RequestMapping(value="logout/logout.html", method=RequestMethod.GET)
 	public ModelAndView toLogout(HttpSession session){
+		System.out.println("toLogout");
 		
 		session.removeAttribute("user_key");
 		session.removeAttribute("admin_key");

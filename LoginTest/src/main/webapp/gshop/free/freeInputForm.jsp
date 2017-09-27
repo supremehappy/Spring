@@ -10,7 +10,7 @@
 	<h2>free input from</h2>
 	<div class="body">
 		<div class="container">
-			<form:form modelAttribute = "bbs_free" action = "../write/freeInputForm.html" method="post" enctype="multipart/form-data">
+			<form:form modelAttribute = "bbs_free" action = "../write/freeInputForm.html" method="post" enctype="multipart/form-data" commandName="bbs_free">
 				<h2>Bordered Table</h2>
 				<p>The .table-bordered class adds borders to a table:</p>            
 				<table class="table table-bordered">
@@ -38,7 +38,10 @@
 						</tr>
 						<tr>
 							<td width="60"><h4>title</h4></td>
-							<td><form:input type="text" class="form-control" id="usr" path="post_title"/></td>
+							<td>
+								<form:input type="text" class="form-control" id="usr" path="post_title"/>
+								<font color="red"><form:errors path="post_title"/></font>
+							</td>
 						</tr>
 						<tr>
 							<td width="60"><h4>image</h4></td>

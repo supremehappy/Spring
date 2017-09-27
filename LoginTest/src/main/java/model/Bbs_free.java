@@ -2,6 +2,7 @@ package model;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Bbs_free {
@@ -16,6 +17,7 @@ public class Bbs_free {
 	private String post_title;
 	private int post_pw;
 	private String reg_date;
+	@NotNull(message="내용 입력")
 	private String post_content;
 	private String image1;
 	private String image2;

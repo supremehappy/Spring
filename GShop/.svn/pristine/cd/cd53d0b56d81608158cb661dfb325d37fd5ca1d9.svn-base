@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">	
+	<title>GShop Home</title>
+</head>
+
+<body>
+	<c:choose>
+		<c:when test="${ RESULT != null }">
+			<h2>해당 기능은 로그인 사용자만 가능합니다.</h2>
+			<h2>로그인을 먼저 진행해 주세요.</h2>
+		</c:when>
+		<c:otherwise>
+			<form action="../login/input.html" method="post">
+				아이디 : <input type="text" name="ID" size="12"/><br/>
+				패스워드 : <input type="password" name="PWD" size="12"/><br/>
+				<input type="submit" value="로그인"/>
+			</form>
+		</c:otherwise>
+	</c:choose>
+</body>
+</html>

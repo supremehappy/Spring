@@ -19,42 +19,42 @@ public class ReadDaoImpl implements ReadDao{
 	//-----------------------------------------------------free
 	public List<Bbs_free> readFreeBBS(Condition con) {
 		
-		return session.selectList("bbsMapper.getFreeBBSList",con);
+		return session.selectList("noticeMapper.getFreeBBSList",con);
 	}
 
 	public Bbs_free getFreeBBS(Integer seq) {
 		
-		return session.selectOne("bbsMapper.getFreeBBSDetail",seq);
+		return session.selectOne("noticeMapper.getFreeBBSDetail",seq);
 	}
 	
 	public Integer getFreeBBSCount() {
 		
-		return session.selectOne("bbsMapper.getFreeBBSCount");
+		return session.selectOne("noticeMapper.getFreeBBSCount");
 	}
 
 	public Integer updateFreeBBSViewCount(Bbs_free free) { // 조회수
 		
-		return session.update("bbsMapper.updateFreeBBSViewCount", free);
+		return session.update("noticeMapper.updateFreeBBSViewCount", free);
 	}
 	
 		//-----------------------------------------------------notice
 	public List<Notice> readNoticeBBS(Condition con) {
 		
-		return session.selectList("bbsMapper.getNoticeBBSList",con);
+		return session.selectList("noticeMapper.getNoticeBBSList",con);
 	}
 	
 	public Notice getNoticeBBS(Integer seq) {
 		
-		return session.selectOne("bbsMapper.getNoticeBBSDetail",seq);
+		return session.selectOne("noticeMapper.getNoticeBBSDetail",seq);
 	}
 	
 	public Integer getNoticeBBSCount() {
 		
-		return session.selectOne("bbsMapper.getNoticeBBSCount");
+		return session.selectOne("noticeMapper.getNoticeBBSCount");
 	}
 	
 	public Integer updateNoticeBBSViewCount(Notice notice) {
 		
-		return session.update("bbsMapper.updateNoticeBBSViewCount", notice);
+		return session.update("noticeMapper.updateNoticeBBSViewCount", notice);
 	}	
 }

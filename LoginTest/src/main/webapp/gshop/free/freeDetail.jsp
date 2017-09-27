@@ -46,7 +46,7 @@ function validate(form){
 									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image3 }">
 									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image4 }">
 									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image5 }">
-									<%-- <c:forEach var = "image" items="${ }">
+									<%-- <c:forEach var = "image" begin="0" end="${STR_SIZE }">
 										
 									</c:forEach> --%>
 								</td>	

@@ -25,8 +25,8 @@
             
             
             
-            <Context docBase="mshop3-4" path="/mshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4"/><Context docBase="MyHomeSpring" path="/MyHomeSpring" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeSpring"/><Context docBase="Gshop_web_test3" path="/Gshop_web_test3" reloadable="true" source="org.eclipse.jst.jee.server:Gshop_web_test3"/><Context docBase="LoginTest" path="/LoginTest" reloadable="true" source="org.eclipse.jst.jee.server:LoginTest"/><Context docBase="mshop3-6" path="/mshop3-6" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-6"/><Context docBase="mshop3-1" path="/mshop3-1" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-1"/><Context docBase="mshop3-5" path="/mshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-5"/></Host>
-        </Engine>
+            <Context docBase="mshop3-4" path="/mshop3-4" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-4"/><Context docBase="Gshop_web_test3" path="/Gshop_web_test3" reloadable="true" source="org.eclipse.jst.jee.server:Gshop_web_test3"/><Context docBase="LoginTest" path="/LoginTest" reloadable="true" source="org.eclipse.jst.jee.server:LoginTest"/><Context docBase="mshop3-6" path="/mshop3-6" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-6"/><Context docBase="mshop3-1" path="/mshop3-1" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-1"/><Context docBase="mshop3-5" path="/mshop3-5" reloadable="true" source="org.eclipse.jst.jee.server:mshop3-5"/><Context docBase="GShop" path="/MyHomeSpring" reloadable="true" source="org.eclipse.jst.jee.server:GShop"/></Host>
+        </Engine><!-- <Context docBase="MyHomeSpring" path="/MyHomeSpring" reloadable="true" source="org.eclipse.jst.jee.server:MyHomeSpring"/> -->
         <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="${nio.http.port}" protocol="org.apache.coyote.http11.Http11NioProtocol" redirectPort="${nio.https.port}"/>
     </Service>
 </Server>

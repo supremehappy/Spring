@@ -32,6 +32,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/login/loginForm.html", method=RequestMethod.GET)
 	public ModelAndView toLoginForm(){
+		System.out.println("toLoginForm");
 		
 		ModelAndView mav = new ModelAndView("/gshop/login_out/loginForm");
 			
@@ -41,6 +42,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/login/loginCheck.html", method=RequestMethod.GET)
 	public ModelAndView toLoginUserCheck(String PAGE, HttpSession session){
+		System.out.println("toLoginUserCheck");
 		
 		//PAGE = "/A/B" ( A : 컨트롤러 명 / B : jsp 파일 이름)
 		//ex) PAGE = /write/bbsInputForm <= 글등록시 / (full path) PAGE = ../login/loginCheck.html?PAGE=/write/bbsInputForm
@@ -49,19 +51,18 @@ public class LoginController {
 		ModelAndView mav = new ModelAndView();
 		
 		String user_key = (String) session.getAttribute("user_key");
-		System.out.println("LoginController user_key "+user_key);
+		
 		String admin_key = (String) session.getAttribute("admin_key");
-		System.out.println("LoginController admin_key "+admin_key);
+		
 		String page = /*"redirect:*/PAGE;
-		System.out.println("LoginController page "+page);
 		
 		if((user_key==null)&&(admin_key==null)){ // 비회원일때
 			mav.setViewName("/gshop/login_out/loginForm");
-			System.out.println("mav "+mav.toString());
+			
 			return mav;
 		}else if(admin_key==null){ // 회원일때
 			mav.setViewName("redirect:"+page);
-			System.out.println("mav "+mav.toString());
+			
 			return mav;
 		}else{ // 관리자일때
 			mav.setViewName("redirect:"+page);
@@ -69,36 +70,13 @@ public class LoginController {
 		}
 	}
 	
-	/*@RequestMapping(value="/login/loginAdminCheck.html", method=RequestMethod.GET)
-	public ModelAndView toLoginAdminCheck(String PAGE, HttpSession session){
-		
-		//PAGE = "/A/B" ( A : 컨트롤러 명 / B : jsp 파일 이름)
-		//ex) PAGE = /login_out/loginForm
-		
-		ModelAndView mav = new ModelAndView();
-		
-		String admin_key = (String) session.getAttribute("admin_key");
-		System.out.println("LoginController admin_key "+admin_key);
-		String page = "/gshop"+PAGE;
-		System.out.println("LoginController page "+page);
-		
-		if((admin_key==null)){
-			mav.setViewName("/gshop/login_out/loginForm");
-			return mav;
-		}else{
-			mav.setViewName(page);
-			return mav;
-		}
-	}*/
-	
 	@RequestMapping(value="/login/loginResult.html", method=RequestMethod.POST)
 	public ModelAndView toLogin(@Valid Login login, BindingResult result, String userId, String password, HttpSession session){
+		System.out.println("toLogin");
 		
 		if(result.hasErrors()){
 			ModelAndView mav = new ModelAndView("/gshop/login_out/loginForm");
 			mav.getModel().putAll(result.getModel());
-			System.out.println("2 "+result.getModel());
-			System.out.println("error");
 			return mav;
 		}
 		
@@ -107,20 +85,13 @@ public class LoginController {
 		try{
 			
 			if(!userId.isEmpty()){
-				System.out.println("LoginController in");
-				
 				String findAdminId = this.adminCatalog.getId(userId);
 				String findUserId = this.userCatalog.getUserById(userId);
-				
-				System.out.println("findAdminId "+findAdminId);
-				System.out.println("findUserId "+findUserId);
 				
 				if(userId.equals(findAdminId)){
 					Admin admin = new Admin();
 					admin.setAdminId(findAdminId);
 					Admin loginAdmin = this.adminCatalog.getAdminById(admin);
-					
-					System.out.println(loginAdmin.toString());
 					
 					session.setAttribute("admin_key", findAdminId);
 					mav.setViewName("/gshop/main");
@@ -152,7 +123,7 @@ public class LoginController {
 			return mav;
 		}catch(Exception e){
 			mav.getModel().putAll(result.getModel());
-			System.out.println("3 "+result.getModel());
+			
 			return mav;
 		}
 	}

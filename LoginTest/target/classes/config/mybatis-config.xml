@@ -17,7 +17,7 @@
 	</environments>
 	<mappers>
 		<mapper resource="mapper/loginAuthorityMapper.xml"/>
-		<mapper resource="mapper/bbsMapper.xml"/>
+		<mapper resource="mapper/noticeMapper.xml"/>
 	</mappers>
 </configuration>
 

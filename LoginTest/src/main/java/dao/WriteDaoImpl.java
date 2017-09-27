@@ -27,28 +27,28 @@ public class WriteDaoImpl implements WriteDao {
 		
 		free.setReg_date(freebbsDate);
 		
-		this.session.insert("bbsMapper.insertFreeWritingInfo",free);
+		this.session.insert("noticeMapper.insertFreeWritingInfo",free);
 		
 	}
 
 	public Integer getMaxFreeId() {
  
-		return this.session.selectOne("bbsMapper.getMaxFreeId");
+		return this.session.selectOne("noticeMapper.getMaxFreeId");
 	}
 
 	public void updateFreeBBS(Bbs_free free) { // 글 수정
 
-		this.session.update("bbsMapper.updateFreeBBS",free);
+		this.session.update("noticeMapper.updateFreeBBS",free);
 	}
 
 	public Bbs_free findFreeBBSSeq(Integer SEQNO) {
 
-		return this.session.selectOne("bbsMapper.findFreeBBSSeq", SEQNO);
+		return this.session.selectOne("noticeMapper.findFreeBBSSeq", SEQNO);
 	}
 	
 	public void deleteFreeBBS(Integer SEQNO) {
 		
-		this.session.selectOne("bbsMapper.deleteFreeBBS",SEQNO);
+		this.session.selectOne("noticeMapper.deleteFreeBBS",SEQNO);
 		
 	}
 	
@@ -65,28 +65,28 @@ public class WriteDaoImpl implements WriteDao {
 		
 		notice.setReg_date(noticebbsDate);
 		
-		this.session.insert("bbsMapper.insertNoticeWritingInfo",notice);
+		this.session.insert("noticeMapper.insertNoticeWritingInfo",notice);
 	}
 
 	public Integer getMaxNoticeId() {
 
-		return this.session.selectOne("bbsMapper.getMaxNoticeId");
+		return this.session.selectOne("noticeMapper.getMaxNoticeId");
 	}
 
 	public void updateNoticeBBS(Notice notice) {
 	
-		this.session.selectOne("bbsMapper.updateNoticeBBS",notice);
+		this.session.selectOne("noticeMapper.updateNoticeBBS",notice);
 		
 	}
 	
 	public Notice findNoitceBBSSeq(Integer SEQNO) {
 		
-		return this.session.selectOne("bbsMapper.findNoticeBBSSeq",SEQNO);
+		return this.session.selectOne("noticeMapper.findNoticeBBSSeq",SEQNO);
 	}
 
 	public void deleteNoticeBBS(Integer SEQNO) {
 		
-		this.session.selectOne("bbsMapper.deleteNoticeBBS",SEQNO);
+		this.session.selectOne("noticeMapper.deleteNoticeBBS",SEQNO);
 		
 	}
 	
