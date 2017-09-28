@@ -16,7 +16,7 @@ function validate(form){
 	<h2>notice input from</h2>
 	<div class="body">
 		<div class="container">
-			<form:form modelAttribute = "notice" action = "../write/noticeInputForm.html" method="post" enctype="multipart/form-data" commandName="notice">
+			<form:form modelAttribute = "notice" action = "../notice/noticeInputForm.html" method="post" enctype="multipart/form-data" commandName="notice">
 				<h2>Bordered Table</h2>
 				<p>The .table-bordered class adds borders to a table:</p>            
 				<table class="table table-bordered">

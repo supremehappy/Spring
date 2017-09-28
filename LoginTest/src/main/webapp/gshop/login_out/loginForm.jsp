@@ -11,10 +11,16 @@
 
 	<form:form modelAttribute="login" action="../login/loginResult.html" commandName="login">
 		
-		<c:choose>
-			<c:when test="${param.USER_UPLOAD !=null }">
-				<h2>글 올리려면 로그인이 필요합니다.</h2>
+
 				<div align="center">
+					<br>
+					<c:choose>
+						<c:when test="${not empty message }">
+							<p><font color="red">${message }</font></p>
+							<br>
+						</c:when>
+					</c:choose>
+					
 					<h2>ID</h2>
 					<form:input path="userId"/>
 					<font color="red"><form:errors path="userId"/></font>
@@ -29,43 +35,7 @@
 					<a href="#" class="btn btn-info" role="button">id 찾기</a>
 					<a href="#" class="btn btn-info" role="button">pw 찾기</a>
 				</div>
-			</c:when>
-			<c:when test="${param.ADMIN_UPLOAD !=null }">
-				<h2>글 올릴 수 있는 권한이 없습니다.</h2>
-				<div align="center">
-					<h2>ID</h2>
-					<form:input path="userId"/>
-					<font color="red"><form:errors path="userId"/></font>
-					<br>
-					<h2>PW</h2>
-					<form:password path="password"/>
-					<font color="red"><form:errors path="password"/></font>
-				</div>
-				<div align="center">
-					<input type="submit" class="btn btn-info" value="login">
-					<a href="#" class="btn btn-info" role="button">join</a>
-					<a href="#" class="btn btn-info" role="button">id 찾기</a>
-					<a href="#" class="btn btn-info" role="button">pw 찾기</a>
-				</div>
-			</c:when>
-			<c:otherwise>
-				<div align="center">
-					<h2>ID</h2>
-					<form:input path="userId"/>
-					<font color="red"><form:errors path="userId"/></font>
-					<br>
-					<h2>PW</h2>
-					<form:password path="password"/>
-					<font color="red"><form:errors path="password"/></font>
-				</div>
-				<div align="center">
-					<input type="submit" class="btn btn-info" value="login">
-					<a href="#" class="btn btn-info" role="button">join</a>
-					<a href="#" class="btn btn-info" role="button">id 찾기</a>
-					<a href="#" class="btn btn-info" role="button">pw 찾기</a>
-				</div>
-			</c:otherwise>
-		</c:choose>
+
 	</form:form>
 
 </body>

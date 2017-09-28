@@ -6,6 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript">
+function validate(){
+	var result = confirm("정말로 삭제하시겠습니까?");
+	if(result == false) return false;
+}
+</script>
 <body>
 	<h2>notice detail</h2>
 	<div class="body">
@@ -34,11 +40,11 @@
 							<c:otherwise>
 								<td width="60"><h4>image</h4></td>
 								<td>
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${NOTICE_ITEM.image1 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image2 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image3 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image4 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image5 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="../upload/${NOTICE_ITEM.image1 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image2 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image3 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image4 }">
+									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image5 }">
 									<%-- <c:forEach var = "image" items="${ }">
 										
 									</c:forEach> --%>
@@ -52,14 +58,14 @@
 			<c:choose>
 				<c:when test="${not empty admin_key }">
 					<div align="center">
-						<a href="../read/noticeList.html" class="btn btn-info" role="button">list</a>
-						<a href="../write/noticeUpdate.html?SEQNO=${NOTICE_ITEM.seq}" class="btn btn-info" role="button">update</a>
-						<a href="../write/noticeDelete.html?SEQNO=${NOTICE_ITEM.seq}" class="btn btn-info" role="button">delete</a>
+						<a href="../notice/noticeList.html" class="btn btn-info" role="button">list</a>
+						<a href="../notice/noticeUpdate.html?SEQNO=${NOTICE_ITEM.seq}" class="btn btn-info" role="button">update</a>
+						<a href="../notice/noticeDelete.html?SEQNO=${NOTICE_ITEM.seq}" class="btn btn-info" role="button" onClick="javascript:validate()">delete</a>
 					</div>	
 				</c:when>
 				<c:otherwise>
 					<div align="center">
-						<a href="../read/noticeList.html" class="btn btn-info" role="button">list</a>
+						<a href="../notice/noticeList.html" class="btn btn-info" role="button">list</a>
 					</div>
 				</c:otherwise>
 			</c:choose>

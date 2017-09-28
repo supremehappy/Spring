@@ -18,12 +18,10 @@
 </head>
 <body>
 
-<h3 align="center">MaPage</h3>
-<form:form modelAttribute="user" action="../user/userInput.html" method="post"
-	enctype="multipart/form-data" name="userInfo" >
+<h3 align="center">MyPage</h3>
 	
-	<table border="1" width="200" align="left">
-		<tr><td>사진</td>
+	<table border="1" align="left" style="margin-left:50px">
+		<tr><td><img src="../gshop/user/upload/${USER.picture_name}"  width="170"/></td></tr>
 		<tr><td colspan="2" align="center">
         <a href="#">수정</a>&emsp;
 		<a href="#">탈퇴</a>&emsp;
@@ -31,13 +29,13 @@
 		</td></tr>
 	</table>
 	
-	<table border="1" width="300" align="center">	
+	<table border="1" width="250" align="center">	
 		<tr><td>닉네임</td>
-		<td>asdsad</td>	
+		<td>${USER.nickname}</td>	
 		</tr>
 		
 		<tr><td>이름</td>
-		<td>asdasd</td>	
+		<td>${USER.user_name}</td>	
 		</tr>
 		
 		<tr><td colspan="2">구매 내역</td>		
@@ -46,6 +44,6 @@
 		<tr><td colspan="2">찜 리스트</td>		
 		</tr>
 	</table>
-</form:form>
+
 </body>
 </html>

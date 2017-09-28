@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <h1 align="center">공지게시글 목록</h1>
 	<div class="body">
 		<div class="container">

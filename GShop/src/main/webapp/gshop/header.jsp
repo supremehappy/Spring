@@ -21,7 +21,7 @@
 		<div class="col-sm-3">
 			<c:choose>
 				<c:when test="${not empty user_key }">
-					<font color="red"><c:out value="${user_key}"></c:out>님, 환영합니다.
+					<font color="red"><c:out value="${user_nickname}"></c:out>님, 환영합니다.
 					</font>
 				</c:when>
 				<c:when test="${not empty admin_key }">
@@ -29,7 +29,7 @@
 					</font>
 				</c:when>
 				<c:otherwise>
-					<a href="#">■ 회원가입</a>
+					<a href="../user/userInputForm.html">■ 회원가입</a>
 				</c:otherwise>
 			</c:choose>
 			

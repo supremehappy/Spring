@@ -103,27 +103,48 @@ public class LoginController {
 					
 					System.out.println(loginUser.toString());
 					
-					if(loginUser.getPassword().equals(password)){
-						session.setAttribute("user_key", findUserId);
-						mav.setViewName("/gshop/main");
-						mav.addObject("loginUser",loginUser);
-					}else{
-						mav.setViewName("/gshop/login_out/loginForm");
-						System.out.println("password not equals");
-						// 오류 메시지 추가 할것. (비번or아디 다르다)
+					switch(loginUser.getStatus()){
+					case 0:
+						if(loginUser.getPassword().equals(password)){
+							session.setAttribute("user_key", findUserId);
+							mav.setViewName("/gshop/main");
+							mav.addObject("loginUser",loginUser);
+						}else{
+							mav.setViewName("/gshop/login_out/loginForm");
+							System.out.println("password not equals");
+							String message="password not equals";
+							mav.addObject("message",message);
+							
+						}
+						break;
+					case 1:
+						if(loginUser.getStatus()==1){ // 탈퇴된 회원일 경우
+							mav.setViewName("/gshop/login_out/loginForm");
+							System.out.println("withdraw membership from this website");
+							String message="withdraw membership from this website";
+							mav.addObject("message",message);
+						}
+						break;
 					}
+					
+					
+				}else{
+					
+					System.out.println("Unregistered id");
+					String message="Unregistered id";
+					mav = new ModelAndView("/gshop/login_out/loginForm");
+					mav.addObject("message",message);
 				}
-				
-			}else{
-				System.out.println("empty");
-				mav.setViewName("/gshop/login_out/loginForm");
 				
 			}
 			
 			return mav;
 		}catch(Exception e){
-			mav.getModel().putAll(result.getModel());
+			System.out.println("Unregistered id");
+			String message="Unregistered id";
 			
+			mav = new ModelAndView("/gshop/login_out/loginForm");
+			mav.addObject("message",message);
 			return mav;
 		}
 	}

@@ -16,7 +16,7 @@ function validate(form){
 <h2>notice update detail</h2>
 	<div class="body">
 		<div class="container">
-			<form:form modelAttribute = "notice" action="../write/noticeUpdateFrom.html" method ="post" enctype="multipart/form-data" onSubmit="return validate(this)">
+			<form:form modelAttribute = "notice" action="../notice/noticeUpdateFrom.html" method ="post" enctype="multipart/form-data" onSubmit="return validate(this)">
 				<h2>Bordered Table</h2>
 				<p>The .table-bordered class adds borders to a table:</p>            
 				<table class="table table-bordered">
@@ -60,11 +60,11 @@ function validate(form){
 								<c:otherwise>
 									<td width="60"><h4>image</h4></td>
 									<td>
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${NOTICE_ITEM.image1 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image2 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image3 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image4 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image5 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="../upload/${NOTICE_ITEM.image1 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image2 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image3 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image4 }">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/upload/${NOTICE_ITEM.image5 }">
 										<br>
 										<div align="left">image</div>
 										<div align="right"><input type="file" class="btn btn-info" value="upload" name="image" multiple="multiple"></div>

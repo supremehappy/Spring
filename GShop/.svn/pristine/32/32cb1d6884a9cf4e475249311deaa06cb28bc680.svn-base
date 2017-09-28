@@ -570,8 +570,9 @@ public class WriteController {
 		
 		ServletContext context = session.getServletContext();
 		
-		String folder = "C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		String folder = context.getRealPath("/upload/"); //"C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
 		//context.getRealPath("/image/"); //
+		System.out.println("folder "+folder);
 		File dir = new File(folder);
 		
 		if(!dir.isDirectory()){
@@ -594,7 +595,7 @@ public class WriteController {
 				str.add(fileName);
 				
 				path=context.getRealPath("/image/"+fileName);
-				
+				System.out.println("path "+path);
 				String savePath = folder + fileName;
 				
 				mf.get(i).transferTo(new File(savePath));

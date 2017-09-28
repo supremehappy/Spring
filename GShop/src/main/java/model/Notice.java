@@ -10,11 +10,11 @@ public class Notice {
 		private	int seq;
 		private String admin_id	;
 		private	int header_id;
-		@NotNull(message="제목 입력")
+		@NotEmpty(message="제목 입력")
 		private String post_title;
 		private	int post_pw;
 		private String reg_date;
-		@NotNull(message="내용 입력")
+		@NotEmpty(message="내용 입력")
 		private String post_content;
 		private String image1;
 		private String image2;

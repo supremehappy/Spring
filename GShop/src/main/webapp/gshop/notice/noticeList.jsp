@@ -29,12 +29,12 @@
 							<td>${notice.seq }</td>
 							<c:choose>
 								<c:when test="${notice.reg_date eq DATE }">
-									<td><a href="../read/noticeDetail.html?SEQNO=${notice.seq }">
-										${notice.post_title } <img alt="" src="../image/new.png"> 
+									<td><a href="../notice/noticeDetail.html?SEQNO=${notice.seq }">
+										${notice.post_title } <img alt="" src="../upload/new.png"> 
 									</a></td>	
 								</c:when>
 								<c:otherwise>
-									<td><a href="../read/noticeDetail.html?SEQNO=${notice.seq }">${notice.post_title }</a></td>	
+									<td><a href="../notice/noticeDetail.html?SEQNO=${notice.seq }">${notice.post_title }</a></td>	
 								</c:otherwise>
 							</c:choose>
 							<td>${notice.admin_id }</td>
@@ -46,13 +46,13 @@
 			</table>
 			
 			<c:forEach var="page" begin="1" end="${COUNT }">
-				<a href="../read/noticeList.html?PAGENO=${page }">${page }</a>
+				<a href="../notice/noticeList.html?PAGENO=${page }">${page }</a>
 			</c:forEach>
 			
 			<c:choose>
 				<c:when test="${not empty admin_key }">
 					<div align="right">
-						<a href="../login/loginCheck.html?PAGE=/write/noticeInputForm.html" class="btn btn-info" role="button">write</a>
+						<a href="../login/loginCheck.html?PAGE=/notice/noticeInputForm.html" class="btn btn-info" role="button">write</a>
 					</div>	
 				</c:when>
 				<c:otherwise>

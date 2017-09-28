@@ -17,12 +17,12 @@
 		<tr>
 			<td width="190" valign="top">
 				<a href="../user/userInputForm.html">회원 가입</a><br/>
-				<a href="../gshop/user/userMaPageResult.jsp">MyPage</a><br/>
+				<a href="../gshop/user/userMyPageResult.jsp">MyPage</a><br/>
 				<a href="../community/list.html">커뮤니티</a><br>
 				<a href="../community/input.html">글쓰기</a><br>
 				<a href="../game/list.html">게임</a><br>
 				<a href="../bbs/bbsList.html?GAMEID=1">게임 게시판</a><br>
-				<a href="../read/noticeList.html">공지사항 게시판</a><br>
+				<a href="../notice/noticeList.html">공지사항 게시판</a><br>
 			</td>
 			<td width="650" valign="top">
 				<c:choose>
