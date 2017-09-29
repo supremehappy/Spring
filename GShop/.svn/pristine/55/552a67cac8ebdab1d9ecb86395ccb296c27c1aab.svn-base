@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<environments default="GShop">
+		<environment id="GShop">
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" 
+					value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" 
+					value="jdbc:oracle:thin:@192.168.1.90:1521:orcl"/>
+				<property name="username" value="hr"/>
+				<property name="password" value="1234"/>
+			</dataSource>		
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="mapper/userMapper.xml"/>
+		
+		<mapper resource="mapper/loginMapper.xml"/>
+		<mapper resource="mapper/orderMapper.xml"/>
+		<mapper resource="mapper/communityMapper.xml"/>
+		
+		<mapper resource="mapper/loginAuthorityMapper.xml"/>
+		<mapper resource="mapper/noticeMapper.xml"/>
+		<mapper resource="mapper/chargeMapper.xml"/>
+			
+		<mapper resource="mapper/bbsMapper.xml"/>
+				
+	</mappers>
+</configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

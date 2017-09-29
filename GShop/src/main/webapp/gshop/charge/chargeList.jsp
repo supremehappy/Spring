@@ -16,20 +16,32 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>번호</th>
-					<th>충전 금액</th>
-					<th>일자</th>
+					<th>no</th>
+					<th>charge cash</th>
+					<th>date</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>John</td>
-					<td>Doe</td>
-					<td>john@example.com</td>
-				</tr>
+				<c:forEach var="charge" items="${CHARGE_LIST }">
+					<tr>
+						<td>${charge.charge_id }</td>
+						<td>${charge.total_amount }</td>
+						<td>${charge.charge_date }</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
+		
+		<c:forEach var="page" begin="1" end="${COUNT }">
+				<a href="../charge/chargeList.html?PAGENO=${page }">${page }</a>
+		</c:forEach>
+			
+			<div align="right">
+				<input type="button" value="list" onClick="javascript:history.go(-1)"/>
+			</div>
 		</div>
+		
+		
 	</div>
 </body>
 </html>

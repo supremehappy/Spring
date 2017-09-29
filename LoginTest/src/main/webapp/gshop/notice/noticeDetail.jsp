@@ -34,11 +34,21 @@
 							<c:otherwise>
 								<td width="60"><h4>image</h4></td>
 								<td>
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${NOTICE_ITEM.image1 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image2 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image3 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image4 }">
-									<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image5 }">
+									<c:if test="${!empty NOTICE_ITEM.image1}">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${NOTICE_ITEM.image1 }">
+									</c:if>
+									<c:if test="${!empty NOTICE_ITEM.image2}">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image2 }">
+									</c:if>
+									<c:if test="${!empty NOTICE_ITEM.image3}">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image3 }">
+									</c:if>
+									<c:if test="${!empty NOTICE_ITEM.image4}">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image4 }">
+									</c:if>
+									<c:if test="${!empty NOTICE_ITEM.image5}">
+										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${NOTICE_ITEM.image5 }">
+									</c:if>
 									<%-- <c:forEach var = "image" items="${ }">
 										
 									</c:forEach> --%>

@@ -1,6 +1,136 @@
 package controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import logic.ChargeCatalog;
+import logic.UserCatalog;
+import model.Charge;
+import model.Condition;
+import model.User;
+
+@Controller
 public class ChargeController {
 
+	@Autowired
+	private UserCatalog userCatalog;
+	@Autowired
+	private ChargeCatalog chargeCatalog;
+
+	@ModelAttribute
+	public Charge setUpCharge(){
+		return new Charge();
+	}
 	
+	@RequestMapping(value="/charge/chargeForm.html", method=RequestMethod.GET)
+	public ModelAndView toChargeForm(User user,HttpSession session){
+		System.out.println("toChargeForm");
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String user_key = (String) session.getAttribute("user_key");
+		
+		user.setUser_id(user_key);
+		
+		User user_cash = this.userCatalog.getUserByIdAndPassword(user);
+		
+		mav.setViewName("gshop/charge/chargeForm");
+		mav.addObject("USER_CASH",user_cash);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/charge/chargeForm.html", method=RequestMethod.POST)
+	public ModelAndView toCharge(Charge charge,User user, BindingResult result, HttpSession session){
+		System.out.println("toCharge");
+		
+		ModelAndView mav = new ModelAndView("gshop/charge/chargeForm");
+		
+		String user_key = (String) session.getAttribute("user_key");
+		
+		user.setUser_id(user_key);
+	
+		User user_cash = this.userCatalog.getUserByIdAndPassword(user);
+		
+		Integer cashBalance = user_cash.getCash_balance();
+		Integer cash= charge.getTotal_amount();
+		Integer sum = cashBalance + cash;
+		System.out.println("cashBalance "+cashBalance);
+		System.out.println("sum "+sum);
+		System.out.println("cash "+cash);
+		
+		mav.addObject("USER_CASH",user_cash);
+		
+		user_cash.setCash_balance(sum);
+		
+		this.chargeCatalog.updateUserCashBalance(user_cash);
+		
+		charge.setUser_id(user_key);
+		
+		this.chargeCatalog.insertCharge(charge);
+		
+		mav.addObject("SUM",sum);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/charge/chargeList.html", method=RequestMethod.GET)
+	public ModelAndView toChargeList(Integer PAGENO){
+		System.out.println("toChargeList");
+		
+		ModelAndView mav = new ModelAndView("gshop/charge/chargeList");
+		
+		Integer cnt = this.chargeCatalog.getChargeListCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		Condition c = new Condition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		
+		List<Charge> chargeList = this.chargeCatalog.readChargeList(c);
+		
+		mav.addObject("CHARGE_LIST",chargeList);
+		mav.addObject("/charge/chargeList");
+		
+		return mav;
+	}
 }

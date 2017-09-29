@@ -62,11 +62,21 @@ function validate(form){
 								<c:otherwise>
 									<td width="60"><h4>image</h4></td>
 									<td>
+										<c:if test="${!empty FREE_ITEM.image1}">
 										<img class="img-thumbnail" alt="" width ="200" height="150" src="../image/${FREE_ITEM.image1 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image2 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image3 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image4 }">
-										<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image5 }">
+										</c:if>
+										<c:if test="${!empty FREE_ITEM.image2}">
+											<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image2 }">
+										</c:if>
+										<c:if test="${!empty FREE_ITEM.image3}">
+											<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image3 }">
+										</c:if>
+										<c:if test="${!empty FREE_ITEM.image4}">
+											<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image4 }">
+										</c:if>
+										<c:if test="${!empty FREE_ITEM.image5}">
+											<img class="img-thumbnail" alt="" width ="200" height="150" src="${pageContext.request.contextPath }/image/${FREE_ITEM.image5 }">
+										</c:if>
 										<br>
 										<div align="left">image</div>
 										<div align="right"><input type="file" class="btn btn-info" value="upload" name="image" multiple="multiple"></div>

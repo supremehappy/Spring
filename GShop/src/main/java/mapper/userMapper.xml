@@ -2,9 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
-
+	
+	<update id="deleteUser" parameterType="model.User">
+		update t_user
+		set status = '1'
+		where user_id = ${user_id}
+	</update>
+	
+ 	<select id="selectInterestGenre" parameterType="String" resultType="model.InterestGenre">
+		select g.genre_id, g.genre_name, i.user_id 
+		from t_interest_genre i, t_genre g
+		where i.genre_id=g.genre_id and i.user_id=#{user_id} order by genre_id asc
+	</select>
+	
+<!-- 	<select id="selectInterestGenre" parameterType="String" resultType="model.InterestGenre">
+		select * from t_interest_genre
+		where user_id=#{user_id}
+	</select> -->
+	
+	<select id="selectUser" parameterType="String" resultType="model.User">
+		select * from t_user
+		where user_id=#{user_id}
+	</select>
+	
 	<select id="selectUserMyPage" parameterType="String" resultType="model.User">
-		select user_name, nickname, picture as picture_name
+		select user_name, nickname, picture
 		from t_user
 		where user_id=#{user_id}
 	</select>
@@ -32,8 +54,21 @@
 	<insert id="insertUser" parameterType="model.User">
 		insert into t_user
 		values(#{user_id},#{password},#{user_name},#{nickname},#{email},
-		#{phone},#{address},#{birthday},#{gender},#{picture_name},#{introduce},
+		#{phone},#{address},#{birthday},#{gender},#{picture},#{introduce},
 		#{interest_genres},#{favorite_games},#{bought_games},#{cash_balance},#{status})
-	</insert>		
+	</insert>	
+	
+	<!-- <select id="selectIntGid" parameterType="String" resultType="Integer">
+		select genre_id from t_interest_genre
+		where user_id=#{user_id}
+	</select>
+	<select id="selectGenre" resultType="String">
+		select genre_name from t_genre
+	</select> -->
+	
+	
+	
+	
+	
 	
 </mapper>

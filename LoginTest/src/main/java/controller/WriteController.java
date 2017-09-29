@@ -100,7 +100,7 @@ public class WriteController {
 				str.add(fileName);
 				
 				path=context.getRealPath("/image/"+fileName);
-				
+				System.out.println("path "+path);
 				String savePath = folder + fileName;
 				
 				mf.get(i).transferTo(new File(savePath));

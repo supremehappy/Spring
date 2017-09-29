@@ -1,0 +1,78 @@
+package model;
+
+public class BbsReply {
+	
+	private int		seq;		// 원글 번호
+	private int		re_seq;		// 댓글 번호
+	private int		re_group;	// 댓글 그룹 번호
+	private int		re_parent;	// 댓글 부모 번호
+	private int		re_view;	// 댓글 표시 순서
+	private String	user_id;	// 댓글 작성자
+	private String	re_reg;		// 댓글 작성일
+	private String	re_comment;	// 댓글 내용
+	private String	picture;	// 댓글 작성자 이미지
+	private String	nickname;	// 댓글 작성자 닉네임
+	
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+	public int getRe_seq() {
+		return re_seq;
+	}
+	public void setRe_seq(int re_seq) {
+		this.re_seq = re_seq;
+	}
+	public int getRe_group() {
+		return re_group;
+	}
+	public void setRe_group(int re_group) {
+		this.re_group = re_group;
+	}
+	public int getRe_parent() {
+		return re_parent;
+	}
+	public void setRe_parent(int re_parent) {
+		this.re_parent = re_parent;
+	}
+	public int getRe_view() {
+		return re_view;
+	}
+	public void setRe_view(int re_view) {
+		this.re_view = re_view;
+	}
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public String getRe_reg() {
+		return re_reg;
+	}
+	public void setRe_reg(String re_reg) {
+		this.re_reg = re_reg;
+	}
+	public String getRe_comment() {
+		return re_comment;
+	}
+	public void setRe_comment(String re_comment) {
+		this.re_comment = re_comment;
+	}
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
+	
+}

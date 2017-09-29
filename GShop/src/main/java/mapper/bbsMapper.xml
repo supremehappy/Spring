@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bbsMapper">
+	<!-- 댓글 -->
+	<!-- 가장 큰 댓글번호 가져오기 -->
+	<select id="getMaxReSeq" resultType="Integer" parameterType="map">
+		SELECT MAX(re_seq) m_seq FROM ${replyTableName}
+	</select>
 	
+	<!-- 댓글 갯수 조회 -->
+	<select id="getReplyCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*) FROM ${replyTableName}
+		WHERE seq=${seq};
+	</select>
+	<!-- 댓글 목록 -->
+	<select id="getReplyList" parameterType="map" resultType="model.BbsReply">
+		SELECT seq, re_seq, re_group, re_parent, re_view, user_id, re_reg, re_comment, picture, nickname FROM
+		(
+		    SELECT a.*, ROWNUM rn FROM
+		    (
+		        (
+		            SELECT r.seq, r.re_seq, r.re_group, r.re_parent, r.re_view, r.user_id, r.re_reg, r.re_comment, u.picture, u.nickname
+		            FROM ${replyTableName} r, ${tableName} b, t_user u
+		            WHERE r.seq = b.seq AND r.user_id = u.user_id AND b.seq = ${seq}
+		            ORDER BY r.re_group ASC, r.re_view ASC
+		        ) a
+		    )
+		)
+	</select>
+	
+	
+	<!-- 게임 게시판 -->
 	<!-- 답글 작성 시 order_no 변경 -->
 	<update id="updateViewOrder" parameterType="map">
 		UPDATE ${tableName} SET view_order = view_order + 1
 		WHERE group_id = ${group_id} AND view_order >= ${view_order}
-		
 	</update>
 	
 	<!-- 답글 처리를 위해 최대 답글 번호를 찾기 -->
@@ -90,19 +117,20 @@
 	
 	<!-- 게시글 리스트 조회 -->
 	<select id="getBbsList" parameterType="map" resultType="model.Bbs">
-		select seq, header_name, header_id, post_title, picture, user_id, nickname, post_content, reg_date, view_count from
+		select seq, header_name, header_id, post_title, picture, user_id, nickname, post_content, reg_date, view_count, reply_count from
 		(
 		    select a.*, rownum rn from
 		    (
 		        (SELECT
-		        g.seq, g.header_id, g.view_order, h.header_name, g.post_title, u.picture, g.user_id, u.nickname,
-		        g.post_content, g.reg_date, g.view_count
-		        FROM ${tableName} g, t_user u, t_header h
-		        WHERE g.user_id = u.user_id AND g.header_id = h.header_id
-		        ORDER BY g.group_id DESC, g.view_order asc) a
+		        b.seq, b.header_id, b.view_order, h.header_name, b.post_title, u.picture, b.user_id, u.nickname,
+		        b.post_content, b.reg_date, b.view_count, (SELECT COUNT(*) FROM t_reply_1 r WHERE r.seq=b.seq) AS reply_count
+		        FROM ${tableName} b, t_user u, t_header h
+		        WHERE b.user_id = u.user_id AND b.header_id = h.header_id
+		        ORDER BY b.group_id DESC, b.view_order asc) a
 		    )
 		) where rn between ${startRow} and ${endRow}<!-- 2. startRow부터 endRow까지 -->
 	</select>
+	
 	<!-- 게시글 등록 -->
 	<insert id="putBbs" parameterType="model.BbsCondition">
 		INSERT INTO t_bbs_#{gameId}
@@ -114,14 +142,7 @@
 			#{seq}, #{name}, #{price}, #{p_date}, #{content}, #{id} 	
 		)
 	</insert>
-	<!-- 게임 게시판 본문 등록 -->
-	<!-- <insert id="inputBbs" parameterType="map">
-		INSERT INTO ${bbs.tableName} VALUES(
-			${bbs.seq}, ${bbs.group_id}, ${bbs.parent_id}, ${bbs.view_order}, '${bbs.user_id}', ${bbs.header_id}, '${bbs.post_title}',
-			${bbs.post_pw}, '${bbs.reg_date}', '${bbs.post_content}',
-			'${bbs.image1}', '${bbs.image2}', '${bbs.image3}', '${bbs.image4}', '${bbs.image5}',${bbs.view_count}
-		)
-	</insert> -->
+	
 	<!-- 게임 게시판 본문 등록 -->
 	<insert id="insertBbs" parameterType="map">
 		INSERT INTO ${tableName}

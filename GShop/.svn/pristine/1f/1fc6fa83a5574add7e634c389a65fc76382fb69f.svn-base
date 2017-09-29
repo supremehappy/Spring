@@ -1,0 +1,56 @@
+package dao;
+
+import java.util.Calendar;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import model.User;
+import model.Charge;
+import model.Condition;
+
+@Repository
+public class ChargeDaoImpl implements ChargeDao{
+	
+	@Autowired
+	private SqlSession session;
+
+	public void insertCharge(Charge charge) {
+		charge.setCharge_id(getMaxChargeId()+1);
+		
+		Calendar today = Calendar.getInstance();
+		int year = today.get(Calendar.YEAR);
+		int month=today.get(Calendar.MONTH)+1;
+		int date = today.get(Calendar.DATE);
+		String chargeDate = year+""+month+""+date;
+		
+		charge.setCharge_date(chargeDate);
+		
+		this.session.insert("chargeMapper.insertCharge",charge);
+	}
+
+	public Integer getMaxChargeId() {
+		
+		return this.session.selectOne("chargeMapper.getMaxChargeId");
+	}
+
+	public void updateUserCashBalance(User user) {
+		
+		this.session.update("chargeMapper.updateUserCashBalance",user);
+		
+	}
+
+	public List<Charge> readChargeList(Condition con) {
+		
+		return session.selectList("chargeMapper.getChargeList",con);
+	}
+
+	public Integer getChargeListCount() {
+		
+		return session.selectOne("chargeMapper.getChargeListCount");
+	}
+	
+	
+}
