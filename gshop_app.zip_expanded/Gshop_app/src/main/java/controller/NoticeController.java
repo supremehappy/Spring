@@ -1,0 +1,464 @@
+package controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+
+import logic.HeaderCatalog;
+import logic.NoticeCatalog;
+import model.Condition;
+import model.Header;
+import model.Notice;
+
+@Controller
+public class NoticeController {
+
+	@Autowired
+	private NoticeCatalog noticeCatalog;
+	@Autowired
+	private HeaderCatalog headerCatalog;
+	
+	//------------------------------------------- read
+	@RequestMapping(value="/notice/noticeDetail.html", method=RequestMethod.GET)
+	public ModelAndView readNoticeDetail(Integer SEQNO){
+		System.out.println("readnoticeDetail");
+		Notice notice = this.noticeCatalog.readNoticeDetail(SEQNO);
+		
+		System.out.println("view_count 1 "+notice.getView_count());
+		
+		Notice notice1 = new Notice();
+		
+		if(notice.getView_count()>=0){
+			int count=notice.getView_count()+1;
+			notice1.setView_count(count);
+		}
+		
+		notice1.setSeq(SEQNO);
+		
+		this.noticeCatalog.updateNoticeBBSViewCount(notice1);
+		
+		System.out.println("view_count 2 "+notice.getView_count());
+		
+		ModelAndView mav = new ModelAndView("gshop/notice/noticeDetail");
+		
+		mav.addObject("NOTICE_ITEM",notice);
+		mav.addObject("/notice/noticeDetail");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/notice/noticeList.html", method=RequestMethod.GET)
+	public ModelAndView readNoticeList(Integer PAGENO){
+		System.out.println("readNoticeList");
+		ModelAndView mav = new ModelAndView("gshop/notice/noticeList");
+		//------------ 페이지 번호 처리
+		Integer cnt = this.noticeCatalog.getNoticeBbsCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		Condition c = new Condition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Notice> noticeList = this.noticeCatalog.readNoticeAll(c);
+		mav.addObject("NOTICE_LIST",noticeList);
+		mav.addObject("/notice/noticeList");
+
+		Calendar today = Calendar.getInstance();
+		
+		int year = today.get(Calendar.YEAR);
+		int month = today.get(Calendar.MONTH)+1;
+		int date = today.get(Calendar.DATE);
+		
+		String to = year+""+month+""+date;  
+		
+		mav.addObject("DATE",to);
+		System.out.println(to);
+		
+		return mav;
+	}
+	
+	//------------------------------------------- write
+	
+	@ModelAttribute
+	public Notice setUpnoticeBBS(){
+		return new Notice();
+	}
+
+	//notice BBS input
+	@RequestMapping(value="/notice/noticeInputForm.html", method=RequestMethod.POST)
+	public ModelAndView noticeWirte(@Valid Notice notice, BindingResult result, HttpSession session, MultipartHttpServletRequest multi) throws IllegalStateException, IOException{
+		
+		if(result.getErrorCount()>0){
+			ModelAndView mav = new ModelAndView("/gshop/notice/noticeInputForm");
+			HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+			List<Header> header = new ArrayList<Header>();
+			
+			header = this.headerCatalog.findHeaderAll();
+			
+			for(Header h : header){
+				headerList.put(h.getHeader_id(), h.getHeader_name());
+			}
+			
+			mav.addObject("HEADER_LIST",headerList);
+			mav.getModel().putAll(result.getModel());
+			return mav;
+		}
+		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		ServletContext context = session.getServletContext();
+		
+		List<MultipartFile> mf = multi.getFiles("image");
+		List<String> str = new ArrayList<String>();
+		str.clear();
+		
+		String fileName = null; 
+		String path = null;
+		OutputStream out = null;
+		String folder = context.getRealPath("/upload/"); //"C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		
+		System.out.println("noticeWirte folder "+ folder);
+		
+		File dir = new File(folder);
+		
+		if(!dir.isDirectory()){
+			
+			dir.mkdirs();
+		}
+		
+		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")){
+			String strNull = "";
+			notice.setImage1(strNull);
+			notice.setImage2(strNull);
+			notice.setImage3(strNull);
+			notice.setImage4(strNull);
+			notice.setImage5(strNull);
+		}else{
+			for(int i = 0; i<mf.size();i++){
+				fileName=mf.get(i).getOriginalFilename();
+				
+				str.add(fileName);
+				System.out.println("str.get(i) "+str.get(i));
+				path=context.getRealPath("/upload/"+fileName);
+				System.out.println("noticeWirte path "+path);
+				String savePath = path;//folder + fileName;
+				System.out.println("noticeWirte savePath "+savePath);
+				mf.get(i).transferTo(new File(savePath));
+				
+			}
+			System.out.println("str.size() "+str.size());
+			System.out.println("str.get(0) "+str.get(0));
+			
+			switch(str.size()){
+			case 1:
+				notice.setImage1(str.get(0));
+				notice.setImage2("");
+				notice.setImage3("");
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 2:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3("");
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 3:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 4:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4(str.get(3));
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 5:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4(str.get(3));
+				notice.setImage5(str.get(4));
+				str.clear();
+				break;
+			}
+		}
+		
+		System.out.println("notice str.size() "+str.size());
+		
+		String user_key = (String) session.getAttribute("user_key");
+		String admin_key = (String) session.getAttribute("admin_key");
+		
+		if((user_key!=null)){
+			notice.setAdmin_id(user_key);
+		}else if(admin_key!=null){
+			notice.setAdmin_id(admin_key);
+		}
+		
+		notice.setView_count(0);
+		System.out.println("notice input header_id "+notice.getHeader_id());
+		this.noticeCatalog.entryNoticeWriting(notice);
+		
+		ModelAndView mav = new ModelAndView("redirect:/notice/noticeList.html");
+		System.out.println("mav "+mav.toString());
+		mav.addObject("HEADER_LIST",headerList);
+		return mav;
+	}
+	
+	@RequestMapping(value="/notice/noticeInputForm.html", method=RequestMethod.GET)
+	public ModelAndView noticeWrite(){
+		System.out.println("WriteController noticeWrite");
+		ModelAndView mav = new ModelAndView("/gshop/notice/noticeInputForm");
+		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("HEADER_LIST",headerList);
+		return mav;
+	}
+	
+	//notice BBS modify
+	@RequestMapping(value="/notice/noticeUpdate.html", method=RequestMethod.GET)
+	public ModelAndView viewNoticeBBSupdateForm(Integer SEQNO){
+		
+		System.out.println("viewNoticeBBSupdateForm");
+		System.out.println("SEQNO "+SEQNO);
+		ModelAndView mav = new ModelAndView("/gshop/notice/noticeUpdateFrom");
+		
+		Notice notice = new Notice();
+		
+		notice = this.noticeCatalog.getNoticeBBSSeq(SEQNO);
+		
+		mav.addObject("NOTICE_ITEM",notice);
+		
+		HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+		List<Header> header = new ArrayList<Header>();
+		
+		header = this.headerCatalog.findHeaderAll();
+		
+		for(Header h : header){
+			headerList.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("HEADER_LIST",headerList);
+		
+		HashMap<Integer, String> selectedHeaderOne = new HashMap<Integer, String>();
+		List<Header> selectedHeader = new ArrayList<Header>();
+		
+		selectedHeader = this.headerCatalog.findNoticeBBSHeaderOne(SEQNO);
+		
+		for(Header h : selectedHeader){
+			System.out.println("h.getHeader_id() "+h.getHeader_id());
+			System.out.println("h.getHeader_name() "+h.getHeader_name());
+			
+			selectedHeaderOne.put(h.getHeader_id(), h.getHeader_name());
+		}
+		
+		mav.addObject("SELECTED_HEADER",selectedHeaderOne);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/notice/noticeUpdateFrom.html", method=RequestMethod.POST)
+	public ModelAndView updateNoticeBBS(@Valid Notice notice, BindingResult result, HttpSession session, Integer SEQNO, MultipartHttpServletRequest multi) throws IllegalStateException, IOException{
+		
+		System.out.println("updateNoticeBBS");
+		
+		if(result.getErrorCount()>0){
+			ModelAndView mav = new ModelAndView("/gshop/notice/noticeUpdateFrom");
+			HashMap<Integer, String> headerList = new HashMap<Integer, String>();
+			List<Header> header = new ArrayList<Header>();
+			
+			header = this.headerCatalog.findHeaderAll();
+			
+			for(Header h : header){
+				headerList.put(h.getHeader_id(), h.getHeader_name());
+			}
+			
+			mav.addObject("HEADER_LIST",headerList);
+			mav.getModel().putAll(result.getModel());
+			return mav;
+		}
+		
+		List<MultipartFile> mf = multi.getFiles("image");
+		List<String> str = new ArrayList<String>();
+		str.clear();
+		
+		String fileName = null; 
+		String path = null;
+		OutputStream out = null;
+		
+		ServletContext context = session.getServletContext();
+		
+		String folder = context.getRealPath("/upload/"); //"C:/Users/wtime/Documents/GitHub/Spring/LoginTest/src/main/webapp/image/";
+		//context.getRealPath("/image/"); //
+		System.out.println("folder "+folder);
+		File dir = new File(folder);
+		
+		if(!dir.isDirectory()){
+			
+			dir.mkdirs();
+		}
+		
+		
+		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")){
+			String strNull = "";
+			notice.setImage1(strNull);
+			notice.setImage2(strNull);
+			notice.setImage3(strNull);
+			notice.setImage4(strNull);
+			notice.setImage5(strNull);
+		}else{
+			for(int i = 0; i<mf.size();i++){
+				fileName=mf.get(i).getOriginalFilename();
+				
+				str.add(fileName);
+				
+				path=context.getRealPath("/upload/"+fileName);
+				System.out.println("path "+path);
+				String savePath = path;//folder + fileName;
+				
+				mf.get(i).transferTo(new File(savePath));
+				
+			}
+			switch(str.size()){
+			case 1:
+				notice.setImage1(str.get(0));
+				notice.setImage2("");
+				notice.setImage3("");
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 2:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3("");
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 3:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4("");
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 4:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4(str.get(3));
+				notice.setImage5("");
+				str.clear();
+				break;
+			case 5:
+				notice.setImage1(str.get(0));
+				notice.setImage2(str.get(1));
+				notice.setImage3(str.get(2));
+				notice.setImage4(str.get(3));
+				notice.setImage5(str.get(4));
+				str.clear();
+				break;
+			}
+		}
+		
+		notice.setSeq(SEQNO);
+		
+		this.noticeCatalog.updateNoticeBBS(notice);
+		ModelAndView mav = new ModelAndView("redirect:/notice/noticeList.html");
+		return mav;
+	}
+	
+	//notice BBS delete
+	@RequestMapping(value="/notice/noticeDelete.html", method=RequestMethod.GET)
+	public ModelAndView noticeDelete(Integer SEQNO){
+		
+		System.out.println("noticeDelete");
+		System.out.println("noticeDelete SEQNO "+SEQNO);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		this.noticeCatalog.deleteNoticeBBS(SEQNO);
+		
+		mav.setViewName("redirect:/notice/noticeList.html");
+		
+		return mav;
+	}
+}

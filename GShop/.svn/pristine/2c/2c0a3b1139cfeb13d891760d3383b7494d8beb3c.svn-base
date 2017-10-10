@@ -1,0 +1,28 @@
+package model;
+
+public class ChargeCondition {
+	private Integer startRow;
+	private Integer endRow;
+	private String user_id;
+	
+	public Integer getStartRow() {
+		return startRow;
+	}
+	public void setStartRow(Integer startRow) {
+		this.startRow = startRow;
+	}
+	public Integer getEndRow() {
+		return endRow;
+	}
+	public void setEndRow(Integer endRow) {
+		this.endRow = endRow;
+	}
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	
+	
+}
