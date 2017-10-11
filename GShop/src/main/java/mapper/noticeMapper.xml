@@ -15,13 +15,17 @@
 		
 		<select id="getNoticeBBSList" parameterType="model.Condition" 
 			resultType="model.Notice">
-			select seq, post_title, admin_id, post_content, reg_date, view_count
+			select *
 			from 
 			(
 				select a.*, rownum rn from
 				(
-					(select * from t_bbs_notice
-					order by seq desc) a
+					(
+			            select n.seq, n.header_id, n.post_title, n.admin_id, n.post_content, n.reg_date, n.view_count, h.header_name
+			            from t_bbs_notice n join t_header h
+			            on n.header_id = h.HEADER_ID
+			            order by n.seq desc
+					) a
 				)
 			) where rn between #{startRow} and #{endRow}
 		</select>
@@ -75,6 +79,7 @@
 		from t_bbs_notice b join t_header h
 		on b.header_id = h.header_id and b.seq=#{seq}
 	</select>
+	
 	<!--  -->
 	
 </mapper>

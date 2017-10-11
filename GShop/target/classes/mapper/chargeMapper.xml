@@ -14,21 +14,16 @@
 		update t_user set cash_balance = #{cash_balance} where user_id = #{user_id}
 	</update>
 	
-	<select id="getChargeList" parameterType="model.ChargeCondition" 
+	<select id="getChargeList" parameterType="model.Condition" 
 		resultType="model.Charge">
-		
-		select *
-		from(       
-		    select a.*, rownum rn from
-		    (
-		        (
-		            select c.charge_id, u.user_id, c.TOTAL_AMOUNT, u.CASH_BALANCE, c.CHARGE_DATE
-		            from t_user u join t_charge c
-		            on u.USER_ID = c.user_id
-		            where u.user_id=#{user_id}
-		            order by charge_id desc
-		        )a
-		    )
+		select charge_id, user_id, total_amount, charge_date
+		from 
+		(
+			select a.*, rownum rn from
+			(
+				(select * from t_charge
+				order by charge_id desc) a
+			)
 		) where rn between #{startRow} and #{endRow}
 	</select>
 	

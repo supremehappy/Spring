@@ -8,6 +8,10 @@
 </head>
 <script type="text/javascript">
 function validate(form){
+	if(form.post_pw.value == ""){
+		alert("암호를 입력하세요."); return false;
+	}
+	
 	var result = confirm("정말로 변경하시겠습니까?");
 	if(result == false) return false;
 }
@@ -16,7 +20,7 @@ function validate(form){
 <h2>notice update detail</h2>
 	<div class="body">
 		<div class="container">
-			<form:form modelAttribute = "notice" action="../notice/noticeUpdateFrom.html" method ="post" enctype="multipart/form-data" onSubmit="return validate(this)">
+			<form:form modelAttribute = "notice" action="../notice/noticeUpdateForm.html" method ="post" enctype="multipart/form-data" onSubmit="return validate(this)" commandName="notice">
 				<h2>Bordered Table</h2>
 				<p>The .table-bordered class adds borders to a table:</p>            
 				<table class="table table-bordered">
@@ -37,17 +41,23 @@ function validate(form){
 						</tr>
 						<tr>
 							<td width="60"><h4>wirter</h4></td>
-							<td><form:input type="text" class="form-control" id="id" path ="admin_id" value="${NOTICE_ITEM.admin_id }" /></td>
+							<td><form:input type="text" class="form-control" id="id" path ="admin_id" value="${NOTICE_ITEM.admin_id }"  disabled="true"/></td>
 						</tr>
 						<tr>
 							<td width="60"><h4>title</h4></td>
 							<td><form:input type="text" class="form-control" id="usr" path="post_title" name="post_title" value="${NOTICE_ITEM.post_title }"/>
 							<font color="red"><form:errors path="post_title"></form:errors></font></td>
-							
+						</tr>
+						<tr>
+							<td width="60"><h4>pw</h4></td>
+							<td>
+								<form:password class="form-control" path="post_pw" name="post_pw"/>
+								<font color="red"><form:errors path="post_pw"/></font>
+							</td>
 						</tr>
 						<tr>
 							<td width="60"><h4>content</h4></td>
-							<td><form:textarea class="form-control" rows="20" id="comment" path="post_content" name="post_content" value="${NOTICE_ITEM.post_content }"/>
+							<td><form:textarea class="form-control" rows="20" id="comment" path="post_content" name="post_content" value="${NOTICE_ITEM.post_content}"/>
 							<font color="red"><form:errors path="post_content"></form:errors></font></td>
 							
 						</tr>
