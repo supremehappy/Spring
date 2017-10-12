@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bbsMapper">
 	<!-- 댓글 -->
+	<!-- 댓글 수정 -->
+	<update id="updateBbsReply" parameterType="map">
+		UPDATE ${replyTableName}
+		SET re_comment=${re_comment}
+		WHERE seq=${seq} AND re_seq=${re_seq}
+	</update>
+	
+	<!-- 답글 작성 시 order_no 변경 -->
+<!-- 	<update id="updateReView" parameterType="map"> -->
+<!-- 		UPDATE ${replyTableName} SET re_view = re_view + 1 -->
+<!-- 		WHERE re_group = ${re_group} AND re_view >= ${re_view} -->
+<!-- 	</update> -->
+	<update id="updateReView" parameterType="map">
+<!-- 		update ${replyTableName} set re_view = re_view + (select count(*) from ${replyTableName} a, ${replyTableName} b -->
+<!-- 		where a.re_seq = b.re_parent and a.seq=${seq} and b.seq=${seq} and a.re_seq=${re_seq}) -->
+<!-- 		where re_group = ${re_group} and re_view >= ${re_view}  -->
+	</update>
+	
+	<!-- 대댓글 처리를 위해 최대 댓글 번호를 찾기 -->
+	<select id="selectMaxReGroup" resultType="Integer">
+		SELECT MAX(re_group) as num FROM ${replyTableName}
+		WHERE seq=${seq}
+	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteBbsReply" parameterType="map">
+		DELETE FROM ${replyTableName}
+		WHERE seq=${seq} AND re_seq=${re_seq} 
+	</delete>
 	
 	<!-- 댓글 삽입 -->
 	<insert id="insertReply" parameterType="map">
@@ -12,16 +41,18 @@
 			${re_seq},
 			${re_group},
 			${re_parent},
-			${re_view},
+			${re_view}+(select count(*) from ${replyTableName} where seq = ${seq} and re_group = ${re_group} and re_parent = ${re_parent}),
 			'${user_id}',
 			'${re_reg}',
-			'${re_comment}'
+			'${re_comment}',
+			${re_depth}
 		)
 	</insert>
 	
 	<!-- 가장 큰 댓글번호 가져오기 -->
 	<select id="getMaxReSeq" resultType="Integer" parameterType="map">
 		SELECT MAX(re_seq) m_seq FROM ${replyTableName}
+		WHERE seq=${seq}
 	</select>
 	
 	<!-- 댓글 갯수 조회 -->
@@ -31,12 +62,12 @@
 	</select>
 	<!-- 댓글 목록 -->
 	<select id="getReplyList" parameterType="map" resultType="model.BbsReply">
-		SELECT seq, re_seq, re_group, re_parent, re_view, user_id, re_reg, re_comment, picture, nickname FROM
+		SELECT seq, re_seq, re_group, re_parent, re_view, re_depth, user_id, re_reg, re_comment, picture, nickname FROM
 		(
 		    SELECT a.*, ROWNUM rn FROM
 		    (
 		        (
-		            SELECT r.seq, r.re_seq, r.re_group, r.re_parent, r.re_view, r.user_id, r.re_reg, r.re_comment, u.picture, u.nickname
+		            SELECT r.seq, r.re_seq, r.re_group, r.re_parent, r.re_view, r.re_depth, r.user_id, r.re_reg, r.re_comment, u.picture, u.nickname
 		            FROM ${replyTableName} r, ${tableName} b, t_user u
 		            WHERE r.seq = b.seq AND r.user_id = u.user_id AND b.seq = ${seq}
 		            ORDER BY r.re_group ASC, r.re_view ASC
