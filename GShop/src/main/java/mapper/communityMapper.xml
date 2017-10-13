@@ -22,18 +22,18 @@
 	</select>
 	
 	<select id="getBbs" parameterType="model.Paging" resultType="model.BbsGenre">
-		select seq, header_name, post_title, nickname, reg_date, image1, image2, image3, image4, image5, post_content, view_count
+		select seq, header_name, post_title, header_name, nickname, reg_date, image1, image2, image3, image4, image5, post_content, view_count
 		from (
 			select a.*, rownum rn 
 			from ( 
-			select * from v_bbs_genre order by seq desc 
+			select * from v_bbs_genre order by group_id desc, view_order asc 
 			) a
 		)
 		where rn between #{startRow} and #{endRow}
 	</select>
 	
 	<select id="getBbsDetail" parameterType="Integer" resultType="model.BbsGenre">
-		select seq, header_id, header_name, post_title, post_pw, post_content, nickname, reg_date, image1, image2, image3, image4, image5, view_count
+		select seq, group_id, parent_id, view_order, header_id, header_name, post_title, post_pw, post_content, nickname, reg_date, image1, image2, image3, image4, image5, view_count
 		from v_bbs_genre
 		where seq = #{seq}
 	</select>
@@ -67,6 +67,41 @@
 		where seq = #{seq}
 	</delete>
 	
+	<update id="updateViewOrder" parameterType="model.BbsGenre">
+		update t_bbs_genre 
+		set view_order = view_order + 1
+		where group_id = #{group_id} 
+		and view_order >= #{view_order}		
+	</update>
+
+	<insert id="putReply" parameterType="model.ReplyGenre">
+		insert into t_reply_genre values (
+		#{seq}, #{re_seq}, #{re_group}, #{re_parent}, #{re_view}, 
+		#{user_id}, #{re_reg}, #{re_comment}
+		)
+	</insert>
+	
+	<select id="getMaxReplySeq" resultType="Integer">
+		select max(re_seq) as max 
+		from t_reply_genre
+	</select>
+
+	<update id="updateReView" parameterType="model.ReplyGenre">
+		update t_reply_genre 
+		set re_view = re_view + 1
+		where re_group = #{re_group} 
+		and re_view >= #{re_view}
+	</update>
+
+	<select id="getReply" parameterType="Integer" resultType="model.ReplyGenre">
+		select seq, re_seq, re_group, re_parent, re_view, user_id, nickname, re_reg, re_comment
+		from v_reply_genre 
+		where seq = #{SEQ}
+		order by re_group asc, re_view asc 
+	</select>
+
+
+
 </mapper>
 
 

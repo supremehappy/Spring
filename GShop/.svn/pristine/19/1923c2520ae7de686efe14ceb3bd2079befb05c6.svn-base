@@ -1,0 +1,49 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/gshop/header.jsp" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">	
+	<title>GShop Home</title>
+</head>
+
+<body>
+	<table border="1">
+		<tr>
+			<td width="190" valign="top">
+				<a href="../user/userInputForm.html">회원 가입</a><br/>
+
+				<c:choose>
+					<c:when test="${not empty user_key }">
+						<a href="../userMyPage/userMyPage.html">MyPage</a><br/>	
+					</c:when>
+					<c:when test="${not empty admin_key }">
+						<a href="../admin/adminPage.html">AdminPage</a><br/>
+					</c:when>
+					<c:otherwise>
+					
+					</c:otherwise>
+				</c:choose>				
+				<a href="../community/list.html">커뮤니티</a><br>
+				<a href="../login/loginCheck.html?PAGE=/community/inputForm.html">커뮤니티 글쓰기</a><br>
+				<a href="../game/gameList.html">게임</a><br>
+				<a href="../bbs/bbsList.html?GAMEID=1">게임 게시판</a><br>
+				<a href="../notice/noticeList.html">공지사항 게시판</a><br>				
+				<a href="../userMyPage/selectUser_id.html">ID 찾기</a><br/>
+				<a href="../userMyPage/selectPassword.html">비밀번호 찾기</a><br/>
+			</td>
+			<td width="650" valign="top">
+				<c:choose>
+					<c:when test="${ BODY != null }">
+						<jsp:include page="${ BODY }"/>
+					</c:when>
+					<c:otherwise>
+						<jsp:include page="main.jsp"/>
+					</c:otherwise>
+				</c:choose>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">	
+	<title>게시판 글쓰기</title>
+</head>
+
+<body>
+<script type="text/javascript">
+function validate(form){
+	var result = confirm("정말로 등록하시겠습니까?");
+ 	if(result == false) {
+ 		return false;
+ 	}
+}
+</script>
+<form:form modelAttribute="bbsGenre" action="../community/insert.html" method="post" enctype="multipart/form-data" onSubmit="return validate(this)">
+	<c:if test="${ ! empty BBS_DETAIL.group_id }">
+		<form:hidden path="group_id" value="${ BBS_DETAIL.group_id }"/>
+	</c:if>
+	<c:if test="${ ! empty BBS_DETAIL.parent_id }">
+		<form:hidden path="parent_id" value="${ BBS_DETAIL.parent_id }"/>
+	</c:if>
+	<form:hidden path="view_order" value="${ BBS_DETAIL.view_order }"/>
+	<table border="1" width="100%">
+		<tr>
+			<td>글번호</td>
+			<td>${ BBS_DETAIL.seq }</td>
+		</tr>
+		<tr>
+			<td>그룹번호</td>
+			<td>${ BBS_DETAIL.group_id }</td>
+		</tr>
+		<tr>
+			<td>부모번호</td>
+			<td>${ BBS_DETAIL.parent_id }</td>
+		</tr>
+		<tr>
+			<td>표시순서</td>
+			<td>${ BBS_DETAIL.view_order }</td>
+		</tr>
+		<tr>
+			<td>글제목</td>
+			<td><form:input path="post_title" size="40"  value="${ BBS_DETAIL.post_title }"/>
+				<font color="red"><form:errors path="post_title"/></font>
+			</td>
+		</tr>	
+		<tr>
+			<td>비밀번호</td>
+			<td><form:password path="post_pw" size="20"/>
+				<font color="red"><form:errors path="post_pw"/></font>
+			</td>
+		</tr>
+		<tr>
+			<td>닉네임</td>
+			<td><form:input path="nickname" value="${ BBS_DETAIL.nickname }" readOnly="true"/>
+			</td>
+		</tr>
+		<tr>
+			<td>이미지1</td>
+			<td><input type="file" name="image" size="40"/></td>
+		</tr>
+		<tr>
+			<td>이미지2</td>
+			<td><input type="file" name="image" size="40"/></td>
+		</tr>	
+		<tr>
+			<td>이미지3</td>
+			<td><input type="file" name="image" size="40"/></td>
+		</tr>	
+		<tr>
+			<td>이미지4</td>
+			<td><input type="file" name="image" size="40"/></td>
+		</tr>	
+		<tr>
+			<td>이미지5</td>
+			<td><input type="file" name="image" size="40"/></td>
+		</tr>		
+		<tr>
+			<td>글내용</td>
+			<td><form:textarea cols="40" rows="8" path="post_content"/>
+				<font color="red"><form:errors path="post_content"/></font>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="등 록"/></td>
+		</tr>	
+	</table>
+</form:form>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMapper">
+
+	<!-- adminDaoImpl -->
+		<!-- chargeManagement -->
+		<select id="findChargeListAll" resultType="model.Charge" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_charge
+					order by charge_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findChargeListForId" resultType="model.Charge" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from t_charge 
+	                where user_id=#{user_id}
+					order by charge_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findChargeListForAmount" resultType="model.Charge" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from t_charge 
+	                where total_amount=#{total_amount}
+					order by charge_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<select id="getChargeCount" resultType="Integer">
+			select count(*) as num from t_charge
+		</select>
+		
+		<!-- gameManagement -->
+		<select id="findGameListAll" resultType="model.Game" parameterType="model.AdminCondition">
+		 	select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_game
+					order by game_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findGameListForName" resultType="model.Game" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from t_game 
+	                where game_name=#{game_name}
+					order by game_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findGameListForCategory" resultType="model.Game" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select g.game_id, ge.GENRE_NAME, g.GAME_NAME, g.DISCOUNT_RATE 
+                    from t_game g join t_game_genres gg
+                    on g.GAME_ID = gg.GAME_ID
+                    join t_genre ge
+                    on gg.genre_id = ge.genre_id
+                    where ge.GENRE_NAME=#{genre_name}
+					order by game_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findGameListForDiscountRate" resultType="model.Game" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from t_game 
+	                where discount_rate=#{discount_rate}
+					order by game_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<select id="getGameCount" resultType="Integer">
+			select count(*) as num from t_game
+		</select>
+		<!--<select id="getGameDetail" resultType="model.Game" parameterType="Integer">
+			select * from t_game where game_id = #{game_id}
+		</select> -->
+		
+		<!-- memberManagement -->
+		<select id="findMemberListAll" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findMemberForId" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					where user_id =#{user_id}
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findMemberForNickName" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					where nickname = #{nickname}
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findMemberForEmail" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					where email = #{email}
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<select id="getMemberCount" resultType="Integer">
+			select count(*) as num from t_user
+		</select>
+		
+		<!-- purchaseManagement -->
+		<select id="findPurchaseListAll" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_order
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findPurchaseForId" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_order
+					where user_id=#{user_id}
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findPurchaseForGameName" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select o.order_id, o.user_id, g.game_name, o.TOTAL_AMOUNT, o.ORDER_DATE
+                    from t_order o join t_game g
+                    on o.game_id = g.game_id
+                    where g.game_name=#{game_name}
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		<select id="findPurchaseForAmount" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_order
+					where total_amount=#{total_amount}
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<select id="getPurchaseCount" resultType="Integer">
+			select count(*) as num from t_order
+		</select>
+		
+</mapper>

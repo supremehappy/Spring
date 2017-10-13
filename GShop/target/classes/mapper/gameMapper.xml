@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gameMapper">
+	
+	<!-- 게임 등록 -->
+	<!-- t_bbs -->
+	<update id="createBbsTable" parameterType="map">
+		CREATE TABLE t_bbs_${gameId}
+		(
+		    seq             NUMBER(6)       NOT NULL,
+		    group_id        NUMBER(6),
+		    parent_id       NUMBER(6),
+		    view_order      NUMBER(6),
+		    user_id         VARCHAR2(50)    NOT NULL,
+		    header_id       NUMBER(2)       NOT NULL,
+		    post_title      VARCHAR2(50),
+		    post_pw         NUMBER(4),
+		    reg_date        VARCHAR2(8),
+		    post_content    VARCHAR2(100),
+		    image1          VARCHAR2(50),
+		    image2          VARCHAR2(50),
+		    image3          VARCHAR2(50),
+		    image4          VARCHAR2(50),
+		    image5          VARCHAR2(50),
+		    view_count      NUMBER(8),
+		    CONSTRAINT pk_t_bbs_${gameId} PRIMARY KEY(seq),
+		    CONSTRAINT fk_t_bbs_${gameId}_user FOREIGN KEY(user_id)
+		    REFERENCES t_user(user_id),
+		    CONSTRAINT fk_t_bbs_${gameId}_header FOREIGN KEY(header_id)
+		    REFERENCES t_header(header_id)
+		)
+	</update>
+	<!-- t_reply -->
+	<update id="createBbsReplyTable" parameterType="map">
+		CREATE TABLE t_reply_${gameId}
+		(
+		    seq         NUMBER(6)       NOT NULL,
+		    re_seq      NUMBER(3),
+		    re_group    NUMBER(3),
+		    re_parent   NUMBER(3),
+		    re_view     NUMBER(3),
+		    user_id     VARCHAR2(50),
+		    re_reg      VARCHAR2(8),
+		    re_comment  VARCHAR2(1000),
+		    CONSTRAINT uk_t_reply_${gameId}_re_seq PRIMARY KEY(re_seq),
+		    CONSTRAINT fk_t_reply_${gameId}_seq FOREIGN KEY(seq)
+		    REFERENCES t_bbs_${gameId}(seq),
+		    CONSTRAINT fk_t_reply_${gameId}_user_id FOREIGN KEY(user_id)
+		    REFERENCES t_user(user_id)
+		)
+	</update>
+	
+	<!-- t_game_images -->
+	<insert id="insertImages" parameterType="model.Game">
+		INSERT INTO t_game_images
+		(
+			game_id,
+			image1,
+			image2,
+			image3,
+			image4,
+			image5
+		)
+		VALUES
+		(
+			#{game_id},
+			#{image1},
+			#{image2},
+			#{image3},
+			#{image4},
+			#{image5}
+		)
+	</insert>
+	<!-- t_game -->
+	<insert id="insertGame" parameterType="model.Game">
+		INSERT INTO t_game
+		(
+			game_id,
+		    game_name,
+		    developer,
+		    publisher,
+		    release_date,
+		    os_id,
+		    cpu,
+		    memory,
+		    capacity,
+		    vga,
+		    network,
+		    price,
+		    discount_rate,
+		    grade,
+		    follower,
+		    sold,
+		    comments,
+		    status
+		)
+		VALUES
+		(
+		    #{game_id},
+		    #{game_name},
+		    #{developer},
+		    #{publisher},
+		    #{release_date},
+		    #{os_id},
+		    #{cpu},
+		    #{memory},
+		    #{capacity},
+		    #{vga},
+		    #{network},
+		    #{price},
+		    #{discount_rate},
+		    #{grade},
+		    #{follower},
+		    #{sold},
+		    #{comments},
+		    #{status}
+		)
+	</insert>
+	
+	<!-- 게임 리스트 조회 -->
+	<select id="getBbsList" resultType="model.Game">
+		SELECT * FROM t_game
+	</select>
+	
+	<!-- 가장 큰 게임ID 조회 -->
+	<select id="getMaxGameId" resultType="Integer">
+		SELECT MAX(game_id) m_gameId FROM t_game
+	</select>
+	<!-- 게임 본문 조회 -->
+	<select id="getGameDetail" resultType="model.Game">
+		SELECT * FROM t_game
+	</select>
+	
+	<!-- 게임 전체 갯수 조회 -->
+	<select id="getGameCount" resultType="Integer">
+		SELECT count(*) AS num FROM t_game
+	</select>
+	
+	<!-- 운영체제 리스트 조회 -->
+	<select id="getOsList" resultType="model.Os">
+		SELECT os_id, os_name FROM t_os ORDER BY os_id
+	</select>
+	
+	<!-- 게임 등급 리스트 조회 -->
+	<select id="getGradeList" resultType="model.Grade">
+		SELECT grade, grade_desc FROM t_grade ORDER BY GRADE
+	</select>
+	
+	<!-- 게임 장르 리스트 조회 -->
+	<select id="getGenreList" resultType="model.Genre">
+		SELECT genre_id, genre_name FROM t_genre
+	</select>
+</mapper>

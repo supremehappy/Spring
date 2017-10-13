@@ -25,9 +25,11 @@
 		<mapper resource="mapper/loginAuthorityMapper.xml"/>
 		<mapper resource="mapper/noticeMapper.xml"/>
 		<mapper resource="mapper/chargeMapper.xml"/>
+		<mapper resource="mapper/adminMapper.xml"/>
 			
 		<mapper resource="mapper/bbsMapper.xml"/>
-				
+		<mapper resource="mapper/gameMapper.xml"/>
+		
 	</mappers>
 </configuration>
 

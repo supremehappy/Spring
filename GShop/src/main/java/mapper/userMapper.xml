@@ -3,10 +3,36 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
 	
+	<select id="selectPassword" parameterType="model.User" resultType="String">
+		select password from t_user
+		where email=#{email}
+		and user_name=#{user_name}
+		and user_id=#{user_id}
+	</select>
+	
+	<select id="selectUser_id" parameterType="model.User" resultType="String">
+		select user_id from t_user
+		where email=#{email}
+		and user_name=#{user_name}
+	</select>
+	
+	<delete id="deleteInterestGenre" parameterType="model.User">
+		DELETE from t_interest_genre
+        where user_id=#{user_id}
+	</delete>
+	
+	<update id="updateUser" parameterType="model.User">
+		update t_user
+		set password=#{password}, user_name=#{user_name}, nickname=#{nickname}
+		, email=#{email}, phone=#{phone}, address=#{address}, birthday=#{birthday}
+		, gender=#{gender}, picture=#{picture}, introduce=#{introduce}, interest_genres=#{interest_genres}
+		where user_id =#{user_id}
+	</update>
+	
 	<update id="deleteUser" parameterType="model.User">
 		update t_user
 		set status = '1'
-		where user_id = ${user_id}
+		where user_id =#{user_id}
 	</update>
 	
  	<select id="selectInterestGenre" parameterType="String" resultType="model.InterestGenre">
@@ -15,18 +41,13 @@
 		where i.genre_id=g.genre_id and i.user_id=#{user_id} order by genre_id asc
 	</select>
 	
-<!-- 	<select id="selectInterestGenre" parameterType="String" resultType="model.InterestGenre">
-		select * from t_interest_genre
-		where user_id=#{user_id}
-	</select> -->
-	
 	<select id="selectUser" parameterType="String" resultType="model.User">
 		select * from t_user
 		where user_id=#{user_id}
 	</select>
 	
 	<select id="selectUserMyPage" parameterType="String" resultType="model.User">
-		select user_name, nickname, picture
+		select user_name, nickname, picture, favorite_games, bought_games
 		from t_user
 		where user_id=#{user_id}
 	</select>
@@ -56,19 +77,5 @@
 		values(#{user_id},#{password},#{user_name},#{nickname},#{email},
 		#{phone},#{address},#{birthday},#{gender},#{picture},#{introduce},
 		#{interest_genres},#{favorite_games},#{bought_games},#{cash_balance},#{status})
-	</insert>	
-	
-	<!-- <select id="selectIntGid" parameterType="String" resultType="Integer">
-		select genre_id from t_interest_genre
-		where user_id=#{user_id}
-	</select>
-	<select id="selectGenre" resultType="String">
-		select genre_name from t_genre
-	</select> -->
-	
-	
-	
-	
-	
-	
+	</insert>
 </mapper>

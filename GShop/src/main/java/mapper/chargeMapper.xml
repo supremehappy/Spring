@@ -21,13 +21,14 @@
 		(
 			select a.*, rownum rn from
 			(
-				(select * from t_charge
-				order by charge_id desc) a
+				(select * from t_charge				 
+				 order by charge_id desc) a
 			)
 		) where rn between #{startRow} and #{endRow}
 	</select>
 	
 	<select id="getChargeListCount" resultType="Integer">
-		select count(*) as num from t_charge
+		select count(*) as num 
+		from t_charge		
 	</select>
 </mapper>

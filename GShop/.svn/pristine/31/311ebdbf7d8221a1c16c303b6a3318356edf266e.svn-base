@@ -1,0 +1,581 @@
+package controller;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import logic.AdminCatalog;
+import model.AdminCondition;
+import model.Charge;
+import model.Game;
+import model.Order;
+import model.User;
+
+@Controller
+public class AdminController {
+	
+	@Autowired
+	private AdminCatalog adminCatalog;
+	
+	// 관리자 페이지
+	@RequestMapping(value="/admin/adminPage.html", method=RequestMethod.GET)
+	public ModelAndView gotoAdminPage(){
+		System.out.println("gotoAdminPage");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/adminPage");
+		
+		return mav;
+	}
+	
+	// 충전관리 페이지
+	@RequestMapping(value="/admin/chargeManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotoChargeManagement(Integer PAGENO){
+		System.out.println("gotoChargeManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/chargeManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getChargeCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Charge> chargeAll = this.adminCatalog.findChargeListAll(c);
+		
+		mav.addObject("CHARGE_ALL",chargeAll);
+		
+		mav.addObject("/admin/chargeManagement");
+				
+		return mav;
+	}
+	
+	@RequestMapping(value="/admin/chargeManagementSearch.html", method=RequestMethod.POST)
+	public ModelAndView gotoChargeManagementSearch(Integer PAGENO, String input, Integer search){
+		System.out.println("gotoChargeManagementSearch");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/chargeManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getChargeCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행
+		
+		if(input == null){
+			List<Charge> chargeAll = this.adminCatalog.findChargeListAll(c);
+			mav.addObject("CHARGE_ALL",chargeAll);
+			
+		}else if(search==0){
+			c.setUser_id(input);
+			
+			List<Charge> chargeId = this.adminCatalog.findChargeListForId(c);
+			mav.addObject("CHARGE_ID",chargeId);
+			
+		}else if(search==1){
+			Integer cash = Integer.valueOf(input);
+			c.setTotal_amount(cash);
+			
+			List<Charge> chargeAmount = this.adminCatalog.findChargeListForAmount(c);
+			mav.addObject("CHARGE_AMOUNT",chargeAmount);
+		}
+		
+		mav.addObject("/admin/chargeManagementSearch");
+				
+		return mav;
+	}
+	
+	// 게임관리 페이지
+	@RequestMapping(value="/admin/gameManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotoGameManagement(Integer PAGENO){
+		System.out.println("gotoGameManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/gameManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getGameCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Game> gameAll = this.adminCatalog.findGameListAll(c);
+		
+		mav.addObject("GAME_ALL",gameAll);
+		
+		mav.addObject("/admin/gameManagement");
+				
+		return mav;
+	}
+	
+	@RequestMapping(value="/admin/gameManagementSearch.html", method=RequestMethod.POST)
+	public ModelAndView gotoGameManagementSearch(Integer PAGENO, String input, Integer search){
+		System.out.println("gotoGameManagementSearch");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/gameManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getGameCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행
+		
+
+		if(input == null){
+			List<Game> gameAll = this.adminCatalog.findGameListAll(c);
+			mav.addObject("GAME_ALL",gameAll);
+		}
+		
+		switch(search){
+		case 6 :
+			c.setGame_name(input);
+			
+			List<Game> gameName = this.adminCatalog.findGameListForName(c);
+			mav.addObject("GAME_GAMENAME",gameName);
+			break;
+		case 7 :
+			Integer rate = Integer.valueOf(input);
+			c.setDiscount_rate(rate);
+			
+			List<Game> gameDiscountRate = this.adminCatalog.findGameListForDiscountRate(c);
+			mav.addObject("GAME_DISCOUNTRATE",gameDiscountRate);
+			break;
+		default :
+			c.setGenre_name(input);
+			
+			List<Game> gameCategory = this.adminCatalog.findGameListForCategory(c);
+			mav.addObject("GAME_CATEGORY",gameCategory);
+			break;
+		}
+		
+		mav.addObject("/admin/gameManagementSearch");
+				
+		return mav;
+	}
+	
+	// 회원관리 페이지
+	@RequestMapping(value="/admin/memberManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotoMemberManagement(Integer PAGENO){
+		System.out.println("gotoMemberManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/memberManagement");
+
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getMemberCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<User> userAll = this.adminCatalog.findMemberListAll(c);
+		
+		mav.addObject("USER_ALL",userAll);
+		
+		mav.addObject("/admin/memberManagement");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/admin/memberManagementSearch.html", method=RequestMethod.POST)
+	public ModelAndView gotoMemberManagementSearch(Integer PAGENO, String input, Integer search){
+		System.out.println("gotoMemberManagementSearch");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/memberManagement");
+
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getMemberCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		if(input == null){
+			List<User> userAll = this.adminCatalog.findMemberListAll(c);
+			mav.addObject("USER_ALL",userAll);
+		}
+		
+		switch(search){
+		case 0 :
+			c.setUser_id(input);
+			
+			List<User> userId = this.adminCatalog.findMemberForId(c);
+			mav.addObject("USER_ID1",userId);
+			break;
+		case 1 :
+			c.setNickname(input);
+			
+			List<User> userNickname = this.adminCatalog.findMemberForNickName(c);
+			mav.addObject("USER_NICKNAME",userNickname);
+			break;
+		case 2 :
+			c.setEmail(input);
+			
+			List<User> userEmail = this.adminCatalog.findMemberForEmail(c);
+			mav.addObject("USER_EMAIL",userEmail);
+			break;
+		}
+		
+		mav.addObject("/admin/memberManagementSearch");
+		
+		return mav;
+	}
+	
+	// 구매정보 페이지
+	@RequestMapping(value="/admin/purchaseManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotopurchaseManagement(Integer PAGENO){
+		System.out.println("gotopurchaseManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/purchaseManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getPurchaseCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Order> orderAll = this.adminCatalog.findPurchaseListAll(c);		
+		
+		mav.addObject("ORDER_ALL",orderAll);
+		
+		mav.addObject("/admin/purchaseManagement");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/admin/purchaseManagementSearch.html", method=RequestMethod.GET)
+	public ModelAndView gotopurchaseManagementSearch(Integer PAGENO, String input, Integer search){
+		System.out.println("gotopurchaseManagementSearch");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/purchaseManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getPurchaseCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행
+		if(input == null){
+			List<Order> orderAll = this.adminCatalog.findPurchaseListAll(c);
+			mav.addObject("ORDER_ALL",orderAll);
+		}
+		
+		switch(search){
+		case 0 :
+			c.setUser_id(input);
+			
+			List<Order> orderId = this.adminCatalog.findPurchaseForId(c);
+			mav.addObject("ORDER_ID",orderId);
+			break;
+		case 1 :
+			c.setGame_name(input);
+			
+			List<Order> orderGamename = this.adminCatalog.findPurchaseForGameName(c);
+			mav.addObject("ORDER_GAMENAME",orderGamename);
+			break;
+		case 2 :
+			Integer price = Integer.valueOf(input);
+			c.setTotal_amount(price);
+			
+			List<Order> orderAmount = this.adminCatalog.findPurchaseForAmount(c);
+			mav.addObject("ORDER_AMOUNT",orderAmount);
+			break;
+		}
+		
+		mav.addObject("/admin/purchaseManagementSearch");
+		
+		return mav;
+	}
+	
+}

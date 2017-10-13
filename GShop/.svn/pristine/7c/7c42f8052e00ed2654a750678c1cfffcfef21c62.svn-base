@@ -1,0 +1,288 @@
+package controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import logic.AdminCatalog;
+import model.AdminCondition;
+import model.Charge;
+import model.Game;
+import model.Order;
+import model.User;
+
+@Controller
+public class AdminController {
+	
+	@Autowired
+	private AdminCatalog adminCatalog;
+	
+	// 관리자 페이지
+	@RequestMapping(value="/admin/adminPage.html", method=RequestMethod.GET)
+	public ModelAndView gotoAdminPage(){
+		System.out.println("gotoAdminPage");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/adminPage");
+		
+		return mav;
+	}
+	
+	// 충전관리 페이지
+	@RequestMapping(value="/admin/chargeManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotoChargeManagement(Integer PAGENO){
+		System.out.println("gotoChargeManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/chargeManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getChargeCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Charge> chargeAll = this.adminCatalog.findChargeListAll(c);
+		/*List<Charge> chargeId = this.adminCatalog.findChargeListForId(c);
+		List<Charge> chargeAmount = this.adminCatalog.findChargeListForAmount(c);*/
+		
+		mav.addObject("CHARGE_ALL",chargeAll);
+		/*mav.addObject("CHARGE_ID",chargeId);
+		mav.addObject("CHARGE_AMOUNT",chargeAmount);*/
+		
+		mav.addObject("/admin/chargeManagement");
+				
+		return mav;
+	}
+	
+	// 게임관리 페이지
+	@RequestMapping(value="/admin/gameManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotoGameManagement(Integer PAGENO){
+		System.out.println("gotoGameManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/gameManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getGameCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Game> gameAll = this.adminCatalog.findGameListAll(c);
+		/*List<Game> gameName = this.adminCatalog.findGameListForName(c);
+		List<Game> gameCategory = this.adminCatalog.findGameListForCategory(c);
+		List<Game> gameDiscountRate = this.adminCatalog.findGameListForDiscountRate(c);*/
+		
+		mav.addObject("GAME_ALL",gameAll);
+		/*mav.addObject("GAME_GAMENAME",gameName);
+		mav.addObject("GAME_CATEGORY",gameCategory);
+		mav.addObject("GAME_DISCOUNTRATE",gameDiscountRate);*/
+		
+		mav.addObject("/admin/gameManagement");
+				
+		return mav;
+	}
+	
+	// 회원관리 페이지
+	@RequestMapping(value="/admin/memberManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotoMemberManagement(Integer PAGENO){
+		System.out.println("gotoMemberManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/memberManagement");
+
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getMemberCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<User> userAll = this.adminCatalog.findMemberListAll(c);
+		/*List<User> userId = this.adminCatalog.findMemberForId(c);
+		List<User> userNickname = this.adminCatalog.findMemberForNickName(c);
+		List<User> userEmail = this.adminCatalog.findMemberForEmail(c);*/
+		
+		mav.addObject("USER_ALL",userAll);
+		/*mav.addObject("USER_ID1",userId);
+		mav.addObject("USER_NICKNAME",userNickname);
+		mav.addObject("USER_EMAIL",userEmail);*/
+		
+		mav.addObject("/admin/memberManagement");
+		
+		return mav;
+	}
+	
+	// 구매정보 페이지
+	@RequestMapping(value="/admin/purchaseManagement.html", method=RequestMethod.GET)
+	public ModelAndView gotopurchaseManagement(Integer PAGENO){
+		System.out.println("gotopurchaseManagement");
+		
+		ModelAndView mav = new ModelAndView("gshop/admin/purchaseManagement");
+		
+		//------------ 페이지 번호 처리
+		Integer cnt = this.adminCatalog.getPurchaseCount();
+		
+		int pageCnt = 0;
+		
+		if(cnt==null){
+			cnt=0;
+		}else{
+			pageCnt=cnt /5;
+			if(cnt%5>0){
+				pageCnt++;
+			}
+		}
+		mav.addObject("COUNT",pageCnt);
+		// page num end
+		
+		//페이지 첫번호 ~ 끝번호 계산
+		int currentPage=0;
+		
+		if(PAGENO==null){
+			currentPage =1;
+		}else{
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		
+		startRow = (currentPage-1)*5+1;
+		endRow = currentPage *5;
+		
+		if(endRow > cnt){
+			endRow = cnt;
+		}
+		
+		AdminCondition c = new AdminCondition();
+		
+		c.setStartRow(startRow);
+		c.setEndRow(endRow);
+		// page fist num~ end num end
+		
+		// 목록 보여주기 위한 쿼리 실행		
+		List<Order> orderAll = this.adminCatalog.findPurchaseListAll(c);
+		/*List<Order> orderId = this.adminCatalog.findPurchaseForId(c);
+		List<Order> orderGamename = this.adminCatalog.findPurchaseForGameName(c);
+		List<Order> orderAmount = this.adminCatalog.findPurchaseForAmount(c);*/
+		
+		mav.addObject("ORDER_ALL",orderAll);
+		/*mav.addObject("ORDER_ID",orderId);
+		mav.addObject("ORDER_GAMENAME",orderGamename);
+		mav.addObject("ORDER_AMOUNT",orderAmount);*/
+		
+		mav.addObject("/admin/purchaseManagement");
+		
+		return mav;
+	}
+	
+}
