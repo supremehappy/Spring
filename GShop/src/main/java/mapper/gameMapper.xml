@@ -2,6 +2,72 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gameMapper">
 	
+	<!-- 메뉴에서 게임 검색 -->
+	<select id="selectGameBySearchValue" parameterType="String" resultType="model.Game">
+		SELECT game_id, game_name, genre_name, genre_id, os_name, discount_rate, price, image1, status FROM
+	(
+	    SELECT a.*, rownum rn FROM
+	    (
+	        (
+	            SELECT
+	                g.game_id, g.game_name, e.genre_name, s.genre_id, o.os_name, g.discount_rate, g.price, i.image1, g.status
+	            FROM
+	                t_game g, t_game_images i, t_os o, t_genre e, t_game_genres s
+	            WHERE
+	                e.genre_id = s.genre_id AND
+	                g.game_id = s.game_id   AND
+	                g.os_id = o.os_id       AND
+	                g.game_id = i.game_id   AND
+	                g.status = 0            AND
+	                UPPER(g.game_name)      LIKE '%' || UPPER(#{search}) || '%'
+	            ORDER BY
+	                g.game_id DESC
+	        ) a
+	    )
+	) WHERE rn BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 좋아요(찜하기) 삭제 -->
+	<delete id="deleteFavoriteGame" parameterType="model.Game">
+		DELETE t_favorite_game
+		WHERE
+			user_id = #{user_id} AND
+			game_id = #{game_id}
+	</delete>
+	
+	<!-- 좋아요(찜하기) 등록 -->
+	<insert id="insertFavoriteGame" parameterType="model.Game">
+		INSERT INTO t_favorite_game
+		(
+		    user_id,
+		    game_id
+		)
+		VALUES
+		(
+		    #{user_id},
+		    #{game_id}
+		)
+	</insert>
+	
+	<!-- 좋아요(찜하기) 갯수 조회 -->
+	<select id="getFavoriteCount" parameterType="model.Game" resultType="Integer">
+		SELECT count(*) AS num FROM t_favorite_game
+		WHERE game_id = #{game_id} AND user_id = #{user_id}
+	</select>
+	
+	<!-- 게임 삭제(status 변경) -->
+	<update id="modifyGameStatus" parameterType="model.Game">
+		UPDATE t_game
+		SET status = #{status}
+		WHERE game_id = #{game_id}
+	</update>
+	
+	<!-- 게임 상태 조회 -->
+	<select id="getGameStatus" parameterType="Integer" resultType="Integer">
+		SELECT status FROM t_game
+		WHERE game_id = #{GAMEID}
+	</select>
+	
 	<!-- 게임 등록 -->
 	<!-- t_bbs -->
 	<update id="createBbsTable" parameterType="map">
@@ -42,6 +108,7 @@
 		    user_id     VARCHAR2(50),
 		    re_reg      VARCHAR2(8),
 		    re_comment  VARCHAR2(1000),
+		    re_depth	NUMBER(2),
 		    CONSTRAINT uk_t_reply_${gameId}_re_seq PRIMARY KEY(re_seq),
 		    CONSTRAINT fk_t_reply_${gameId}_seq FOREIGN KEY(seq)
 		    REFERENCES t_bbs_${gameId}(seq),
@@ -49,6 +116,12 @@
 		    REFERENCES t_user(user_id)
 		)
 	</update>
+	
+	<!-- t_game_genres -->
+	<insert id="insertGameGenres" parameterType="model.Game">
+		INSERT INTO t_game_genres
+		VALUES (#{game_id}, #{genre_id})
+	</insert>
 	
 	<!-- t_game_images -->
 	<insert id="insertImages" parameterType="model.Game">
@@ -71,6 +144,7 @@
 			#{image5}
 		)
 	</insert>
+	
 	<!-- t_game -->
 	<insert id="insertGame" parameterType="model.Game">
 		INSERT INTO t_game
@@ -118,17 +192,68 @@
 	</insert>
 	
 	<!-- 게임 리스트 조회 -->
-	<select id="getBbsList" resultType="model.Game">
-		SELECT * FROM t_game
+	<select id="getGameList" resultType="model.Game">
+		SELECT game_id, game_name, genre_name, genre_id, os_name, discount_rate, price, image1, status FROM
+		(
+		    SELECT a.*, rownum rn FROM
+		    (
+		        (
+		            SELECT
+		                g.game_id, g.game_name, e.genre_name, s.genre_id, o.os_name, g.discount_rate, g.price, i.image1, g.status
+		            FROM
+		                t_game g, t_game_images i, t_os o, t_genre e, t_game_genres s
+		            WHERE
+		                e.genre_id = s.genre_id AND
+		                g.game_id = s.game_id   AND
+		                g.os_id = o.os_id       AND
+		                g.game_id = i.game_id   AND
+		                g.status = 0
+		            ORDER BY
+		                g.game_id DESC
+		        ) a
+		    )
+		) WHERE rn BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
 	<!-- 가장 큰 게임ID 조회 -->
 	<select id="getMaxGameId" resultType="Integer">
 		SELECT MAX(game_id) m_gameId FROM t_game
 	</select>
+	
 	<!-- 게임 본문 조회 -->
-	<select id="getGameDetail" resultType="model.Game">
-		SELECT * FROM t_game
+	<select id="getGameDetail" parameterType="Integer" resultType="model.Game">
+		SELECT
+		    g.game_id,
+		    g.game_name,
+		    g.developer,
+		    g.publisher,
+		    o.os_id,
+		    o.os_name,
+		    g.cpu,
+		    g.memory,
+		    g.capacity,
+		    g.vga,
+		    g.network,
+		    g.price,
+		    g.discount_rate,
+		    g.grade,
+		    r.grade_desc,
+		    g.follower,
+		    g.sold,
+		    g.comments,
+		    g.status,
+		    e.genre_name,
+		    g.release_date,
+		    i.image1, i.image2, i.image3, i.image4, i.image5
+		FROM
+		    t_game g, t_os o, t_grade r, t_game_images i, t_game_genres s, t_genre e
+		WHERE
+		    o.os_id=g.os_id         AND
+		    g.grade=r.grade         AND
+		    g.game_id=i.game_id     AND
+		    s.genre_id = e.genre_id AND
+		    s.game_id = g.game_id   AND
+		    g.game_id=#{GAMEID}
 	</select>
 	
 	<!-- 게임 전체 갯수 조회 -->

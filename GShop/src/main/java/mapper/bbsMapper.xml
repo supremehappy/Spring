@@ -5,7 +5,7 @@
 	<!-- 댓글 수정 -->
 	<update id="updateBbsReply" parameterType="map">
 		UPDATE ${replyTableName}
-		SET re_comment=${re_comment}
+		SET re_comment='${re_comment}'
 		WHERE seq=${seq} AND re_seq=${re_seq}
 	</update>
 	
