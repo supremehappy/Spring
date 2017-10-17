@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="orderMapper">
+
+	<select id="getUser" parameterType="String" resultType="model.User">
+		select user_id, nickname, cash_balance
+		from t_user
+		where user_id = #{user_id}
+	</select>
+
+	<select id="getGame" parameterType="Integer" resultType="model.Game">
+		select game_id, game_name, price, discount_rate
+		from t_game
+		where game_id = #{GAME_ID}
+	</select>
+
+	<select id="getMaxOrderId" resultType="Integer">
+		select max(order_id) as max 
+		from t_order
+	</select>
+
+	<insert id="putOrder" parameterType="model.Order">
+		insert into t_order values (
+		#{order_id}, #{user_id}, #{game_id}, #{total_amount}, #{order_date}
+		)
+	</insert>
+	
+	<update id="updateUser" parameterType="model.User">
+		update t_user 
+		set cash_balance = #{cash_balance} 
+		where user_id = #{user_id}
+	</update>
+	
+	<update id="updateGame" parameterType="model.User">
+		update t_game 
+		set sold = sold + 1 
+		where game_id = #{game_id}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>GShop</title>
+</head>
+
+<body>
+<div class="body">
+	<div class="container">
+	
+<form:form modelAttribute="order" action="../order/insert.html" method="post" enctype="multipart/form-data" onSubmit="return validate(this)">
+
+	<h4 align="center">구매 상세</h4>
+	<table class="table table-bordered">
+		<tbody>
+		<tr>
+			<td>게임이름</td>
+			<td><form:input path="game_name" value="${ORDER_INFO.game_name}" readOnly="true"/></td>
+		</tr>		
+		<tr>
+			<td>게임가격</td>
+			<td><form:input align="right" path="price" value="${ORDER_INFO.price}" readOnly="true"/>원</td>
+		</tr>	
+		<tr>
+			<td>할인율</td>
+			<td><form:input align="right" path="discount_rate" value="${ORDER_INFO.discount_rate}" readOnly="true"/>%</td>
+		</tr>
+		<tr>
+			<td>결제금액</td>
+			<td><form:input align="right" path="total_amount" value="${(ORDER_INFO.price/100) * (100-ORDER_INFO.discount_rate) }" readOnly="true"/>원</td>
+		</tr>
+		<tr>
+			<td>보유금액</td>
+			<td><form:input align="right" path="cash_balance" value="${ORDER_INFO.cash_balance}" readOnly="true"/></td>
+		</tr>
+		</tbody>
+	</table>
+	<div align="center">
+		<input type="submit" class="btn btn-info" value="등 록"/>
+	</div>
+</form:form>
+</body>
+</html>

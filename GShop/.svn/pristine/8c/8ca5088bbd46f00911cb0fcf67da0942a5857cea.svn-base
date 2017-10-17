@@ -1,0 +1,16 @@
+package dao;
+
+import model.Game;
+import model.Order;
+import model.User;
+
+public interface OrderDao {
+	
+	public User readUser(String user_id);
+	public Game readGame(Integer GAME_ID);
+	
+	public Integer getMaxOrderId();
+	public void insertOrder(Order order);
+	public void updateUser(User user);
+	public void updateGame(Integer game_id);
+}

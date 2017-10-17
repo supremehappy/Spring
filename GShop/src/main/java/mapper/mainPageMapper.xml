@@ -28,7 +28,7 @@
 		select a.*, rownum rn from
 		(
 		(
-		select i.image2
+		select g.GAME_ID, g.game_name, i.image2
 		from t_game g join t_game_images i
 		on g.game_id = i.game_id
 		order by g.discount_rate desc , g.game_id
@@ -43,7 +43,7 @@
 		select a.*, rownum rn from
 		(
 		(
-		select i.image2
+		select g.GAME_ID, g.game_name, i.image2
 		from t_game g join t_game_images i
 		on g.game_id = i.game_id
 		order by g.sold desc

@@ -2,8 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gameMapper">
 	
+	<!-- 게임 수정 -->
+	<!-- t_game_genres -->
+	<update id="updateGameGenres" parameterType="model.Game">
+		UPDATE  t_game_genres
+		SET     genre_id        = #{genre_id}
+		WHERE   game_id         = #{game_id}
+	</update>
+	
+	<!-- t_game_images -->
+	<update id="updateGameImages" parameterType="model.Game">
+		UPDATE  t_game_images
+		SET     image1          = #{image1},
+		        image2          = #{image2},
+		        image3          = #{image3},
+		        image4          = #{image4},
+		        image5          = #{image5}
+		WHERE   game_id         = #{game_id}
+	</update>
+	
+	<!-- t_game -->
+	<update id="updateGame" parameterType="model.Game">
+		UPDATE  t_game
+		SET     game_name       = #{game_name},
+		        developer       = #{developer},
+		        publisher       = #{publisher},
+		        release_date    = #{release_date},
+		        os_id           = #{os_id},
+		        cpu             = #{cpu},
+		        memory          = #{memory},
+		        capacity        = #{capacity},
+		        vga             = #{vga},
+		        network         = #{network},
+		        price           = #{price},
+		        discount_rate   = #{discount_rate},
+		        grade           = #{grade},
+		        comments        = #{comments}
+		WHERE   game_id         = #{game_id}
+	</update>
+	
 	<!-- 메뉴에서 게임 검색 -->
-	<select id="selectGameBySearchValue" parameterType="String" resultType="model.Game">
+	<select id="getGameListBySearch" parameterType="String" resultType="model.Game">
 		SELECT game_id, game_name, genre_name, genre_id, os_name, discount_rate, price, image1, status FROM
 	(
 	    SELECT a.*, rownum rn FROM

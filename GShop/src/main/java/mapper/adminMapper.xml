@@ -46,6 +46,7 @@
 			where rn between #{startRow} and #{endRow}
 		</select>
 		
+		
 		<!-- 충전관리페이지 전체목록 불러오기 위한 내역 카운트 -->
 		<select id="getChargeCountAll" resultType="Integer">
 			select count(*) as num from t_charge
@@ -137,13 +138,33 @@
 			where rn between #{startRow} and #{endRow}
 		</select>
 		
-		<!-- 게임관리페이지 목록 불러오기 위한 내역 카운트 -->
-		<select id="getGameCount" resultType="Integer">
+		
+		<!-- 게임관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountAll" resultType="Integer">
 			select count(*) as num from t_game
 		</select>
-		<!--<select id="getGameDetail" resultType="model.Game" parameterType="Integer">
-			select * from t_game where game_id = #{game_id}
-		</select> -->
+		
+		<!-- 게임관리페이지 게임명검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountForGameName" resultType="Integer" parameterType="String">
+			select count(*) as num from t_game
+			where game_name=#{game_name}
+		</select>
+		
+		<!-- 게임관리페이지 카테고리검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountForGenreName" resultType="Integer" parameterType="String">
+			select count(*) as num
+            from t_game g join t_game_genres gg
+            on g.GAME_ID = gg.GAME_ID
+            join t_genre ge
+            on gg.genre_id = ge.genre_id
+			where genre_name=#{genre_name}
+		</select>
+		
+		<!-- 게임관리페이지 할인율 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountForDiscountRate" resultType="Integer" parameterType="Integer">
+			select count(*) as num from t_game
+			where discount_rate = #{discount_rate}
+		</select>
 		
 <!--  --><!-- memberManagement -->
 		<!-- 회원관리페이지 전체목록조회 -->
@@ -197,10 +218,30 @@
 			where rn between #{startRow} and #{endRow}
 		</select>
 		
-		<!-- 회원관리페이지 목록 불러오기 위한 내역 카운트 -->
-		<select id="getMemberCount" resultType="Integer">
+		
+		<!-- 회원관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountAll" resultType="Integer">
 			select count(*) as num from t_user
 		</select>
+		
+		<!-- 회원관리페이지 회원id 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountForId" resultType="Integer" parameterType="String">
+			select count(*) as num from t_user
+			where user_id = #{user_id}
+		</select>
+		
+		<!-- 회원관리페이지 닉네임 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountForNickName" resultType="Integer" parameterType="String">
+			select count(*) as num from t_user
+			where nickname = #{nickname}
+		</select>
+		
+		<!-- 회원관리페이지 이메일 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountForEmail" resultType="Integer" parameterType="String">
+			select count(*) as num from t_user
+			where email = #{email}
+		</select>
+		
 		
 		<!-- 회원정보페이지를 위한 조회 -->
 		<select id="findUser" resultType="model.User" parameterType="model.User">
@@ -268,9 +309,30 @@
 			where rn between #{startRow} and #{endRow}
 		</select>
 		
-		<!-- 구매관리페이지 목록 불러오기 위한 내역 카운트 -->
-		<select id="getPurchaseCount" resultType="Integer">
+		
+		<!-- 구매관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountAll" resultType="Integer" >
 			select count(*) as num from t_order
+		</select>
+		
+		<!-- 구매관리페이지 회원id 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountForId" resultType="Integer" parameterType="String">
+			select count(*) as num from t_order
+			where user_id = #{user_id}
+		</select>
+		
+		<!-- 구매관리페이지 게임명 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountForGameName" resultType="Integer" parameterType="String">
+			select count(*) as num 
+            from t_order o join t_game g
+            on o.game_id = g.game_id
+			where game_name = #{game_name}
+		</select>
+		
+		<!-- 구매관리페이지 구매액 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountForAmount" resultType="Integer" parameterType="Integer">
+			select count(*) as num from t_order
+			where total_amount = #{total_amount}
 		</select>
 		
 </mapper>

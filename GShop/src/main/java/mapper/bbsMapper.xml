@@ -26,6 +26,7 @@
 		WHERE seq=${seq}
 	</select>
 	
+	
 	<!-- 댓글 삭제 -->
 	<delete id="deleteBbsReply" parameterType="map">
 		DELETE FROM ${replyTableName}
@@ -120,6 +121,12 @@
 	<update id="updateBbsViewCount" parameterType="map">
 		UPDATE ${tableName} SET view_count = ${viewCount} WHERE seq=${seq}
 	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteBbsReplyByBbsDelete" parameterType="map">
+		DELETE FROM ${replyTableName}
+		WHERE seq=${seq} 
+	</delete>
 	<!-- 게시글 삭제 -->
 	<delete id="deleteBbs" parameterType="map">
 		DELETE FROM ${tableName} WHERE seq=${seq}
@@ -171,7 +178,7 @@
 		    (
 		        (SELECT
 		        b.seq, b.header_id, b.view_order, h.header_name, b.post_title, u.picture, b.user_id, u.nickname,
-		        b.post_content, b.reg_date, b.view_count, (SELECT COUNT(*) FROM t_reply_1 r WHERE r.seq=b.seq) AS reply_count
+		        b.post_content, b.reg_date, b.view_count, (SELECT COUNT(*) FROM ${replyTableName} r WHERE r.seq=b.seq) AS reply_count
 		        FROM ${tableName} b, t_user u, t_header h
 		        WHERE b.user_id = u.user_id AND b.header_id = h.header_id
 		        ORDER BY b.group_id DESC, b.view_order asc) a

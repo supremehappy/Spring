@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chargeMapper">
+	<!-- chargeImpl  -->
+	<insert id="insertCharge" parameterType="model.Charge">
+		insert into t_charge values(#{charge_id},#{user_id},#{total_amount},#{charge_date})
+	</insert>
+	
+	<select id="getMaxChargeId" resultType="Integer">
+		select max(charge_id) max_id from t_charge
+	</select>
+	
+	<update id="updateUserCashBalance" parameterType="model.User">
+		update t_user set cash_balance = #{cash_balance} where user_id = #{user_id}
+	</update>
+	
+	<select id="getChargeList" parameterType="model.Condition" 
+		resultType="model.Charge">
+		select charge_id, user_id, total_amount, charge_date
+		from 
+		(
+			select a.*, rownum rn from
+			(
+				(select * from t_charge
+				order by charge_id desc) a
+			)
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="getChargeListCount" resultType="Integer">
+		select count(*) as num from t_charge
+	</select>
+</mapper>
