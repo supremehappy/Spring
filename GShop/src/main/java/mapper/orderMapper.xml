@@ -48,7 +48,9 @@
 		from (
 			select a.*, rownum rn 
 			from ( 
-			select * from v_order order by order_id desc 
+			select * from v_order 
+			where user_id = #{user_id}
+			order by order_id desc 
 			) a
 		)
 		where rn between #{startRow} and #{endRow}
@@ -60,6 +62,12 @@
 		where game_id = #{GAME_ID}
 	</select>
 
+	<select id="readOrder" parameterType="Integer" resultType="model.Order">
+		select order_id, nickname, game_name, total_amount, order_date 
+		from v_order
+		where order_id = #{ORDER_ID}
+	</select>
+	
 </mapper>
 
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gameMapper">
+	
+	<!-- 게임 리스트 조회 -->
+	<select id="getGameList" resultType="model.Game">
+		SELECT game_id, game_name, genre_name, genre_id, os_name, discount_rate, price, image1, status FROM
+		(
+		    SELECT a.*, rownum rn FROM
+		    (
+		        (
+		            SELECT g.game_id, g.game_name, e.genre_name, s.genre_id, o.os_name, g.discount_rate, g.price, i.image1, g.status
+		            FROM t_game g, t_game_images i, t_os o, t_genre e, t_game_genres s
+		            WHERE e.genre_id = s.genre_id AND g.os_id = o.os_id AND g.game_id = i.game_id AND
+			            g.game_id = s.game_id AND g.status = 0
+		            ORDER BY g.game_id DESC
+		        ) a<!-- 글 번호를 역순검색으로 찾는다 -->
+		    )
+		) WHERE rn BETWEEN #{startRow} AND #{endRow}<!-- startRow부터 endRow까지 -->
+	</select>
+	
+	<!-- 가장 큰 게임ID 조회 -->
+	<select id="getMaxGameId" resultType="Integer">
+		SELECT MAX(game_id) m_gameId FROM t_game
+	</select>
+	
+	<!-- 게임 본문 조회 -->
+	<select id="getGameDetail" parameterType="Integer" resultType="model.Game">
+		SELECT
+		    g.game_id,
+		    g.game_name,
+		    g.developer,
+		    g.publisher,
+		    o.os_id,
+		    o.os_name,
+		    g.cpu,
+		    g.memory,
+		    g.capacity,
+		    g.vga,
+		    g.network,
+		    g.price,
+		    g.discount_rate,
+		    g.grade,
+		    r.grade_desc,
+		    g.follower,
+		    g.sold,
+		    g.comments,
+		    g.status,
+		    e.genre_name,
+		    g.release_date,
+		    i.image1, i.image2, i.image3, i.image4, i.image5
+		FROM
+		    t_game g, t_os o, t_grade r, t_game_images i, t_game_genres s, t_genre e
+		WHERE
+		    o.os_id=g.os_id         AND
+		    g.grade=r.grade         AND
+		    g.game_id=i.game_id     AND
+		    s.genre_id = e.genre_id AND
+		    s.game_id = g.game_id   AND
+		    g.game_id=#{GAMEID}
+	</select>
+	
+	<!-- 게임 전체 갯수 조회 -->
+	<select id="getGameCount" resultType="Integer">
+		SELECT count(*) AS num FROM t_game
+	</select>
+	
+	<!-- 게임 장르 리스트 조회 -->
+	<select id="getGenreList" resultType="model.Genre">
+		SELECT genre_id, genre_name FROM t_genre
+	</select>
+</mapper>

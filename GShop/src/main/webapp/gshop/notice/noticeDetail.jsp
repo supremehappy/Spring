@@ -10,7 +10,6 @@
 function validate(){
 	var result = confirm("정말로 삭제하시겠습니까?");
 	if(result == false) return false;
-	else alert("삭제되었습니다.");
 }
 </script>
 <body>

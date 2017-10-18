@@ -10,46 +10,67 @@
 		select *
 		from
 		(
-			select a.*, rownum rn from
-			(
-				(
-					select i.image2
-					from t_game g join t_game_images i
-					on g.game_id = i.game_id
-					order by g.release_date desc , g.game_id desc
-				) a
-			)
-		) where rn between 1 and 5
+		    select a.*, rownum rn from
+		    (
+		        (
+		            SELECT      i.image2,
+		            			g.game_id,
+		            			g.game_name
+		            FROM        t_game g,  t_game_images i
+		            WHERE       g.game_id = i.game_id AND
+		                        g.status = 0
+		            ORDER BY    g.release_date desc , g.game_id desc
+		        ) a
+		    )
+		) where rn between 1 and 10
 	</select>
 	<select id="saleGame" resultType="model.GameImage">
 		select *
 		from
 		(
-		select a.*, rownum rn from
-		(
-		(
-		select g.GAME_ID, g.game_name, i.image2
-		from t_game g join t_game_images i
-		on g.game_id = i.game_id
-		order by g.discount_rate desc , g.game_id
-		) a
-		)
-		) where rn between 1 and 5
+		    select a.*, rownum rn from
+		    (
+		        (
+		        SELECT      g.game_id,
+		                    g.game_name,
+		                    g.price,
+		                    g.discount_rate,
+		                    g.release_date,
+		                    i.image1,
+		                    i.image2
+		        FROM        t_game g,
+		                    t_game_images i
+		        WHERE       g.game_id = i.game_id   AND
+		                    g.status = 0
+		        order by g.discount_rate desc , g.game_id
+		        ) a
+		    )
+		) where rn between 1 and 20
 	</select>
 	<select id="bestGame" resultType="model.GameImage">
 		select *
 		from
 		(
-		select a.*, rownum rn from
-		(
-		(
-		select g.GAME_ID, g.game_name, i.image2
-		from t_game g join t_game_images i
-		on g.game_id = i.game_id
-		order by g.sold desc
-		) a
-		)
-		) where rn between 1 and 5
+		    select a.*, rownum rn from
+		    (
+		        (
+		        SELECT      g.game_id,
+		                    g.game_name,
+		                    g.price,
+		                    g.discount_rate,
+		                    g.release_date,
+		                    i.image1,
+		                    i.image2
+		        FROM        t_game g,
+		                    t_game_images i
+		        WHERE       g.game_id = i.game_id   AND
+		                    g.status = 0
+		        ORDER BY    g.sold DESC ,
+		                    g.discount_rate DESC,
+		                    g.game_id DESC    
+		        ) a
+		    )
+		) where rn between 1 and 20
 	</select>
 
 

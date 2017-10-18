@@ -14,7 +14,6 @@ function validate(form){
 	
 	var result = confirm("정말로 변경하시겠습니까?");
 	if(result == false) return false;
-	else alert("수정되었습니다.");
 }
 </script>
 <body>

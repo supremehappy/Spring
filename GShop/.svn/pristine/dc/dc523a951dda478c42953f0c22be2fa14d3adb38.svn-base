@@ -1,0 +1,121 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/gshop/header.jsp" %>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">	
+<link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
+	
+	<title>GShop Home</title>
+</head>
+<body>
+	<div id="all">
+		<div id="content">
+			<div class="container">
+			
+	            <div class="col-md-12">
+					<h2>Weekly New</h2>
+	            	<div id="main-slider">
+	            		<c:forEach var="img" items="${NEW}">
+	            			<div class="item">
+								<img src="${pageContext.request.contextPath }/upload/game/${img.image2}" alt="" class="img-responsive">
+							</div>
+	            		</c:forEach>
+					</div><!-- /#main-slider -->
+				</div><!-- .col-md-12 end -->
+			</div><!-- .container end -->
+			
+				
+			<div id="hot">
+				<div class="box">
+					<div class="container">
+						<div class="col-md-12">
+							<h2>Hot this week</h2>
+						</div>
+					</div>
+				</div>
+			<div class="container">
+				<div class="product-slider">
+					<c:forEach var="img" items="${SALE}">
+						<div class="item">
+							<div class="product">
+								<div class="flip-container">
+									<div class="flipper">
+										<div class="front">
+											<a href="detail.html">
+												<img src="${pageContext.request.contextPath }/upload/game/${img.image2}" alt="" class="img-responsive">
+											</a>
+										</div>
+										<div class="back">
+											<a href="detail.html">
+												<img src="${pageContext.request.contextPath }/upload/game/${img.image2}" alt="" class="img-responsive">
+											</a>
+										</div>
+									</div>
+								</div>
+								<a href="detail.html" class="invisible">
+								    <img src="${pageContext.request.contextPath }/upload/game/${img.image2}" alt="" class="img-responsive">
+								</a>
+								<div class="text">
+									<h3><a href="detail.html">White Blouse Armani</a></h3>
+									<p class="price"><del>$280</del> $143.00</p>
+								</div>
+								<!-- /.text -->
+								
+								<div class="ribbon sale">
+								<div class="theribbon">SALE</div>
+								<div class="ribbon-background"></div>
+								</div>
+								<!-- /.ribbon -->
+								
+							</div>
+							<!-- /.product -->
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+			
+			</div>
+			
+			
+			<div class="box">
+				<div class="new">
+					<div class="fotorama" data-arrows="true" data-width="100%"
+						data-ratio="965/643" data-allow-fullscreen="true"
+						data-nav="thumbs" data-autoplay="true">
+						<c:forEach var="img" items="${NEW}">
+							<img src="${pageContext.request.contextPath }/upload/game/${img.image2}">
+							<a href="#" ><img src="${pageContext.request.contextPath }/upload/game/${img.image2}"></a>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="sale">
+					<div class="fotorama" data-arrows="true" data-width="100%"
+						data-ratio="965/643" data-allow-fullscreen="true"
+						data-nav="thumbs" data-autoplay="true">
+					     <c:forEach var="img" items="${SALE}">
+				<img src="${pageContext.request.contextPath }/upload/game/${img.image2}">
+				<a href="#" ><img src="${pageContext.request.contextPath }/upload/game/${img.image2}"></a>
+				</c:forEach>
+					</div>
+				</div>
+				<div class="hot">
+					<div class="fotorama" data-arrows="true" data-width="100%"
+					data-ratio="965/643" data-allow-fullscreen="true"
+					data-nav="thumbs" data-autoplay="true">
+						<c:forEach var="img" items="${BEST}">
+							<img src="${pageContext.request.contextPath }/upload/game/${img.image2}">
+							<a href="#" ><img src="${pageContext.request.contextPath }/upload/game/${img.image2}"></a>
+						</c:forEach>
+					</div>
+				</div>
+			</div><!-- .box end -->
+		</div><!-- #content end -->
+	</div><!-- #all end -->
+<%@ include file="/gshop/footer.jsp" %>	
+
+</body>
+</html>
