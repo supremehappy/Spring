@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMapper">
+
+	<!-- adminDaoImpl -->
+<!--  --><!-- chargeManagement -->
+		<!-- 충전관리페이지 전체목록조회 -->
+		<select id="findChargeListAll" resultType="model.Charge" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_charge
+					order by charge_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 충전관리페이지 id검색 -->
+		<select id="findChargeListForId" resultType="model.Charge" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from t_charge 
+	                where user_id=#{user_id}
+					order by charge_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 충전관리페이지 충전금액검색 -->
+		<select id="findChargeListForAmount" resultType="model.Charge" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select * from t_charge 
+	                where total_amount=#{total_amount}
+					order by charge_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		
+		<!-- 충전관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getChargeCountAll" resultType="Integer">
+			select count(*) as num from t_charge
+		</select>
+		
+		<!-- 충전관리페이지 id검색한 값 목록 불러오기 위한 내역 카운트 -->
+		<select id="getChargeCountForId" resultType="Integer" parameterType="String">
+			select count(*) as num from t_charge
+			where user_id = #{user_id}
+		</select>
+		
+		<!-- 충전관리페이지 충전금액 검색한 값 목록 불러오기 위한 내역 카운트 -->
+		<select id="getChargeCountForAmount" resultType="Integer" parameterType="Integer">
+			select count(*) as num from t_charge
+			where total_amount = #{total_amount}
+		</select>
+		
+<!--  --><!-- gameManagement -->
+		<!-- 게임관리페이지 전체목록조회 -->
+		<select id="findGameListAll" resultType="model.Game" parameterType="model.AdminCondition">
+		 	select *
+			from(
+				select a.*, rownum rn from(
+					(select g.game_id, ge.GENRE_NAME, g.GAME_NAME, g.DISCOUNT_RATE 
+                    from t_game g join t_game_genres gg
+                    on g.GAME_ID = gg.GAME_ID
+                    join t_genre ge
+                    on gg.genre_id = ge.genre_id
+					order by game_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 게임관리페이지 게임명검색 -->
+		<select id="findGameListForName" resultType="model.Game" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select g.game_id, ge.GENRE_NAME, g.GAME_NAME, g.DISCOUNT_RATE 
+                    from t_game g join t_game_genres gg
+                    on g.GAME_ID = gg.GAME_ID
+                    join t_genre ge
+                    on gg.genre_id = ge.genre_id
+	                where game_name=#{game_name}
+					order by game_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 게임관리페이지 카테고리검색 -->
+		<select id="findGameListForCategory" resultType="model.Game" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select g.game_id, ge.GENRE_NAME, g.GAME_NAME, g.DISCOUNT_RATE 
+                    from t_game g join t_game_genres gg
+                    on g.GAME_ID = gg.GAME_ID
+                    join t_genre ge
+                    on gg.genre_id = ge.genre_id
+                    where ge.GENRE_NAME=#{genre_name}
+					order by game_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 게임관리페이지 할인율검색 -->
+		<select id="findGameListForDiscountRate" resultType="model.Game" parameterType="model.AdminCondition">
+			select *
+			from 
+			(
+				select a.*, rownum rn from
+				(
+					(select g.game_id, ge.GENRE_NAME, g.GAME_NAME, g.DISCOUNT_RATE 
+                    from t_game g join t_game_genres gg
+                    on g.GAME_ID = gg.GAME_ID
+                    join t_genre ge
+                    on gg.genre_id = ge.genre_id
+	                where discount_rate=#{discount_rate}
+					order by game_id desc) a
+				)
+			)
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		
+		<!-- 게임관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountAll" resultType="Integer">
+			select count(*) as num from t_game
+		</select>
+		
+		<!-- 게임관리페이지 게임명검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountForGameName" resultType="Integer" parameterType="String">
+			select count(*) as num from t_game
+			where game_name=#{game_name}
+		</select>
+		
+		<!-- 게임관리페이지 카테고리검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountForGenreName" resultType="Integer" parameterType="String">
+			select count(*) as num
+            from t_game g join t_game_genres gg
+            on g.GAME_ID = gg.GAME_ID
+            join t_genre ge
+            on gg.genre_id = ge.genre_id
+			where genre_name=#{genre_name}
+		</select>
+		
+		<!-- 게임관리페이지 할인율 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getGameCountForDiscountRate" resultType="Integer" parameterType="Integer">
+			select count(*) as num from t_game
+			where discount_rate = #{discount_rate}
+		</select>
+		
+<!--  --><!-- memberManagement -->
+		<!-- 회원관리페이지 전체목록조회 -->
+		<select id="findMemberListAll" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 회원관리페이지 id검색 -->
+		<select id="findMemberForId" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					where user_id =#{user_id}
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 회원관리페이지 닉네임검색 -->
+		<select id="findMemberForNickName" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					where nickname = #{nickname}
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 회원관리페이지 이메일검색 -->
+		<select id="findMemberForEmail" resultType="model.User" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select * from t_user
+					where email = #{email}
+					order by user_id ) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		
+		<!-- 회원관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountAll" resultType="Integer">
+			select count(*) as num from t_user
+		</select>
+		
+		<!-- 회원관리페이지 회원id 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountForId" resultType="Integer" parameterType="String">
+			select count(*) as num from t_user
+			where user_id = #{user_id}
+		</select>
+		
+		<!-- 회원관리페이지 닉네임 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountForNickName" resultType="Integer" parameterType="String">
+			select count(*) as num from t_user
+			where nickname = #{nickname}
+		</select>
+		
+		<!-- 회원관리페이지 이메일 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getMemberCountForEmail" resultType="Integer" parameterType="String">
+			select count(*) as num from t_user
+			where email = #{email}
+		</select>
+		
+		
+		<!-- 회원정보페이지를 위한 조회 -->
+		<select id="findUser" resultType="model.User" parameterType="model.User">
+			select * from t_user
+			where user_id=#{user_id} and nickname=#{nickname}
+		</select>
+		
+<!--  --><!-- purchaseManagement -->
+		<!-- 구매정보페이지 전체목록조회 -->
+		<select id="findPurchaseListAll" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select o.order_id, o.user_id, g.game_name, o.TOTAL_AMOUNT, o.ORDER_DATE
+                    from t_order o join t_game g
+                    on o.game_id = g.game_id
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 구매정보페이지 id검색 -->
+		<select id="findPurchaseForId" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select o.order_id, o.user_id, g.game_name, o.TOTAL_AMOUNT, o.ORDER_DATE
+                        from t_order o join t_game g
+                        on o.game_id = g.game_id
+                        where o.user_id=#{user_id}
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 구매정보페이지 게임명검색 -->
+		<select id="findPurchaseForGameName" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select o.order_id, o.user_id, g.game_name, o.TOTAL_AMOUNT, o.ORDER_DATE
+                    from t_order o join t_game g
+                    on o.game_id = g.game_id
+                    where g.game_name=#{game_name}
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		<!-- 구매정보페이지 구매금액검색 -->
+		<select id="findPurchaseForAmount" resultType="model.Order" parameterType="model.AdminCondition">
+			select *
+			from(
+				select a.*, rownum rn from(
+					(select o.order_id, o.user_id, g.game_name, o.TOTAL_AMOUNT, o.ORDER_DATE
+                    from t_order o join t_game g
+                    on o.game_id = g.game_id
+					where total_amount=#{total_amount}
+					order by order_id desc) a
+				)
+			) 
+			where rn between #{startRow} and #{endRow}
+		</select>
+		
+		
+		<!-- 구매관리페이지 전체목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountAll" resultType="Integer" >
+			select count(*) as num from t_order
+		</select>
+		
+		<!-- 구매관리페이지 회원id 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountForId" resultType="Integer" parameterType="String">
+			select count(*) as num from t_order
+			where user_id = #{user_id}
+		</select>
+		
+		<!-- 구매관리페이지 게임명 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountForGameName" resultType="Integer" parameterType="String">
+			select count(*) as num 
+            from t_order o join t_game g
+            on o.game_id = g.game_id
+			where game_name = #{game_name}
+		</select>
+		
+		<!-- 구매관리페이지 구매액 검색한 값목록 불러오기 위한 내역 카운트 -->
+		<select id="getPurchaseCountForAmount" resultType="Integer" parameterType="Integer">
+			select count(*) as num from t_order
+			where total_amount = #{total_amount}
+		</select>
+		
+</mapper>

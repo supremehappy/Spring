@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<html>
+	<div data-role="page">
+		<%@ include file="/gshop/header.jsp" %>
+		
+		<div role="main" class="ui-content">
+		<h1>커뮤니티 게시글 목록</h1>
+		
+	
+				<table class="table table-hover">
+
+					<tbody>
+					<c:if test="${ empty BBS_LIST }">
+						<tr align="center"><td>등록된 게시글이 없습니다.</td></tr>						
+					</c:if>					
+					<c:if test="${ !empty BBS_LIST }">
+						<c:forEach var="bbsGenre" items="${ BBS_LIST }">
+						<tr>
+							<td><a href="../community/detail.html?SEQ=${ bbsGenre.seq }">${ bbsGenre.seq }</a></td>
+							<td>${ bbsGenre.header_name }</td>
+							<td><a href="../community/detail.html?SEQ=${ bbsGenre.seq }">${ bbsGenre.post_title }</a></td>
+							<td>${ bbsGenre.nickname }</td>
+							<td>${ bbsGenre.reg_date }</td>
+							<td>${ bbsGenre.view_count }</td>
+						</tr>
+					</c:forEach>
+					
+					</tbody>
+					</c:if>
+				</table>
+
+				<br>
+				<c:forEach var="page" begin="1" end="${ COUNT }">
+					<a href="../community/list.html?PAGENO=${ page }">${ page }</a>
+				</c:forEach>
+			
+		</div>
+		
+		<%@ include file="/gshop/footer.jsp" %>
+	</div>
+</html>

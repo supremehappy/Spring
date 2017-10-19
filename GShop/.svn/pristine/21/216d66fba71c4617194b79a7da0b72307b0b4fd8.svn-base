@@ -1,0 +1,559 @@
+package controller;
+
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import logic.CommunityCatalog;
+import model.BbsGenre;
+import model.Header;
+import model.Order;
+import model.Paging;
+import model.ReplyGenre;
+
+@Controller
+public class CommunityController {
+	@Autowired
+	private CommunityCatalog communityCatalog;
+
+	@ModelAttribute
+	public BbsGenre setupBbsGenre(){
+		return new BbsGenre();
+	}
+	
+	@ModelAttribute
+	public ReplyGenre setupReplyGenre(){
+		return new ReplyGenre();
+	}
+	
+	@RequestMapping(value="/community/inputForm.html", method=RequestMethod.GET)
+	public ModelAndView inputForm(HttpSession session) {
+		List<Header> headerList = communityCatalog.readHeader();
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("HEADER", headerList);
+		
+		String user_id = (String) session.getAttribute("user_key");
+		String nickname = communityCatalog.readUser(user_id);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("NICKNAME", nickname);
+		mav.addAllObjects(headerMap);
+		mav.setViewName("gshop/community/bbsGenreInputForm");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/community/insert.html", method=RequestMethod.POST)
+	public ModelAndView insert(@Valid BbsGenre bbsGenre, BindingResult result, HttpSession session, Integer PARENT_ID) {
+		
+		if(result.getErrorCount() > 0) {
+			ModelAndView mav = new ModelAndView("gshop/community/bbsGenreInputForm");
+			mav.getModel().putAll(result.getModel());
+			
+			return mav;
+		}
+		
+		String[] fileName = null;
+		MultipartFile[] multiFile = null;
+		
+		for(int index = 0; index < 5; index++) {
+			multiFile = bbsGenre.getImage();
+			fileName = new String[5];
+			String path = null;
+			OutputStream out = null;
+			ServletContext context = session.getServletContext();
+
+			if(multiFile != null) {
+				fileName[index] = multiFile[index].getOriginalFilename();
+				path = context.getRealPath("/upload/"+fileName[index]);
+				System.out.println(path);
+				try{
+					out = new FileOutputStream(path);
+					BufferedInputStream bis = new BufferedInputStream(multiFile[index].getInputStream());
+					byte[] buffer = new byte[8106];
+					int read = 0;
+					while( (read = bis.read(buffer))>0 ) {
+						out.write(buffer, 0, read);
+					}
+					
+					if(out != null) {
+						out.close();
+					}
+				}
+				catch(Exception e) {
+					
+				}
+				
+				if(index == 0) {					
+					if(fileName[index] == "") {
+						bbsGenre.setImage1("");
+					}
+					else {
+						bbsGenre.setImage1(fileName[index]);
+					}
+				}
+				else if(index == 1) {					
+					if(fileName[index] == "") {
+						bbsGenre.setImage2("");
+					}
+					else {
+						bbsGenre.setImage2(fileName[index]);
+					}
+				}
+				else if(index == 2) {
+					if(fileName[index] == "") {
+						bbsGenre.setImage3("");
+					}
+					else {
+						bbsGenre.setImage3(fileName[index]);
+					}
+				}
+				else if(index == 3) {
+					if(fileName[index] == "") {
+						bbsGenre.setImage4("");
+					}
+					else {
+						bbsGenre.setImage4(fileName[index]);
+					}
+				}
+				else if(index == 4) {
+					if(fileName[index] == "") {
+						bbsGenre.setImage5("");
+					}
+					else {
+						bbsGenre.setImage5(fileName[index]);
+					}
+				}
+
+			}
+		}
+		
+		String user_id = (String) session.getAttribute("user_key");
+		int group_id = bbsGenre.getGroup_id();
+//		int parent_id = bbsGenre.getParent_id();
+		int view_order = bbsGenre.getView_order();
+		
+		ModelAndView mav = new ModelAndView("gshop/index");
+		
+		if(user_id == null) {
+			mav.addObject("RESULT", "nobody");
+			mav.addObject("BODY", "login.jsp");
+			
+			return mav;
+		}
+		else {
+			bbsGenre.setUser_id(user_id);
+
+			Object obj = communityCatalog.getMaxSeq();
+			
+			int seq = 0;
+			
+			
+			if(obj != null) {	
+				seq = Integer.parseInt(String.valueOf(obj));
+				
+//				BbsGenre compare = communityCatalog.readDetail(seq);
+				seq++;
+				
+				if(group_id != 0) {
+//					bbsGenre.setParent_id(parent_id);
+					
+					view_order++;
+					bbsGenre.setView_order(view_order);
+										
+					communityCatalog.updateViewOrder(bbsGenre);
+				}
+				else {
+					bbsGenre.setGroup_id(seq);
+				}
+			}
+			else {
+				seq++;
+				bbsGenre.setGroup_id(seq);
+			}
+			
+			
+			bbsGenre.setSeq(seq);
+			
+			Calendar today = Calendar.getInstance();
+			int year = today.get(Calendar.YEAR);
+			int month = today.get(Calendar.MONTH) + 1;
+			String tMonth = null;
+			if(month < 10) {
+				tMonth = "0" + month;
+			}
+			else {
+				tMonth = "" + month;
+			}
+			int date = today.get(Calendar.DATE);
+			String reg_date = year + tMonth + date;
+			bbsGenre.setReg_date(reg_date);
+			
+			bbsGenre.setView_count(0);
+
+			communityCatalog.insertBbs(bbsGenre);
+			
+			return new ModelAndView("redirect:/community/list.html");
+		}
+	}
+	
+	@RequestMapping(value="/community/list.html", method=RequestMethod.GET)
+	public ModelAndView select(Integer PAGENO) {
+		ModelAndView mav = new ModelAndView("gshop/community/bbsGenreList");
+		
+		Integer cnt = communityCatalog.getBbsCount();
+		int pageCnt = 0;
+		
+		if(cnt == null) {
+			cnt = 0;
+		}
+		else {
+			pageCnt = cnt / 5;
+			
+			if(cnt % 5 > 0) {
+				pageCnt++;
+			}
+		}
+		
+		mav.addObject("COUNT", pageCnt);
+		
+		int currentPage = 0;
+		
+		if(PAGENO == null) {
+			currentPage = 1;
+		}
+		else {
+			currentPage = PAGENO;
+		}
+		
+		int startRow = 0;
+		int endRow = 0;
+		startRow = (currentPage - 1) * 5 + 1;
+		endRow = currentPage * 5;
+		
+		if(endRow > cnt) {
+			endRow = cnt;
+		}		
+		
+		Paging p = new Paging();
+		p.setStartRow(startRow);
+		p.setEndRow(endRow);
+		
+		List<BbsGenre> bbsList = communityCatalog.readAll(p);
+				
+		mav.addObject("BBS_LIST", bbsList);
+		
+		return mav;
+	}	
+	
+	@RequestMapping(value="/community/detail.html", method=RequestMethod.GET)
+	public ModelAndView readDetail(Integer SEQ, HttpSession session){
+		ModelAndView mav = new ModelAndView("gshop/community/bbsGenreDetail");
+		
+		BbsGenre bbsGenre = communityCatalog.readDetail(SEQ);
+		bbsGenre.setView_count(bbsGenre.getView_count() + 1);
+		communityCatalog.updateViewCount(bbsGenre);
+		
+		String user_id = (String) session.getAttribute("user_key");
+		
+		if(user_id != null) {
+			String nickname = communityCatalog.readUser(user_id);
+			mav.addObject("NICKNAME", nickname);
+		}
+		
+		List<ReplyGenre> replyList = communityCatalog.readReplyAll(SEQ);
+		
+		
+		mav.addObject("USER_ID", user_id);		
+		mav.addObject("BBS_DETAIL", bbsGenre);
+		mav.addObject("REPLY_LIST", replyList);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/community/replyForm.html", method=RequestMethod.POST)
+	public ModelAndView replyForm(HttpSession session, Integer SEQ, Integer GROUP_ID, Integer PARENT_ID, Integer VIEW_ORDER, String TITLE) {
+		List<Header> headerList = communityCatalog.readHeader();
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("HEADER", headerList);
+		
+		String user_id = (String) session.getAttribute("user_key");
+		String nickname = communityCatalog.readUser(user_id);
+		
+		BbsGenre bbsGenre = communityCatalog.readDetail(SEQ);
+		
+		bbsGenre.setGroup_id(GROUP_ID);
+		bbsGenre.setParent_id(PARENT_ID);
+		bbsGenre.setView_order(VIEW_ORDER);
+		bbsGenre.setNickname(nickname);
+		bbsGenre.setPost_title(TITLE);
+		
+		ModelAndView mav = new ModelAndView("gshop/community/bbsGenreInputForm");
+		mav.addObject("BBS_DETAIL", bbsGenre);
+		mav.addObject("NICKNAME", nickname);
+		mav.addAllObjects(headerMap);
+		
+		return mav;
+	}
+		
+	@RequestMapping(value="/community/updateForm.html", method=RequestMethod.POST)
+	public ModelAndView updateForm(Integer SEQ) {
+		List<Header> headerList = communityCatalog.readHeader();
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		headerMap.put("HEADER", headerList);
+
+		BbsGenre bbsGenre = communityCatalog.readDetail(SEQ);
+
+		ModelAndView mav = new ModelAndView("gshop/community/bbsGenreUpdateForm");
+		mav.addAllObjects(headerMap);
+		mav.addObject("BBS_UPDATE", bbsGenre);
+
+		return mav;
+	}
+	
+	@RequestMapping(value="/community/update.html", method=RequestMethod.POST)
+	public ModelAndView update(@Valid BbsGenre bbsGenre, BindingResult result, HttpSession session, String POST_CONTENT) {
+
+		if(result.getErrorCount() > 0) {
+			ModelAndView mav = new ModelAndView("gshop/community/bbsGenreUpdateForm");
+			mav.getModel().putAll(result.getModel());
+			
+			return mav;
+		}
+		
+		BbsGenre bbsGenreImage = communityCatalog.readDetail(bbsGenre.getSeq());
+		
+		String image1 = bbsGenreImage.getImage1();
+		String image2 = bbsGenreImage.getImage2();
+		String image3 = bbsGenreImage.getImage3();
+		String image4 = bbsGenreImage.getImage4();
+		String image5 = bbsGenreImage.getImage5();
+		
+		String[] fileName = null;
+		MultipartFile[] multiFile = null;
+		
+		for(int index = 0; index < 5; index++) {
+			multiFile = bbsGenre.getImage();
+			fileName = new String[5];
+			String path = null;
+			OutputStream out = null;
+			ServletContext context = session.getServletContext();
+			
+			if(multiFile != null) {
+				fileName[index] = multiFile[index].getOriginalFilename();
+				path = context.getRealPath("/upload/"+fileName[index]);
+
+				try{
+					out = new FileOutputStream(path);
+					BufferedInputStream bis = new BufferedInputStream(multiFile[index].getInputStream());
+					byte[] buffer = new byte[8106];
+					int read = 0;
+					while( (read = bis.read(buffer))>0 ) {
+						out.write(buffer, 0, read);
+					}
+					
+					if(out != null) {
+						out.close();
+					}
+				}
+				catch(Exception e) {
+					
+				}
+				
+				if(index == 0) {
+					if(fileName[index] != "") {
+						System.out.println("image1 in");
+						bbsGenre.setImage1(fileName[index]);
+					}
+					else {
+						if(image1 == null) {
+							System.out.println("image1 null");
+							bbsGenre.setImage1("");
+						}
+						else {
+							System.out.println("image1 not null");
+							bbsGenre.setImage1(image1);
+						}
+					}
+				}
+				else if(index == 1) {
+					if(fileName[index] != "") {
+						System.out.println("image2 in");
+						bbsGenre.setImage2(fileName[index]);
+					}
+					else {
+						if(image2 == null) {
+							System.out.println("image2 null");
+							bbsGenre.setImage2("");
+						}
+						else {
+							System.out.println("image2 not null");
+							bbsGenre.setImage2(image2);
+						}
+					}
+				}
+				else if(index == 2) {
+					if(fileName[index] != "") {
+						System.out.println("image3 in");
+						bbsGenre.setImage3(fileName[index]);
+					}
+					else {
+						if(image3 == null) {
+							System.out.println("image3 null");
+							bbsGenre.setImage3("");
+						}
+						else {
+							System.out.println("image3 not null");
+							bbsGenre.setImage3(image3);
+						}
+					}				
+				}
+				else if(index == 3) {
+					if(fileName[index] != "") {
+						System.out.println("image4 in");
+						bbsGenre.setImage4(fileName[index]);
+					}
+					else {
+						if(image4 == null) {
+							System.out.println("image4 null");
+							bbsGenre.setImage4("");
+						}
+						else {
+							System.out.println("image4 not null");
+							bbsGenre.setImage4(image4);
+						}
+					}
+				}
+				else if(index == 4) {
+					if(fileName[index] != "") {
+						System.out.println("image5 in");
+						bbsGenre.setImage5(fileName[index]);
+					}
+					else {
+						if(image5 == null) {
+							System.out.println("image5 null");
+							bbsGenre.setImage5("");
+						}
+						else {
+							System.out.println("image5 not null");
+							bbsGenre.setImage5(image5);
+						}
+					}
+				}
+			}
+		}
+		
+		bbsGenre.setPost_content(POST_CONTENT);
+		communityCatalog.updateBbs(bbsGenre);
+
+		return new ModelAndView("redirect:/community/list.html");
+	}
+	
+	@RequestMapping(value="/community/delete.html", method=RequestMethod.POST)
+	public ModelAndView delete(Integer SEQ) {
+
+		communityCatalog.deleteBbs(SEQ);
+
+		return new ModelAndView("redirect:/community/list.html");
+	}
+	
+	@RequestMapping(value="/community/insertComment.html", method=RequestMethod.POST)
+	public ModelAndView insertComment(@Valid ReplyGenre replyGenre, BindingResult result, HttpSession session) {
+		
+		if(result.getErrorCount() > 0) {
+			ModelAndView mav = new ModelAndView("gshop/community/bbsGenreDetail");
+			mav.getModel().putAll(result.getModel());
+			
+			return mav;
+		}
+		
+		String user_id = (String) session.getAttribute("user_key");
+		String nickname = communityCatalog.readUser(user_id);
+		
+		int seq = replyGenre.getSeq();
+		int re_group = replyGenre.getRe_group();
+		int re_parent = replyGenre.getRe_parent();
+		int re_view = replyGenre.getRe_view();
+		
+		ModelAndView mav = new ModelAndView("gshop/index");
+		
+		if(user_id == null) {
+			mav.addObject("RESULT", "nobody");
+			mav.addObject("BODY", "login.jsp");
+			
+			return mav;
+		}
+		else {
+			replyGenre.setUser_id(user_id);
+			replyGenre.setNickname(nickname);
+			
+			Object obj = communityCatalog.getMaxReplySeq();
+			
+			int re_seq = 0;
+						
+			if(obj != null) {	
+				re_seq = Integer.parseInt(String.valueOf(obj));
+				re_seq++;
+				
+				if(re_group != 0) {
+					replyGenre.setRe_group(re_group);
+					replyGenre.setRe_parent(re_parent);
+					re_view++;
+					replyGenre.setRe_view(re_view);
+										
+					communityCatalog.updateReView(replyGenre);
+				}
+				else {
+					replyGenre.setRe_group(re_seq);
+				}
+			}
+			else {
+				re_seq++;
+				replyGenre.setRe_group(re_seq);
+			}
+			
+			System.out.println("seq = " + seq);
+			System.out.println("re_group = " + re_group);
+			System.out.println("re_parent = " + re_parent);
+			System.out.println("re_view = " + re_view);
+			System.out.println("re_seq = " + re_seq);
+			
+			replyGenre.setRe_seq(re_seq);
+			
+			Calendar today = Calendar.getInstance();
+			int year = today.get(Calendar.YEAR);
+			int month = today.get(Calendar.MONTH) + 1;
+			String tMonth = null;
+			if(month < 10) {
+				tMonth = "0" + month;
+			}
+			else {
+				tMonth = "" + month;
+			}
+			int date = today.get(Calendar.DATE);
+			String re_reg = year + tMonth + date;
+			replyGenre.setRe_reg(re_reg);
+
+			communityCatalog.insertReply(replyGenre);
+			
+			return new ModelAndView("redirect:/community/detail.html?SEQ=" + seq);
+		}
+	}
+}

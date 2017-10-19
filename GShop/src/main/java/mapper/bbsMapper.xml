@@ -10,15 +10,15 @@
 	</update>
 	
 	<!-- 답글 작성 시 order_no 변경 -->
-	<update id="updateReView" parameterType="map">
+	<!-- <update id="updateReView" parameterType="map">
 		UPDATE ${replyTableName} SET re_view = re_view + 1
 		WHERE re_group = ${re_group} AND re_view >= ${re_view}
-	</update>
-	<!-- <update id="updateReView" parameterType="map">
+	</update> -->
+	<update id="updateReView" parameterType="map">
 		update ${replyTableName} set re_view = re_view + (select count(*) from ${replyTableName} a, ${replyTableName} b
 		where a.re_seq = b.re_parent and a.seq=${seq} and b.seq=${seq} and a.re_seq=${re_seq})
 		where re_group = ${re_group} and re_view >= ${re_view} 
-	</update> -->
+	</update>
 	
 	<!-- 대댓글 처리를 위해 최대 댓글 번호를 찾기 -->
 	<select id="selectMaxReGroup" resultType="Integer">

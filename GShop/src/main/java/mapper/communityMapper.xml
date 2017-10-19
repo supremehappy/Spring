@@ -100,7 +100,10 @@
 		order by re_group asc, re_view asc 
 	</select>
 
-
+	<delete id="deleteReply" parameterType="model.ReplyGenre">
+		delete from t_reply_genre
+		where seq = #{seq} and re_seq = #{re_seq}
+	</delete>
 
 </mapper>
 
